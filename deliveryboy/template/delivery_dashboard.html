@@ -1,0 +1,825 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vet-dashboard.css' %}">
+    
+    <style>
+    
+        :root { 
+            --brand-purple: #894B8D; 
+            --bg-soft: #f4eef5; 
+        }
+        body {
+    background-color: #f4eef5;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+        
+        /* Logout Button - Matched to Vet Dashboard */
+        .btn-logout-custom {
+            background-color: var(--brand-purple) !important;
+            color: white !important;
+            border-radius: 50px !important;
+            padding: 10px 30px !important;
+            font-weight: 700 !important;
+            border: none !important;
+            transition: 0.3s;
+        }
+        .btn-logout-custom:hover {
+            background-color: #6a3a6d !important;
+            transform: translateY(-2px);
+        }
+
+        /* Banner Style */
+        .delivery-breadcrumb-box { 
+            background-color: var(--brand-purple); 
+            border-bottom-left-radius: 40px; 
+            border-bottom-right-radius: 40px; 
+        }
+
+        /* Sidebar Profile */
+        .dashboard-card { 
+            background: #fff; 
+            border-radius: 25px; 
+            padding: 30px; 
+            border: none; 
+            box-shadow: 0 10px 30px rgba(137, 75, 141, 0.05); 
+            margin-bottom: 30px; 
+        }
+        .agent-profile-img { 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 4px solid var(--brand-purple); 
+        }
+
+        /* Stats Widgets */
+        .stat-widget { 
+            border-radius: 25px; 
+            padding: 35px 25px; 
+            color: #fff; 
+            margin-bottom: 25px; 
+            background: var(--brand-purple); 
+            transition: 0.3s; 
+            border: none; 
+        }
+        .stat-widget.dark { background: #333333; }
+        .stat-widget h2 { font-size: 38px; font-weight: 800; margin-top: 10px; }
+
+        /* General Buttons */
+        .btn-brand-solid {
+            background-color: var(--brand-purple);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            padding: 12px 25px;
+            border: none;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-brand-solid:hover { background-color: #6a3a6d; } 
+    </style>
+    <style>
+    .vendor-toast {
+        animation: slideInRight 0.4s ease-out;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    .slide-out-right {
+        animation: slideOutRight 0.5s ease-in forwards !important;
+    }
+
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(110%); opacity: 0; }
+    }
+</style>
+
+<style>
+    /* Delivery Tabs */
+#delivery-tabs .nav-link.active {
+    background-color: #894B8D !important;
+    color: white !important;
+}
+#delivery-tabs .nav-link {
+    background-color: #f8f9fa;
+    color: #333;
+    transition: all 0.3s ease;
+}
+#delivery-tabs .nav-link:hover:not(.active) {
+    background-color: #e9ecef;
+}
+</style>
+
+</head>
+<body>
+
+    
+
+<header class="header-area">
+    <div class="container">
+        <div class="header-flex d-flex align-items-center justify-content-between py-3">
+
+            <div class="logo">
+                <a href="/">
+                    <a href="/"><img src="{% static 'assets/img/logo/logo1.png' %}" alt="PetPal Logo" style="width: 200px; height:70px;"></a>
+                </a>
+            </div>
+
+            <nav class="main-menu d-none d-lg-block">
+                <ul class="d-flex list-unstyled m-0 gap-4">
+                    <li><a href="{% url 'delivery_dashboard' %}" class="text-dark fw-bold">Home</a></li>
+                    <li><a href="{% url 'delivery_support' %}" class="text-dark fw-bold">Support</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-btn">
+                <a href="{% url 'delivery_logout' %}" 
+                   class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end" style="height: 0; position: relative; z-index: 1100;">
+            <div class="message-container" style="width: 100%; max-width: 300px; margin-top: -20px; margin-right: 25px;">
+                {% if messages %}
+                    {% for message in messages %}
+                        
+                        {% if 'success' in message.tags %}
+                        <div class="alert alert-dismissible fade show shadow border-0 mb-2 vendor-toast" role="alert" 
+                             style="border-radius: 12px; background: #fff; padding: 0; overflow: hidden; display: flex; align-items: stretch; min-height: 85px; box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;">
+                            
+                            <div style="width: 10px; background: #28a745; flex-shrink: 0;"></div>
+                            
+                            <div style="padding: 12px 18px; flex-grow: 1; position: relative; display: flex; flex-direction: column; justify-content: center;">
+                                <strong style="color: #28a745; font-size: 15px; font-weight: 800; display: block; text-transform: uppercase;">Success!</strong>
+                                <span style="color: #555; font-size: 13px; line-height: 1.4; padding-right: 20px;">{{ message }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                                        style="position: absolute; top: 10px; right: 10px; font-size: 0.6rem;"></button>
+                            </div>
+                        </div>
+
+                        {% elif 'danger' in message.tags or 'error' in message.tags %}
+                        <div class="alert alert-dismissible fade show shadow border-0 mb-2 vendor-toast" role="alert" 
+                             style="border-radius: 12px; background: #fff; padding: 0; overflow: hidden; display: flex; align-items: stretch; min-height: 85px; box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;">
+                            
+                            <div style="width: 10px; background: #dc3545; flex-shrink: 0;"></div>
+                            
+                            <div style="padding: 12px 18px; flex-grow: 1; position: relative; display: flex; flex-direction: column; justify-content: center;">
+                                <strong style="color: #dc3545; font-size: 15px; font-weight: 800; display: block; text-transform: uppercase;">Failed!</strong>
+                                <span style="color: #555; font-size: 13px; line-height: 1.4; padding-right: 20px;">{{ message }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                                        style="position: absolute; top: 10px; right: 10px; font-size: 0.6rem;"></button>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="
+    background: linear-gradient(135deg, #894B8D, #6a3a6d);
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    padding: 60px 0;
+">
+    <div class="container text-center">
+        
+        <h2 class="fw-bold text-white mb-2">
+            Delivery Boy Dashboard
+        </h2>
+
+        <p style="
+    color: rgb(254, 254, 254);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+">
+    {{ agent.deliveryboy_name }} | DeliveryBoy_id: {{ agent.deliveryboy_id }}
+</p>
+
+    </div>
+</div>
+
+<main class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="dashboard-card text-center p-4 bg-white rounded-4" 
+     style="box-shadow: 0 15px 40px rgba(0,0,0,0.08);">
+                    <img src="{% if agent.deliveryboy_profile %}{{ agent.deliveryboy_profile.url }}{% else %}{% static 'assets/img/users/default.png' %}{% endif %}" class="agent-profile-img mb-3" >
+                    <h4 class="vet-name-sidebar mb-1 fw-bold">{{ agent.deliveryboy_name }}</h4>
+                    <p class="text-muted small" id="display-address">
+                        <i class="fas fa-map-marker-alt me-2 text-danger"></i><strong>{{ agent.vendor_id.area_id.area_name }}</strong>
+                    </p>
+                    <div class="text-center mb-2">
+
+                        {% if agent.is_available == 1 %}
+                        <span class="badge bg-success rounded-pill px-3">Online</span>
+                        {% else %}
+                        <span class="badge bg-secondary rounded-pill px-3" style="background-color: #393f61 !important;">Offline</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Delivery Boy Details Card — vet jaisa -->
+                <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                    <h5 class="fw-bold mb-3">Delivery Boy Details</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><strong>Email:</strong> {{ agent.email }}</li>
+                        <li class="mb-2"><strong>Contact:</strong> {{ agent.contact }}</li>
+                    </ul>
+                </div>
+
+                <!-- Vendor Details Card -->
+                <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                    <h5 class="fw-bold mb-3">🏪 My Vendor</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><strong>Name:</strong> {{ agent.vendor_id.vendor_name }}</li>
+                        <li class="mb-2"><strong>Email:</strong> {{ agent.vendor_id.email }}</li>
+                        <li class="mb-2"><strong>Contact:</strong> {{ agent.vendor_id.contact }}</li>
+                        <li class="mb-2"><strong>Shop Address:</strong> {{ agent.vendor_id.address }}</li>
+                        <li class="mb-2"><strong>Area:</strong> {{ agent.vendor_id.area_id.area_name }}</li>
+                    </ul>
+                </div>
+                <!-- Availability Status Card — vet dashboard jaisa -->
+                <div class="dashboard-card p-4 bg-white rounded-4 mt-3"
+                    style="box-shadow: 0 15px 40px rgba(0,0,0,0.08);">
+                    <label class="small fw-bold mb-1">Set Availability Status:</label>
+                    <form action="{% url 'toggle_status' %}" method="POST" id="toggleForm">
+                        {% csrf_token %}
+                        <select name="availability_status" class="form-select form-select-sm rounded-pill shadow-sm" id="statusSelect" onchange="handleStatusChange(this)">
+                            <option value="1" {% if agent.is_available == 1 %}selected{% endif %}>Online (Available)</option>
+                            <option value="0" {% if agent.is_available == 0 %}selected{% endif %}>Offline (Not Available)</option>
+                        </select>
+                    </form>
+
+                    <script>
+                    function handleStatusChange(select) {
+                        if (select.value === '0') {
+                            {% if order_groups %}
+                            select.value = '1';
+                            const modal = new bootstrap.Modal(document.getElementById('pendingBlockModal'));
+                            modal.show();
+                            return;
+                            {% endif %}
+                        }
+                        document.getElementById('toggleForm').submit();
+                    }
+                    </script>
+
+                    {% if agent.is_available == 1 %}
+                    {% with pending_count=order_groups|length %}
+                    {% if pending_count > 0 %}
+                    <div class="mt-2 p-2 rounded-3 text-center" style="background: #fff3cd; border: 1px solid #ffc107;">
+                        <small class="text-warning fw-bold">
+                            ⚠️ {{ pending_count }} active order{{ pending_count|pluralize }} pending — please complete before going offline!
+                        </small>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+    <div class="row">
+
+        <!-- Active Tasks -->
+        <div class="col-md-6">
+            <div style="
+                background: linear-gradient(135deg, #894B8D, #a060a6);
+                border-radius: 25px;
+                padding: 30px;
+                color: white;
+                box-shadow: 0 10px 30px rgba(137,75,141,0.25);
+                transition: 0.3s;"
+                >
+                <small style="
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    font-weight: 600;
+                    color: rgba(255,255,255,0.8);
+                ">
+                    Active Tasks
+                </small>
+
+                <h2 style="
+                    margin-top: 10px;
+                    font-size: 36px;
+                    font-weight: 800;
+                    color: white;
+                ">
+                    {{ order_groups|length }} Orders
+                </h2>
+            </div>
+        </div>
+
+        <!-- Total Delivered -->
+        <div class="col-md-6">
+            <div style="
+                background: linear-gradient(135deg, #2c2c2c, #444);
+                border-radius: 25px;
+                padding: 30px;
+                color: white;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                transition: 0.3s;"
+            >
+                <small style="
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    font-weight: 600;
+                    color: rgba(255,255,255,0.7);
+                ">
+                    Total Delivered
+                </small>
+
+                <h2 style="
+                    margin-top: 10px;
+                    font-size: 36px;
+                    font-weight: 800;
+                    color: white;
+                ">
+                    {{ completed_count }} Tasks
+                </h2>
+            </div>
+        </div>
+
+    </div>
+
+                
+                <div class="dashboard-card p-4 bg-white rounded-4 mt-5">
+
+                    <!-- Tabs -->
+                    <ul class="nav nav-pills mb-4 gap-2" id="delivery-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="pending-tab" data-bs-toggle="pill" data-bs-target="#pending-pane" type="button">
+                                🚚 Pending Deliveries
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="completed-tab" data-bs-toggle="pill" data-bs-target="#completed-pane" type="button">
+                                ✅ Completed ({{ completed_count }})
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="editprofile-tab" data-bs-toggle="pill" data-bs-target="#editprofile-pane" type="button">
+                                ✏️ Edit Profile
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="security-tab" data-bs-toggle="pill" data-bs-target="#security-pane" type="button">
+                                🔒 Security
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- TAB 1: Pending -->
+                        <div class="tab-pane fade show active" id="pending-pane">                            
+                            <!-- Scrollable container -->
+                            <div style="max-height: 520px; overflow-y: auto; padding-right: 8px;">
+
+                                {% for group in order_groups %}
+                                <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
+
+                                    <!-- Order Header: Customer + Status -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                        <div>
+                                            <span class="badge rounded-pill mb-1 d-inline-block"
+                                                style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                #{{ group.order.order_id }}
+                                            </span>
+                                            <span class="text-muted small d-block">Customer</span>
+                                            <h6 class="fw-bold m-0">{{ group.order.cust_id.cust_name }}</h6>
+                                            <small class="text-muted">
+                                                📞 {{ group.order.cust_id.contact }} &nbsp;|&nbsp;
+                                                📍 {{ group.order.cust_id.area_id.area_name }}
+                                            </small>
+                                            <small class="text-muted d-block mt-1">
+                                                🏪 {{ group.products.0.detail.vendor_id.vendor_name }}
+                                            </small>
+                                        </div>
+                                        <span class="badge rounded-pill px-3 py-2
+                                            {% if group.detail_status == 1 %}bg-info text-white
+                                            {% elif group.detail_status == 2 %}bg-primary text-white
+                                            {% else %}bg-success text-white{% endif %}">
+                                            {% if group.detail_status == 1 %}📦 Assigned
+                                            {% elif group.detail_status == 2 %}🚚 Out for Delivery
+                                            {% else %}✅ Delivered{% endif %}
+                                        </span>
+                                    </div>
+
+                                    <!-- Products List -->
+                                    {% for item in group.products %}
+                                    <div class="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
+                                        <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                                            style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                        <div class="flex-grow-1">
+                                            <h6 class="fw-bold mb-0">{{ item.detail.prod_id.prod_name }}</h6>
+                                            <small class="text-muted">Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <small class="text-muted d-block">Subtotal</small>
+                                            <span class="fw-bold" style="color: #894B8D;">₹{{ item.subtotal }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                    <!-- Order Info -->
+                                    <div class="bg-light rounded-3 p-3 mb-3 mt-2">
+                                        <div class="row small">
+                                            <div class="col-md-5">
+                                                <span class="text-muted fw-bold">📍 Delivery Address:</span>
+                                                <p class="mb-0">{{ group.order.address }}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="text-muted fw-bold">📅 Order Date:</span>
+                                                <p class="mb-0">{{ group.order.order_date|date:"d M Y" }}</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <span class="text-muted fw-bold">🚚 Expected:</span>
+                                                <p class="mb-0">{{ group.order.delivery_date|date:"d M Y" }}</p>
+                                            </div>                                        
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="mb-3">
+                                        <div class="progress" style="height: 7px; border-radius: 10px; background: #eee;">
+                                            <div class="progress-bar" style="background: #894B8D; width: {% if group.detail_status == 1 %}40%{% elif group.detail_status == 2 %}70%{% else %}100%{% endif %};">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-1" style="font-size: 11px; font-weight: 700;">
+                                            <span style="color: #aaa;">Processing</span>
+                                            <span style="color: {% if group.detail_status >= 1 %}#894B8D{% else %}#aaa{% endif %};">Assigned</span>
+                                            <span style="color: {% if group.detail_status >= 2 %}#894B8D{% else %}#aaa{% endif %};">Out for Delivery</span>
+                                            <span style="color: {% if group.detail_status == 3 %}#28a745{% else %}#aaa{% endif %};">Delivered</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        {% if group.detail_status == 1 %}
+                                            <!-- Assigned → Out for Delivery -->
+                                            <a href="{% url 'update_status' group.order.order_id 2 %}"
+                                            class="btn btn-sm btn-info rounded-pill px-4 fw-bold text-white shadow-sm">
+                                                🚚 Out for Delivery
+                                            </a>
+                                        {% elif group.detail_status == 2 %}
+                                            <!-- Out for Delivery → Delivered -->
+                                            <a href="{% url 'update_status' group.order.order_id 3 %}"
+                                            class="btn btn-sm btn-success rounded-pill px-4 fw-bold shadow-sm">
+                                                ✅ Mark Delivered
+                                            </a>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                {% empty %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-check-circle fa-3x text-success mb-3 opacity-50"></i>
+                                    <p class="text-muted fw-bold">No pending deliveries! 🐾</p>
+                                </div>
+                                {% endfor %}
+
+                            </div><!-- end scrollable -->
+                        </div><!-- end pending tab pane -->
+
+                        <!-- TAB 2: Completed -->
+                        <div class="tab-pane fade" id="completed-pane">
+                            <div style="max-height: 520px; overflow-y: auto; padding-right: 8px;">
+
+                                {% for group in completed_groups %}
+                                <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
+
+                                    <!-- Order Header -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                        <div>
+                                            <span class="badge rounded-pill mb-1 d-inline-block"
+                                                style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                #{{ group.order.order_id }}
+                                            </span>
+                                            <span class="text-muted small d-block">Customer</span>
+                                            <h6 class="fw-bold m-0">{{ group.order.cust_id.cust_name }}</h6>
+                                            <small class="text-muted">
+                                                📞 {{ group.order.cust_id.contact }} &nbsp;|&nbsp;
+                                                📍 {{ group.order.cust_id.area_id.area_name }}
+                                            </small>
+                                            <small class="text-muted d-block mt-1">
+                                                🏪 {{ group.products.0.detail.vendor_id.vendor_name }}
+                                            </small>
+                                        </div>
+                                        <span class="badge rounded-pill px-3 py-2 bg-success text-white">
+                                            ✅ Delivered
+                                        </span>
+                                    </div>
+
+                                    <!-- Products -->
+                                    {% for item in group.products %}
+                                    <div class="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
+                                        <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                                            style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                        <div class="flex-grow-1">
+                                            <h6 class="fw-bold mb-0">{{ item.detail.prod_id.prod_name }}</h6>
+                                            <small class="text-muted">Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <small class="text-muted d-block">Subtotal</small>
+                                            <span class="fw-bold" style="color: #894B8D;">₹{{ item.subtotal }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                    <!-- Order Info -->
+                                    <div class="bg-light rounded-3 p-3 mt-2">
+                                        <div class="row small">
+                                            <div class="col-md-5">
+                                                <span class="text-muted fw-bold">📍 Delivery Address:</span>
+                                                <p class="mb-0">{{ group.order.address }}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span class="text-muted fw-bold">📅 Order Date:</span>
+                                                <p class="mb-0">{{ group.order.order_date|date:"d M Y" }}</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <span class="text-muted fw-bold">🚚 Delivered:</span>
+                                                <p class="mb-0">{{ group.order.delivery_date|date:"d M Y" }}</p>
+                                            </div>                        
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {% empty %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-box-open fa-3x text-muted mb-3 opacity-50"></i>
+                                    <p class="text-muted fw-bold">No completed deliveries yet! 🐾</p>
+                                </div>
+                                {% endfor %}
+
+                            </div><!-- end completed scrollable -->
+                        </div><!-- end completed tab pane -->
+
+                        <!-- Edit Profile Tab -->
+                        <div class="tab-pane fade" id="editprofile-pane">
+                            <h5 class="fw-bold mb-4">Edit Profile</h5>
+                            <form action="{% url 'delivery_dashboard' %}" method="POST" enctype="multipart/form-data" id="del-edit-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="edit_profile" value="1">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="small fw-bold mb-1">Full Name</label>
+                                        <input type="text" name="deliveryboy_name" id="del_name"
+                                               class="form-control rounded-pill"
+                                               value="{{ agent.deliveryboy_name }}" required>
+                                        <small id="del_name_err" class="text-danger d-none">Please enter a valid name (letters only, no repeated characters).</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="small fw-bold mb-1">Contact No.</label>
+                                        <div class="input-group">
+                                            <input type="tel" name="contact" id="del_contact"
+                                                   class="form-control rounded-pill"
+                                                   value="{{ agent.contact }}" required maxlength="10">
+                                            <span class="input-group-text border-0 bg-transparent d-none" id="del_contact_tick">
+                                                <i class="fas fa-check-circle text-success"></i>
+                                            </span>
+                                        </div>
+                                        <small id="del_contact_err" class="text-danger d-none">Must be 10 digits starting with 6-9.</small>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="small fw-bold mb-1">Change Profile Photo</label>
+                                        <input type="file" name="profile_photo" id="del_photo"
+                                            class="form-control rounded-3"
+                                            accept="image/jpeg,image/png,image/jpg">
+                                        <small class="text-muted">Formats: JPG, PNG only. Max size: 2MB.</small>
+                                        <small id="del_photo_err" class="text-danger d-none">Only JPG/PNG allowed, max 2MB.</small>
+                                    </div>
+                                </div>
+                                <button type="submit" id="del_save_btn"
+                                        class="btn btn-primary w-100 rounded-pill py-2 fw-bold mt-4"
+                                        style="background-color: var(--brand-purple); border: none;">
+                                    Save Changes 🐾
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Security Tab -->
+                        <div class="tab-pane fade" id="security-pane">
+                            <div class="p-2">
+                                <h5 class="fw-bold mb-4" style="color: var(--brand-purple);">Security — Update Password</h5>
+                                <form action="{% url 'delivery_change_password' %}" method="POST" id="del-sec-form">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Current Password</label>
+                                            <input type="password" name="old_password" class="form-control rounded-pill" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="new_password" id="del_new_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button"
+                                                        onclick="toggleDelPass('del_new_p', this)">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <div class="progress mt-2" style="height: 5px;">
+                                                <div id="del_strength_bar" class="progress-bar" style="width:0%"></div>
+                                            </div>
+                                            <small id="del_strength_text" class="text-muted">Password strength</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Confirm New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="confirm_password" id="del_conf_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button"
+                                                        onclick="toggleDelPass('del_conf_p', this)">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <small id="del_match_text" class="d-none mt-1"></small>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="del_pass_btn"
+                                            class="btn w-100 rounded-pill py-3 fw-bold mt-4"
+                                            style="background: var(--brand-purple); color: white; border: none;"
+                                            disabled>
+                                        Update Password 🔒
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div><!-- end tab content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Pending Orders Block Modal -->
+<div class="modal fade" id="pendingBlockModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 25px; overflow: hidden;">
+
+            <!-- Red top bar -->
+            <div style="background: #dc3545; padding: 25px 30px 20px;">
+                <div class="text-center">
+                    <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <i class="fas fa-exclamation-triangle" style="color: white; font-size: 26px;"></i>
+                    </div>
+                    <h5 class="fw-bold text-white mb-0">Cannot Go Offline</h5>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body text-center px-4 py-4">
+                <p class="fw-bold text-dark mb-1" style="font-size: 16px;">
+                    You have <span style="color: #dc3545;">{{ order_groups|length }} active order{{ order_groups|length|pluralize }}</span> pending!
+                </p>
+                <p class="text-muted small mb-0">
+                    Please complete all deliveries before going offline.
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 justify-content-center pb-4">
+                <button type="button" class="btn fw-bold px-5 py-2 rounded-pill"
+                        style="background: #894B8D; color: white; border: none;"
+                        data-bs-dismiss="modal">
+                    OK, Got It!
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $(".alert").each(function() {
+                $(this).addClass('slide-out-right');
+                $(this).fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            });
+        }, 5000); 
+    });
+</script>
+
+<script>
+    function validateDelEditForm() {
+        const name = document.getElementById('del_name').value.trim();
+        const contact = document.getElementById('del_contact').value.trim();
+        const photoInput = document.getElementById('del_photo');
+
+        const nameValid = /^[a-zA-Z\s]+$/.test(name) && name.length > 1 && !/^(.)\1+$/i.test(name.replace(/\s/g,''));
+        const contactValid = /^[6-9]\d{9}$/.test(contact);
+
+        let photoValid = true;
+        if (photoInput && photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            const allowed = ['image/jpeg', 'image/jpg', 'image/png'];
+            const maxSize = 2 * 1024 * 1024;
+            photoValid = allowed.includes(file.type) && file.size <= maxSize;
+            document.getElementById('del_photo_err').classList.toggle('d-none', photoValid);
+        }
+
+        document.getElementById('del_name_err').classList.toggle('d-none', nameValid);
+        document.getElementById('del_contact_err').classList.toggle('d-none', contactValid);
+        document.getElementById('del_contact_tick').classList.toggle('d-none', !contactValid);
+
+        document.getElementById('del_name').classList.toggle('is-valid', nameValid);
+        document.getElementById('del_name').classList.toggle('is-invalid', !nameValid && name.length > 0);
+        document.getElementById('del_contact').classList.toggle('is-valid', contactValid);
+        document.getElementById('del_contact').classList.toggle('is-invalid', !contactValid && contact.length > 0);
+
+        document.getElementById('del_save_btn').disabled = !(nameValid && contactValid && photoValid);
+    }
+
+    document.getElementById('del_name').addEventListener('input', validateDelEditForm);
+    document.getElementById('del_contact').addEventListener('input', validateDelEditForm);
+    document.getElementById('del_photo').addEventListener('change', validateDelEditForm);
+    validateDelEditForm();
+</script>
+
+<script>
+    function validateDelSecurity() {
+        const newP = document.getElementById('del_new_p') ? document.getElementById('del_new_p').value : '';
+        const confP = document.getElementById('del_conf_p') ? document.getElementById('del_conf_p').value : '';
+        let strength = 0;
+        if (newP.length >= 8) strength++;
+        if (/[A-Z]/.test(newP)) strength++;
+        if (/[0-9]/.test(newP)) strength++;
+        if (/[!@#$%^&*]/.test(newP)) strength++;
+        const bar = document.getElementById('del_strength_bar');
+        const text = document.getElementById('del_strength_text');
+        if (bar) {
+            const colors = ['','bg-danger','bg-warning','bg-info','bg-success'];
+            const labels = ['','Weak','Fair','Good','Strong'];
+            bar.className = 'progress-bar ' + (colors[strength] || '');
+            bar.style.width = (strength * 25) + '%';
+            text.textContent = newP.length ? (labels[strength] || '') : 'Password strength';
+        }
+        const isMatch = newP === confP && confP.length > 0;
+        const matchEl = document.getElementById('del_match_text');
+        if (matchEl && confP.length) {
+            matchEl.classList.remove('d-none');
+            matchEl.textContent = isMatch ? 'Passwords match ✓' : 'Passwords do not match';
+            matchEl.style.color = isMatch ? 'green' : 'red';
+        } else if (matchEl) matchEl.classList.add('d-none');
+        if (document.getElementById('del_pass_btn'))
+            document.getElementById('del_pass_btn').disabled = !(strength >= 2 && isMatch);
+    }
+
+    function toggleDelPass(id, btn) {
+        const inp = document.getElementById(id);
+        const isText = inp.type === 'text';
+        inp.type = isText ? 'password' : 'text';
+        btn.innerHTML = isText ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    }
+
+    ['del_name','del_contact'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', validateDelEditForm);
+    });
+    ['del_new_p','del_conf_p'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', validateDelSecurity);
+    });
+    validateDelEditForm();
+    validateDelSecurity();
+</script>
+</body>
+</html>

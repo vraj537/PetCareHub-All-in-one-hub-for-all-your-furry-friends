@@ -1,0 +1,65 @@
+:root { --tg-brand-color: #894B8D; }
+
+/* Cart Icon & Badge */
+.cart-icon-wrap { position: relative; cursor: pointer; color: #333; font-size: 20px; padding: 5px; display: inline-block; }
+.cart-badge {
+    position: absolute; top: -5px; right: -5px; background: var(--tg-brand-color);
+    color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid #fff;
+}
+
+/* Side Drawer Panel */
+.cart-drawer {
+    position: fixed; top: 0; right: -420px; width: 400px; height: 100%;
+    background: #fff; box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+    z-index: 9999; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex; flex-direction: column;
+}
+.cart-drawer.open { right: 0; }
+.cart-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: none; z-index: 9998; backdrop-filter: blur(3px);
+}
+
+/* NEW: Layout fix for Header and Items */
+.cart-header { 
+    background: #f8f4f9; padding: 20px 25px; 
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* NEW: Horizontal split for Image and Info */
+.cart-item { 
+    display: flex; gap: 15px; padding: 20px; 
+    border-bottom: 1px solid #f1f1f1; align-items: flex-start;
+}
+.cart-item img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+
+/* NEW: Container for Text & Controls */
+.cart-item-info { flex: 1; display: flex; flex-direction: column; }
+.cart-item-name { font-weight: 700; color: #333; margin-bottom: 4px; display: block; font-size: 16px; }
+.cart-item-price { color: var(--tg-brand-color); font-weight: 800; display: block; margin-bottom: 10px; }
+
+/* NEW: Row for Quantity + Remove Button */
+.qty-row { display: flex; align-items: center; gap: 15px; }
+
+/* Centered Quantity Controls */
+.qty-box { 
+    display: inline-flex; align-items: center; justify-content: center; 
+    background: #f4eef5; border-radius: 8px; padding: 5px; min-width: 100px;
+}
+.qty-btn { 
+    width: 30px; height: 30px; border: none; background: none; 
+    font-weight: 800; cursor: pointer; font-size: 18px; 
+    display: flex; align-items: center; justify-content: center; color: #333;
+}
+.qty-num { width: 35px; text-align: center; font-weight: 800; font-size: 15px; }
+
+/* Action Buttons */
+.btn-remove { color: #ff4d4d; font-size: 13px; cursor: pointer; font-weight: 600; text-decoration: none; }
+.cart-footer { padding: 25px; border-top: 1px solid #eee; background: #fff; margin-top: auto; }
+.btn-proceed { 
+    background: var(--tg-brand-color); color: #fff; width: 100%; padding: 15px; 
+    border-radius: 50px; font-weight: 800; text-align: center; text-decoration: none; display: block; 
+}
+

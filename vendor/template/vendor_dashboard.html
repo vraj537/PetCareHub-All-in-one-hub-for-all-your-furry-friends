@@ -1,0 +1,1334 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vet-dashboard.css' %}"> <style>
+        #pills-tab .nav-link.active { background-color: #1a237e !important; color: white !important; }
+        #pills-tab .nav-link { background-color: #f8f9fa; color: #333; transition: all 0.3s ease; }
+        #pills-tab .nav-link:hover:not(.active) { background-color: #e9ecef; }
+    </style>
+
+    <style>
+    /* Card ki height fix aur scrollbar lane ke liye */
+    .logistics-scroll-container {
+        max-height: 400px; /* Isse zyada hone par scroll aayega */
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    /* Custom Scrollbar Styling (3rd image jaisa) */
+    .logistics-scroll-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    .logistics-scroll-container::-webkit-scrollbar-thumb {
+        background: #894B8D;
+        border-radius: 10px;
+    }
+    .logistics-scroll-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="message-container" style="position: fixed; top: 100px; right: 20px; z-index: 1050; width: 300px;">
+    {% if messages %}
+        {% for message in messages %}
+            
+            {% if 'success' in message.tags or 'vendor_login' in message.tags %}
+            <div class="alert alert-dismissible fade show shadow border-0 mb-3" role="alert" 
+                 style="border-radius: 12px; background: #fff; padding: 0; overflow: hidden; animation: slideInRight 0.4s ease-out; display: flex; align-items: stretch; min-height: 70px;">
+                
+                <div style="width: 10px; background: #28a745; flex-shrink: 0;"></div>
+                
+                <div style="padding: 10px 15px; flex-grow: 1; position: relative; display: flex; flex-direction: column; justify-content: center;">
+                    <strong style="color: #28a745; font-size: 15px; font-weight: 700; display: block; text-transform: uppercase;">Success!</strong>
+                    <span style="color: #666; font-size: 13.5px; line-height: 1.2; padding-right: 20px;">{{ message }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                            style="position: absolute; top: 8px; right: 8px; font-size: 0.6rem;"></button>
+                </div>
+            </div>
+
+            {% elif 'error' in message.tags %}
+            <div class="alert alert-dismissible fade show shadow border-0 mb-3" role="alert" 
+                 style="border-radius: 12px; background: #fff; padding: 0; overflow: hidden; animation: slideInRight 0.4s ease-out; display: flex; align-items: stretch; min-height: 70px;">
+                
+                <div style="width: 10px; background: #dc3545; flex-shrink: 0;"></div>
+                
+                <div style="padding: 10px 15px; flex-grow: 1; position: relative; display: flex; flex-direction: column; justify-content: center;">
+                    <strong style="color: #dc3545; font-size: 15px; font-weight: 700; display: block; text-transform: uppercase;">Failed!</strong>
+                    <span style="color: #666; font-size: 13.5px; line-height: 1.2; padding-right: 20px;">{{ message }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                            style="position: absolute; top: 8px; right: 8px; font-size: 0.6rem;"></button>
+                </div>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+</div>
+
+<style>
+    /* Smooth Slide-in Animation from Right */
+    @keyframes slideInRight {
+        from { transform: translateX(110%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    /* Mobile optimization: Choti screens par width adjust ho jayegi */
+    @media (max-width: 400px) {
+        .message-container { 
+            width: auto;
+            left: 20px; 
+            right: 20px; 
+            top: 80px; /* Mobile par thoda upar */
+        }
+    }
+</style>
+    <header class="header-area">
+        <div class="container">
+            <div class="header-flex d-flex align-items-center justify-content-between py-3">
+                <div class="logo">
+                    <a href="/"><img src="{% static 'assets/img/logo/logo1.png' %}" alt="PetPal Logo" style="width: 200px; height:70px;"></a>
+                </div>
+                <nav class="main-menu d-none d-lg-block">
+                    <ul class="d-flex list-unstyled m-0 gap-4">
+                        <li><a href="{% url 'vendor_dashboard' %}" class="text-dark fw-bold">Home</a></li>
+                        <li><a href="{% url 'product' %}" class="text-dark fw-bold">View Shop</a></li>
+                        <li><a href="{% url 'vendor_contact' %}" class="text-dark fw-bold">Support</a></li>
+                    </ul>
+                </nav>
+                <div class="header-btn">
+    <a href="{% url 'vendor_logout' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">Logout</a>
+</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="vet-breadcrumb-box py-5" style="background-color: #f4eef5;">
+        <div class="container text-center">
+            <h2 class="vet-title fw-bold" style="color: #894B8D;">Vendor Dashboard</h2>
+            <p class="vet-subtitle text-muted">
+                {{ vendor.vendor_name }} | Vendor_id: {{ vendor.vendor_id }} | Shop Partner
+            </p>
+        </div>
+    </div>
+
+    <main class="dashboard-wrapper py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stat-widget shadow-sm" style="background: #894B8D; border-radius: 25px; padding: 30px; color: #ffffff;">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">Total Sales</small>
+                        <h2 class="mt-2 mb-1" style="font-size: 38px; font-weight: 800; color: #ffffff;">₹{{ total_sales }}</h2>
+                        <div class="small mt-2" style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-wallet me-1"></i> Lifetime Earnings
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-widget shadow-sm" style="background: #333333; border-radius: 25px; padding: 30px; color: #ffffff;">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">Orders Fulfilled</small>
+                        <h2 class="mt-2 mb-1" style="font-size: 38px; font-weight: 800; color: #ffffff;">{{ orders_fulfilled }}</h2>
+                        <div class="small mt-2" style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-check-circle me-1"></i> Successfully Delivered
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-widget shadow-sm" style="background: #dc3545; border-radius: 25px; padding: 30px; color: #ffffff;">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">Cancelled Orders</small>
+                        <h2 class="mt-2 mb-1" style="font-size: 38px; font-weight: 800; color: #ffffff;">{{ cancelled_count }}</h2>
+                        <div class="small mt-2" style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-times-circle me-1"></i> Customer Cancellations
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="dashboard-card text-center p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <img src="/media/{{ vendor.vendor_profile }}" class="profile-img-main mb-3"
+                            style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #894B8D;">
+                        <h4 class="vet-name-sidebar mb-1 fw-bold text-dark" id="display-name">{{ vendor.vendor_name }}</h4>
+                        <p class="text-muted small">
+                            <i class="fas fa-map-marker-alt me-2 text-danger"></i><strong>{{ vendor.area_id.area_name }}</strong>
+                        </p>
+                        <div class="availability-badge mb-3">
+                            <span class="badge bg-success rounded-pill px-3">Active Store</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <h5 class="fw-bold mb-3">Store Details</h5>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2"><strong>Email:</strong> {{ vendor.email }}</li>
+                            <li class="mb-2"><strong>Contact:</strong> {{ vendor.contact }}</li>
+                            <li class="mb-2"><strong>Shop Address:</strong> {{ vendor.address }}</li>
+                        </ul>
+                    </div>
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <div class="mt-1 text-center">
+                            <p class="small text-muted mb-2">No longer wish to sell on PetCareHub?</p>
+                            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-4 fw-bold" onclick="confirmVendorRemoval()">
+                                <i class="fas fa-user-times me-2"></i>Request Permanent Removal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4">
+                        <ul class="nav nav-pills mb-4 gap-1 flex-nowrap" id="pills-tab" role="tablist" style="overflow-x: auto;">
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link active fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-orders-tab" data-bs-toggle="pill" data-bs-target="#pills-orders" type="button">📋 Recent Orders</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-products-tab" data-bs-toggle="pill" data-bs-target="#pills-products" type="button">🛍️ My Products</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-delivered-tab" data-bs-toggle="pill" data-bs-target="#pills-delivered" type="button">✅ Delivered ({{ delivered_count }})</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-cancelled-tab" data-bs-toggle="pill" data-bs-target="#pills-cancelled" type="button">❌ Cancelled ({{ cancelled_count }})</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews" type="button">⭐ Reviews</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-edit-tab" data-bs-toggle="pill" data-bs-target="#pills-edit" type="button">✏️ Edit Profile</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" style="font-size: 13px;" id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button">🔒 Security</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-orders">
+                                <h5 class="fw-bold mb-4">Order Queue</h5>
+
+                                <!-- Scrollable container -->
+                                <div style="max-height: 520px; overflow-y: auto; padding-right: 8px;">
+
+                                    {% for group in order_groups %}
+                                    <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
+
+                                        <!-- Order Header: Customer + Status Badge -->
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                            <div>
+                                                <span class="badge rounded-pill mb-1 d-inline-block"
+                                                    style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                    #{{ group.order.order_id }}
+                                                </span>
+                                                <span class="text-muted small d-block">Customer</span>
+                                                <h6 class="fw-bold m-0">{{ group.order.cust_id.cust_name }}</h6>
+                                                <small class="text-muted">
+                                                    📞 {{ group.order.cust_id.contact }} &nbsp;|&nbsp;
+                                                    📍 {{ group.order.cust_id.area_id.area_name }}
+                                                </small>
+                                            </div>
+                                            <span class="badge rounded-pill px-3 py-2
+                                                {% if group.products.0.detail.detail_status == 0 %}bg-warning text-dark
+                                                {% elif group.products.0.detail.detail_status == 1 %}bg-info text-white
+                                                {% elif group.products.0.detail.detail_status == 2 %}bg-primary text-white
+                                                {% else %}bg-success text-white{% endif %}">
+                                                {% if group.products.0.detail.detail_status == 0 %}🕐 Processing
+                                                {% elif group.products.0.detail.detail_status == 1 %}📦 Assigned
+                                                {% elif group.products.0.detail.detail_status == 2 %}🚚 Out for Delivery
+                                                {% else %}✅ Delivered{% endif %}
+                                            </span>
+                                        </div>
+
+                                        <!-- Products List (same order ke saare products) -->
+                                        {% for item in group.products %}
+                                        <div class="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
+                                            <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                                                style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold mb-0">{{ item.detail.prod_id.prod_name }}</h6>
+                                                <small class="text-muted">Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}</small>
+                                            </div>
+                                            <div class="text-end">
+                                                <small class="text-muted d-block">Subtotal</small>
+                                                <span class="fw-bold" style="color: #894B8D;">₹{{ item.subtotal }}</span>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <!-- Order Info: Address + Dates + Total -->
+                                        <div class="bg-light rounded-3 p-3 mb-3 mt-2">
+                                            <div class="row small">
+                                                <div class="col-md-5">
+                                                    <span class="text-muted fw-bold">📍 Delivery Address:</span>
+                                                    <p class="mb-0">{{ group.order.address }}</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span class="text-muted fw-bold">📅 Order Date:</span>
+                                                    <p class="mb-0">{{ group.order.order_date|date:"d M Y" }}</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span class="text-muted fw-bold">🚚 Expected:</span>
+                                                    <p class="mb-0">{{ group.order.delivery_date|date:"d M Y" }}</p>
+                                                </div>                                    
+                                            </div>
+                                        </div>
+
+                                        <!-- Progress Bar -->
+                                        <div class="mb-3">
+                                            <div class="progress" style="height: 7px; border-radius: 10px; background: #eee;">
+                                                <div class="progress-bar" style="background: #894B8D;
+                                                    width: {% if group.products.0.detail.detail_status == 0 %}10%
+                                                        {% elif group.products.0.detail.detail_status == 1 %}40%
+                                                        {% elif group.products.0.detail.detail_status == 2 %}70%
+                                                        {% else %}100%{% endif %};">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-1" style="font-size: 11px; font-weight: 700;">
+                                                <span style="color: #894B8D;">Processing</span>
+                                                <span style="color: {% if group.products.0.detail.detail_status >= 1 %}#894B8D{% else %}#aaa{% endif %};">Assigned</span>
+                                                <span style="color: {% if group.products.0.detail.detail_status >= 2 %}#894B8D{% else %}#aaa{% endif %};">Out for Delivery</span>
+                                                <span style="color: {% if group.products.0.detail.detail_status == 3 %}#28a745{% else %}#aaa{% endif %};">Delivered</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Assign Form: Sirf Processing orders ke liye -->
+                                        {% if group.products.0.detail.detail_status == 0 %}
+                                        <form action="{% url 'assign_order' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ group.order.order_id }}">
+                                            <div class="row g-2 align-items-end">
+
+                                                <!-- Delivery Boy Dropdown -->
+                                                <div class="col-md-5">
+                                                    <label class="small fw-bold mb-1">Assign Delivery Boy</label>
+                                                    <select name="delivery_boy" class="form-select rounded-pill" required>
+                                                        <option value="">-- Select --</option>
+                                                        {% if approved_boys %}
+                                                            {% for boy in approved_boys %}
+                                                                {% if boy.active_order_count < 10 %}
+                                                                    <!-- Available boy -->
+                                                                    <option value="{{ boy.deliveryboy_id }}">
+                                                                        {{ boy.deliveryboy_name }} ({{ boy.active_order_count }}/10)
+                                                                    </option>
+                                                                {% else %}
+                                                                    <!-- Busy boy — disabled aur grey -->
+                                                                    <option disabled style="color: #ccc; background: #f8f8f8;">
+                                                                        🔴 {{ boy.deliveryboy_name }} — Busy (10/10)
+                                                                    </option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <option disabled>⚠️ No delivery boy online right now</option>
+                                                        {% endif %}
+                                                    </select>
+                                                </div>
+
+                                                <!-- Delivery Date -->
+                                                <div class="col-md-4">
+                                                    <label class="small fw-bold mb-1">Confirm Delivery Date</label>
+                                                    <input type="date" name="delivery_date" class="form-control rounded-pill"
+                                                        value="{{ group.order.delivery_date|date:'Y-m-d' }}"
+                                                        min="{{ group.order.order_date|date:'Y-m-d' }}">
+                                                </div>
+
+                                                <!-- Assign Button -->
+                                                <div class="col-md-3">
+                                                    <button type="submit" class="btn w-100 rounded-pill fw-bold"
+                                                            style="background: #894B8D; color: #fff; border: none;">
+                                                        Assign ✅
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        {% else %}
+                                        <!-- Already assigned info -->
+                                        <div class="small text-muted p-2 bg-light rounded-3">
+                                            <i class="fas fa-truck me-1"></i>
+                                            Assigned to: <strong>{{ group.order.deliveryboy_id.deliveryboy_name }}</strong> |
+                                            Delivery Date: <strong>{{ group.order.delivery_date|date:"d M Y" }}</strong>
+                                        </div>
+                                        {% endif %}
+
+                                    </div>
+                                    {% empty %}
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-shopping-basket fa-3x text-light mb-3"></i>
+                                        <p class="text-muted">No orders received yet. 🐾</p>
+                                    </div>
+                                    {% endfor %}
+
+                                </div><!-- end scrollable container -->
+                            </div>
+
+                            <!-- DELIVERED TAB -->
+                            <div class="tab-pane fade" id="pills-delivered">
+                                <div style="max-height: 520px; overflow-y: auto; padding-right: 8px;">
+
+                                    {% for group in delivered_groups %}
+                                    <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                            <div>
+                                                <span class="badge rounded-pill mb-1 d-inline-block"
+                                                    style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                    #{{ group.order.order_id }}
+                                                </span>
+                                                <span class="text-muted small d-block">Customer</span>
+                                                <h6 class="fw-bold m-0">{{ group.order.cust_id.cust_name }}</h6>
+                                                <small class="text-muted">
+                                                    📞 {{ group.order.cust_id.contact }} &nbsp;|&nbsp;
+                                                    📍 {{ group.order.cust_id.area_id.area_name }}
+                                                </small>
+                                            </div>
+                                            <span class="badge rounded-pill px-3 py-2 bg-success text-white">
+                                                ✅ Delivered
+                                            </span>
+                                        </div>
+
+                                        <!-- Products -->
+                                        {% for item in group.products %}
+                                        <div class="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
+                                            <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                                                style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold mb-0">{{ item.detail.prod_id.prod_name }}</h6>
+                                                <small class="text-muted">Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}</small>
+                                            </div>
+                                            <div class="text-end">
+                                                <small class="text-muted d-block">Subtotal</small>
+                                                <span class="fw-bold" style="color: #894B8D;">₹{{ item.subtotal }}</span>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <!-- Order Info -->
+                                        <div class="bg-light rounded-3 p-3 mt-2">
+                                            <div class="row small">
+                                                <div class="col-md-5">
+                                                    <span class="text-muted fw-bold">📍 Delivery Address:</span>
+                                                    <p class="mb-0">{{ group.order.address }}</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span class="text-muted fw-bold">📅 Order Date:</span>
+                                                    <p class="mb-0">{{ group.order.order_date|date:"d M Y" }}</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span class="text-muted fw-bold">🚚 Delivered On:</span>
+                                                    <p class="mb-0">{{ group.order.delivery_date|date:"d M Y" }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Assigned Boy Info -->
+                                        <div class="small text-muted p-2 bg-light rounded-3 mt-2">
+                                            <i class="fas fa-truck me-1"></i>
+                                            Delivered by: <strong>{{ group.order.deliveryboy_id.deliveryboy_name }}</strong>
+                                        </div>
+
+                                    </div>
+                                    {% empty %}
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-box-open fa-3x text-light mb-3 opacity-50"></i>
+                                        <p class="text-muted">No delivered orders yet. 🐾</p>
+                                    </div>
+                                    {% endfor %}
+
+                                </div><!-- end scrollable -->
+                            </div><!-- end delivered tab -->
+
+                            <div class="tab-pane fade" id="pills-products">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="fw-bold mb-4">Inventory List</h5>
+                                    <button class="btn btn-primary btn-sm rounded-pill px-3"
+                                            style="background-color: #894B8D; border: none;"
+                                            data-bs-toggle="modal" data-bs-target="#addProductModal">+ Add Product</button>
+                                </div>
+
+                                <div style="max-height: 400px; overflow-y: scroll; padding-right: 8px; display: block;">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                                                <tr class="small fw-bold text-muted text-uppercase">
+                                                    <th>Product Details</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Stock</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for p in products %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <img src="/media/{{ p.cover_img_path }}" class="rounded" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid #eee;">
+                                                            <span class="fw-bold text-dark">{{ p.prod_name }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-light text-dark border">{{ p.category_id.category_name }}</span></td>
+                                                    <td class="fw-bold text-primary">₹{{ p.price }}</td>
+                                                    <td>
+                                                        <span class="fw-bold {% if p.qty == 0 %}text-danger{% elif p.qty <= 3 %}text-warning{% else %}text-success{% endif %}">
+                                                            {{ p.qty }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {% if p.qty > 3 %}
+                                                        <span class="badge bg-success-subtle text-success rounded-pill px-3">In Stock</span>
+                                                        {% elif p.qty > 0 %}
+                                                        <span class="badge bg-warning-subtle text-warning rounded-pill px-3">Low Stock</span>
+                                                        {% else %}
+                                                        <span class="badge bg-danger-subtle text-danger rounded-pill px-3">Out of Stock</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-2"
+                                                                    style="font-size: 12px;"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#editQtyModal{{ p.prod_id }}">
+                                                                ✏️ Qty
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger rounded-pill px-2"
+                                                                    style="font-size: 12px;"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteProductModal{{ p.prod_id }}">
+                                                                🗑️
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Edit Qty Modal -->
+                                                        <div class="modal fade" id="editQtyModal{{ p.prod_id }}" tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                                <div class="modal-content rounded-4 border-0 shadow">
+                                                                    <div class="modal-header border-0 pb-0">
+                                                                        <h6 class="modal-title fw-bold" style="color: #894B8D;">Update Stock Qty</h6>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p class="small text-muted mb-3">{{ p.prod_name }}</p>
+                                                                        <form method="POST" action="{% url 'update_product_qty' p.prod_id %}">
+                                                                            {% csrf_token %}
+                                                                            <label class="small fw-bold mb-1">New Quantity</label>
+                                                                            <input type="number" name="new_qty" value="{{ p.qty }}" min="0" max="999"
+                                                                                   class="form-control rounded-pill mb-3" required>
+                                                                            <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold"
+                                                                                    style="background: #894B8D; border: none;">
+                                                                                Update Qty ✅
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Delete Confirm Modal -->
+                                                        <div class="modal fade" id="deleteProductModal{{ p.prod_id }}" tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                                <div class="modal-content rounded-4 border-0 shadow">
+                                                                    <div class="modal-header border-0 pb-0">
+                                                                        <h6 class="modal-title fw-bold text-danger">Delete Product?</h6>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                    </div>
+                                                                    <div class="modal-body text-center">
+                                                                        <p class="small text-muted mb-1">This will permanently delete:</p>
+                                                                        <p class="fw-bold text-dark mb-3">{{ p.prod_name }}</p>
+                                                                        <p class="small text-danger mb-3">⚠️ This action cannot be undone!</p>
+                                                                        <form method="POST" action="{% url 'delete_product' p.prod_id %}">
+                                                                            {% csrf_token %}
+                                                                            <div class="d-flex gap-2">
+                                                                                <button type="button" class="btn btn-outline-secondary rounded-pill flex-fill"
+                                                                                        data-bs-dismiss="modal">Cancel</button>
+                                                                                <button type="submit" class="btn btn-danger rounded-pill flex-fill fw-bold">
+                                                                                    Delete 🗑️
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr><td colspan="6" class="text-center py-5 text-muted">No products found. Start by adding one! 🐾</td></tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!-- end scrollable wrapper -->
+                            </div>
+
+                            <!-- CANCELLED TAB -->
+                            <div class="tab-pane fade" id="pills-cancelled">
+                                <div style="max-height: 520px; overflow-y: auto; padding-right: 8px;">
+
+                                    {% for group in cancelled_groups %}
+                                    <div class="card border-0 shadow-sm rounded-4 mb-4 p-3" style="border-left: 4px solid #dc3545 !important;">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                            <div>
+                                                <span class="badge rounded-pill mb-1 d-inline-block"
+                                                    style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                    #{{ group.order.order_id }}
+                                                </span>
+                                                <span class="text-muted small d-block">Customer</span>
+                                                <h6 class="fw-bold m-0">{{ group.order.cust_id.cust_name }}</h6>
+                                                <small class="text-muted">
+                                                    📞 {{ group.order.cust_id.contact }} &nbsp;|&nbsp;
+                                                    📍 {{ group.order.cust_id.area_id.area_name }}
+                                                </small>
+                                            </div>
+                                            <span class="badge rounded-pill px-3 py-2 bg-danger text-white">
+                                                ❌ Cancelled
+                                            </span>
+                                        </div>
+
+                                        <!-- Products -->
+                                        {% for item in group.products %}
+                                        <div class="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
+                                            <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                                                style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold mb-0">{{ item.detail.prod_id.prod_name }}</h6>
+                                                <small class="text-muted">Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}</small>
+                                            </div>
+                                            <div class="text-end">
+                                                <small class="text-muted d-block">Subtotal</small>
+                                                <span class="fw-bold text-danger">₹{{ item.subtotal }}</span>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <!-- Order Info -->
+                                        <div class="bg-light rounded-3 p-3 mt-2">
+                                            <div class="row small">
+                                                <div class="col-md-5">
+                                                    <span class="text-muted fw-bold">📍 Delivery Address:</span>
+                                                    <p class="mb-0">{{ group.order.address }}</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span class="text-muted fw-bold">📅 Order Date:</span>
+                                                    <p class="mb-0">{{ group.order.order_date|date:"d M Y" }}</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span class="text-muted fw-bold">🚫 Cancelled On:</span>
+                                                    <p class="mb-0 fw-bold text-danger">{{ group.order.cancelled_at|date:"d M Y" }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    {% empty %}
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-check-circle fa-3x text-success mb-3 opacity-50"></i>
+                                        <p class="text-muted">No cancelled orders. 🐾</p>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div><!-- end cancelled tab -->
+
+                            <!-- REVIEWS TAB -->
+                            <div class="tab-pane fade" id="pills-reviews" role="tabpanel">
+                                <h5 class="fw-bold mb-3" style="color: #894B8D;">Product Reviews</h5>
+
+                                {% if product_reviews %}
+                                <!-- Product Dropdown -->
+                                <div class="mb-4">
+                                    <select class="form-select rounded-pill shadow-sm" id="productReviewDropdown" onchange="showProductReviews(this.value)" style="max-width: 350px;">
+                                        <option value="">-- Select a Product --</option>
+                                        {% for pr in product_reviews %}
+                                        <option value="prod_{{ pr.product.prod_id }}">
+                                            {{ pr.product.prod_name }} ({{ pr.review_count }} review{{ pr.review_count|pluralize }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Har product ka review section — default hidden -->
+                                {% for pr in product_reviews %}
+                                <div id="prod_{{ pr.product.prod_id }}" class="product-review-section" style="display: none;">
+                                    <div class="review-list" style="max-height: 450px; overflow-y: auto;">
+                                        {% for r in pr.reviews %}
+                                        <div class="p-3 mb-3 border rounded-4 bg-white shadow-sm d-flex gap-3">
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="fw-bold m-0">{{ r.cust_id.cust_name }}</h6>
+                                                    <small class="text-muted">{{ r.feedback_date|date:"d M, Y" }}</small>
+                                                </div>
+                                                <div class="text-warning small mb-1">
+                                                    {% for i in "12345"|make_list %}
+                                                        {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <p class="small text-muted mb-0">"{{ r.comments }}"</p>
+                                            </div>
+                                        </div>
+                                        {% empty %}
+                                        <div class="text-center py-5">
+                                            <i class="fas fa-star fa-2x text-muted opacity-25 mb-2 d-block"></i>
+                                            <p class="text-muted">No reviews yet for this product. 🐾</p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                <!-- Default state: koi product select nahi -->
+                                <div id="no-product-selected" class="text-center py-5">
+                                    <i class="fas fa-star fa-2x text-muted opacity-25 mb-2 d-block"></i>
+                                    <p class="text-muted small">Select a product from the dropdown to view its reviews.</p>
+                                </div>
+
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-box-open fa-2x text-muted opacity-25 mb-2 d-block"></i>
+                                    <p class="text-muted">No products found. Add products to see reviews. 🐾</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <!-- END REVIEWS TAB -->
+
+                            <div class="tab-pane fade" id="pills-edit" role="tabpanel">
+                                <h5 class="fw-bold mb-4" style="color: #894B8D;">Edit Profile</h5>
+                                <form action="{% url 'vendor_dashboard' %}" method="POST" enctype="multipart/form-data" id="vendor-edit-form">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="small fw-bold mb-1">Store Name</label>
+                                            <input type="text" name="vendor_name" id="v_name" class="form-control rounded-pill" value="{{ vendor.vendor_name }}" required>
+                                            <small id="v_name_err" class="text-danger d-none">Please enter a valid name (letters only, no repeated characters).</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small fw-bold mb-1">Contact Number</label>
+                                            <div class="input-group">
+                                                <input type="tel" name="contact" id="v_contact" class="form-control rounded-pill" value="{{ vendor.contact }}" required maxlength="10">
+                                                <span class="input-group-text border-0 bg-transparent d-none" id="v_contact_tick"><i class="fas fa-check-circle text-success"></i></span>
+                                            </div>
+                                            <small id="v_contact_err" class="text-danger d-none">Must be 10 digits starting with 6-9.</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Shop Address</label>
+                                            <textarea name="address" id="v_address" class="form-control rounded-4" rows="2"
+                                                    minlength="10" required placeholder="Enter full shop address (min 10 characters)">{{ vendor.address }}</textarea>
+                                            <small id="v_address_err" class="text-danger d-none">Address must be at least 10 characters.</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Change Profile Photo</label>
+                                            <input type="file" name="vendor_profile" id="v_photo" class="form-control rounded-3"
+                                                accept="image/jpeg,image/png,image/jpg">
+                                            <small class="text-muted">Formats: JPG, PNG only. Max size: 2MB.</small>
+                                            <small id="v_photo_err" class="text-danger d-none">Only JPG/PNG allowed, max 2MB.</small>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="v_save_btn" class="btn btn-primary w-100 rounded-pill py-2 fw-bold mt-4" style="background-color: #894B8D; border: none;">
+                                        Save Changes 🐾
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-security">
+                                <h5 class="fw-bold mb-4">Security — Update Password</h5>
+                                <form action="{% url 'vendor_change_password' %}" method="POST" id="vendor-sec-form">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Current Password</label>
+                                            <input type="password" name="old_password" class="form-control rounded-pill" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="new_password" id="v_new_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button" onclick="togglePass('v_new_p', this)"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                            <div class="progress mt-2" style="height: 5px;">
+                                                <div id="v_strength_bar" class="progress-bar" style="width:0%"></div>
+                                            </div>
+                                            <small id="v_strength_text" class="text-muted">Password strength</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Confirm New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="confirm_password" id="v_conf_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button" onclick="togglePass('v_conf_p', this)"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                            <small id="v_match_text" class="d-none mt-1"></small>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="v_pass_btn" class="btn btn-primary w-100 rounded-pill py-2 fw-bold mt-4" style="background-color: #894B8D; border: none;" disabled>
+                                        Update Password 🔒
+                                    </button>
+                                </form>
+                            </div>
+
+                            <script>
+                                // Product Reviews Dropdown Handler
+                                function showProductReviews(prodId) {
+                                    // Pehle sab hide karo
+                                    document.querySelectorAll('.product-review-section').forEach(function(el) {
+                                        el.style.display = 'none';
+                                    });
+
+                                    const noSelect = document.getElementById('no-product-selected');
+
+                                    if (prodId) {
+                                        // Selected product ka section dikhao
+                                        const target = document.getElementById(prodId);
+                                        if (target) {
+                                            target.style.display = 'block';
+                                        }
+                                        if (noSelect) noSelect.style.display = 'none';
+                                    } else {
+                                        // Koi select nahi — default message dikhao
+                                        if (noSelect) noSelect.style.display = 'block';
+                                    }
+                                }
+                            </script>
+
+                            <script>
+                            // --- Vendor Edit Profile Validation ---
+                            function validateVendorEditForm() {
+                                const name = document.getElementById('v_name').value.trim();
+                                const contact = document.getElementById('v_contact').value.trim();
+                                const address = document.getElementById('v_address').value.trim();
+                                const photoInput = document.getElementById('v_photo');
+
+                                const nameValid = /^[a-zA-Z\s]+$/.test(name) && name.length > 1 && !/^(.)\1+$/i.test(name.replace(/\s/g,''));
+                                const contactValid = /^[6-9]\d{9}$/.test(contact);
+                                const addressValid = address.length >= 10;
+
+                                // Photo validation — only if file selected
+                                let photoValid = true;
+                                if (photoInput && photoInput.files.length > 0) {
+                                    const file = photoInput.files[0];
+                                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                                    const maxSize = 2 * 1024 * 1024; // 2MB
+                                    photoValid = allowedTypes.includes(file.type) && file.size <= maxSize;
+                                    document.getElementById('v_photo_err').classList.toggle('d-none', photoValid);
+                                }
+
+                                document.getElementById('v_name_err').classList.toggle('d-none', nameValid);
+                                document.getElementById('v_contact_err').classList.toggle('d-none', contactValid);
+                                document.getElementById('v_address_err').classList.toggle('d-none', addressValid);
+                                document.getElementById('v_contact_tick').classList.toggle('d-none', !contactValid);
+
+                                document.getElementById('v_name').classList.toggle('is-valid', nameValid);
+                                document.getElementById('v_name').classList.toggle('is-invalid', !nameValid && name.length > 0);
+                                document.getElementById('v_contact').classList.toggle('is-valid', contactValid);
+                                document.getElementById('v_contact').classList.toggle('is-invalid', !contactValid && contact.length > 0);
+                                document.getElementById('v_address').classList.toggle('is-valid', addressValid);
+                                document.getElementById('v_address').classList.toggle('is-invalid', !addressValid && address.length > 0);
+
+                                document.getElementById('v_save_btn').disabled = !(nameValid && contactValid && addressValid && photoValid);
+                            }
+
+                            // --- Vendor Security Validation ---
+                            function validateVendorSecurity() {
+                                const newP = document.getElementById('v_new_p').value;
+                                const confP = document.getElementById('v_conf_p').value;
+                                let strength = 0;
+                                if (newP.length >= 8) strength++;
+                                if (/[A-Z]/.test(newP)) strength++;
+                                if (/[0-9]/.test(newP)) strength++;
+                                if (/[!@#$%^&*]/.test(newP)) strength++;
+
+                                const bar = document.getElementById('v_strength_bar');
+                                const text = document.getElementById('v_strength_text');
+                                const colors = ['','bg-danger','bg-warning','bg-info','bg-success'];
+                                const labels = ['','Weak','Fair','Good','Strong'];
+                                bar.className = 'progress-bar ' + (colors[strength] || '');
+                                bar.style.width = (strength * 25) + '%';
+                                text.textContent = newP.length ? (labels[strength] || '') : 'Password strength';
+
+                                const isMatch = newP === confP && confP.length > 0;
+                                const matchEl = document.getElementById('v_match_text');
+                                if (confP.length) {
+                                    matchEl.classList.remove('d-none');
+                                    matchEl.textContent = isMatch ? 'Passwords match ✓' : 'Passwords do not match';
+                                    matchEl.style.color = isMatch ? 'green' : 'red';
+                                } else {
+                                    matchEl.classList.add('d-none');
+                                }
+                                document.getElementById('v_pass_btn').disabled = !(strength >= 2 && isMatch);
+                            }
+
+                            function togglePass(id, btn) {
+                                const inp = document.getElementById(id);
+                                const isText = inp.type === 'text';
+                                inp.type = isText ? 'password' : 'text';
+                                btn.innerHTML = isText ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                            }
+
+                            document.getElementById('v_name').addEventListener('input', validateVendorEditForm);
+                            document.getElementById('v_contact').addEventListener('input', validateVendorEditForm);
+                            document.getElementById('v_address').addEventListener('input', validateVendorEditForm);
+                            document.getElementById('v_photo').addEventListener('change', validateVendorEditForm);
+                            document.getElementById('v_new_p').addEventListener('input', validateVendorSecurity);
+                            document.getElementById('v_conf_p').addEventListener('input', validateVendorSecurity);
+                            validateVendorEditForm();
+                            validateVendorSecurity();
+                            </script>
+
+                            
+
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 bg-light">
+                <h5 class="modal-title fw-bold" style="color: #894B8D;"><i class="fas fa-box-open me-2"></i>List New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="add_product" value="1">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold mb-1">Product Category</label>
+                            <select name="p_category" class="form-select rounded-pill" required>
+                                <option value="" disabled selected>Select Category</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.category_id }}">{{ cat.category_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold mb-1">Product Name</label>
+                            <input type="text" name="p_name" class="form-control rounded-pill" placeholder="e.g. Premium Dog Biscuits" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold mb-1">Price (₹)</label>
+                            <input type="number" name="p_price" class="form-control rounded-pill" min="1" max="99999" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold mb-1">Stock Quantity</label>
+                            <input type="number" name="p_qty" class="form-control rounded-pill" min="0" max="999" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-bold mb-1">Product Description (Brief)</label>
+                        <textarea name="p_desc" class="form-control rounded-4" rows="2" placeholder="Max 250 characters..." required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold text-primary mb-1">Main Cover Image</label>
+                            <input type="file" name="p_cover" class="form-control rounded-3" accept="image/*" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="small fw-bold text-success mb-1">Gallery Images (Multiple shift+select Images) </label>
+                            <input type="file" name="p_gallery" class="form-control rounded-3" accept="image/*" multiple required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-3">
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow" style="background: #894B8D; border:none;">List My Product 🐾</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div> <section class="logistics-wrapper mt-5 pb-5">
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="dashboard-card p-4 bg-white shadow-sm rounded-4">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold m-0" style="color: #333;">
+                            <i class="fas fa-truck-loading me-2" style="color: #894B8D;"></i> Logistics Center
+                        </h4>
+                    </div>
+
+                    <ul class="nav nav-pills mb-4 gap-3" id="pills-logistics-tab" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active fw-bold px-4 py-2 rounded-pill shadow-sm" 
+                                    id="logistics-active-tab" data-bs-toggle="pill" data-bs-target="#logistics-active" 
+                                    type="button">Active Force</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" 
+                                    id="logistics-manage-tab" data-bs-toggle="pill" data-bs-target="#logistics-manage" 
+                                    type="button">Manage Partners</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm" 
+                                    id="logistics-requests-tab" data-bs-toggle="pill" data-bs-target="#logistics-requests" 
+                                    type="button">New Requests</button>
+                        </li>                        
+                    </ul>
+
+                    <div class="tab-content">
+                        
+                        <div class="tab-pane fade show active" id="logistics-active">
+                            <h5 class="fw-bold mb-4">On-Duty Partners</h5>
+                            <div class="logistics-scroll-container" style="max-height: 350px; overflow-y: auto; padding-right: 10px;">
+                                <table class="table align-middle">
+                                    <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                                        <tr class="small fw-bold text-muted text-uppercase">
+                                            <th>Partner Details</th>
+                                            <th>Contact No.</th>
+                                            <th>Area</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for boy in all_boys %}
+                                            {% if boy.status == 1 %} <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        {% if boy.deliveryboy_profile %}
+                                                            <img src="/media/{{ boy.deliveryboy_profile }}" 
+                                                                class="rounded-circle shadow-sm" 
+                                                                style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #fff; outline: 1px solid #eee;">
+                                                        {% else %}
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm" 
+                                                                style="width: 45px; height: 45px; border: 1px solid #eee; color: #894B8D;">
+                                                                <i class="fas fa-user"></i>
+                                                            </div>
+                                                        {% endif %}
+                                                        
+                                                        <div>
+                                                            <h6 class="mb-0 fw-bold text-dark">{{ boy.deliveryboy_name }}</h6>
+                                                            <small class="text-muted" style="font-size: 0.75rem;">ID: #DB-0{{ boy.deliveryboy_id }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted fw-bold small">
+                                                        <i class="fas fa-phone-alt me-1 text-primary" style="font-size: 0.8rem;"></i> 
+                                                        {{ boy.contact }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                            <span class="badge bg-light text-dark border px-3 py-2 shadow-sm rounded-pill" style="font-weight: 600;">
+                                                <i class="fas fa-map-marker-alt text-danger me-1" style="font-size: 0.8rem;"></i> 
+                                                {{ boy.area_id.area_name }}
+                                            </span>
+                                        </td>
+                                                <td>
+                                                    {% if boy.is_available == 1 %}
+                                                        <span class="badge bg-success-subtle text-success rounded-pill px-3 border border-success">
+                                                            <i class="fas fa-circle me-1" style="font-size: 8px;"></i> Online
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger-subtle text-danger rounded-pill px-3 border border-danger">
+                                                            <i class="fas fa-circle me-1" style="font-size: 8px;"></i> Offline
+                                                        </span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center py-5 text-muted">No partners found. 🐾</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="logistics-manage">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold m-0">Partner Management</h5>
+                                <span class="small text-muted">Update partner access and visibility</span>
+                            </div>
+
+                            <div class="logistics-scroll-container" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                                            <tr class="small fw-bold text-muted text-uppercase">
+                                                <th>Partner Details</th>
+                                                <th>Contact & Area</th>
+                                                <th>Current Status</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for boy in all_boys %}
+                                                {% if boy.status == 1 or boy.status == 3 %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            {% if boy.deliveryboy_profile %}
+                                                                <img src="/media/{{ boy.deliveryboy_profile }}" 
+                                                                    class="rounded-circle shadow-sm" 
+                                                                    style="width: 45px; height: 45px; object-fit: cover; border: 1px solid #eee;">
+                                                            {% else %}
+                                                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm" 
+                                                                    style="width: 45px; height: 45px; border: 1px solid #eee; color: #894B8D;">
+                                                                    <i class="fas fa-user"></i>
+                                                                </div>
+                                                            {% endif %}
+
+                                                            <div>
+                                                                <h6 class="mb-0 fw-bold text-dark">{{ boy.deliveryboy_name }}</h6>
+                                                                <small class="text-muted">ID: #DB-0{{ boy.deliveryboy_id }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="d-flex flex-column gap-2">
+                                                            <span class="small fw-bold text-muted">
+                                                                <i class="fas fa-phone-alt me-1 text-primary"></i> {{ boy.contact }}
+                                                            </span>
+                                                            
+                                                            <span class="badge bg-light text-dark border rounded-pill px-3 py-2 shadow-sm" style="width: fit-content; font-weight: 600;">
+                                                                <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ boy.area_id.area_name }}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if boy.status == 1 %}
+                                                            <span class="badge bg-success-subtle text-success rounded-pill px-3 border border-success">Approved</span>
+                                                        {% elif boy.status == 3 %}
+                                                            <span class="badge bg-danger-subtle text-danger rounded-pill px-3 border border-danger">Restricted</span>
+                                                        {% endif %}
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column gap-2 align-items-center">
+                                                            {% if boy.status == 1 %}
+                                                                <a href="{% url 'db_status' boy.deliveryboy_id 3 %}" 
+                                                                class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-bold shadow-sm w-100" 
+                                                                style="font-size: 11px;">
+                                                                    <i class="fas fa-ban me-1"></i> Restrict
+                                                                </a>
+                                                            {% elif boy.status == 3 %}
+                                                                <a href="{% url 'db_status' boy.deliveryboy_id 1 %}" 
+                                                                class="btn btn-sm btn-success rounded-pill px-3 fw-bold shadow-sm w-100" 
+                                                                style="font-size: 11px;">
+                                                                    <i class="fas fa-check-circle me-1"></i> Reactivate
+                                                                </a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                                <tr><td colspan="4" class="text-center py-5 text-muted">No partners to manage.</td></tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="logistics-requests">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-bold m-0">Join Requests</h5>
+        <span class="small text-muted">Reviewing new applications</span>
+    </div>
+
+    <div class="logistics-scroll-container" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                    <tr class="small fw-bold text-muted text-uppercase">
+                        <th>Partner Details</th>
+                        <th>Contact & Area</th>
+                        <th>Current Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for boy in all_boys %}
+                        {% if boy.status == 0 or boy.status == 2 %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    {% if boy.deliveryboy_profile %}
+                                        <img src="/media/{{ boy.deliveryboy_profile }}" 
+                                             class="rounded-circle shadow-sm" 
+                                             style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #fff; outline: 1px solid #eee;">
+                                    {% else %}
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm" 
+                                             style="width: 45px; height: 45px; border: 1px solid #eee; color: #894B8D;">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">{{ boy.deliveryboy_name }}</h6>
+                                        <small class="text-muted" style="font-size: 0.75rem;">ID: #DB-0{{ boy.deliveryboy_id }}</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="d-flex flex-column gap-2">
+                                    <span class="small fw-bold text-muted">
+                                        <i class="fas fa-phone-alt me-1 text-primary"></i> {{ boy.contact }}
+                                    </span>
+                                    <span class="badge bg-light text-dark border rounded-pill px-3 py-2 shadow-sm" style="width: fit-content;">
+                                        <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ boy.area_id.area_name }}
+                                    </span>
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if boy.status == 0 %}
+                                    <span class="badge bg-warning-subtle text-warning rounded-pill px-3 border border-warning">Pending</span>
+                                {% elif boy.status == 2 %}
+                                    <span class="badge bg-danger-subtle text-danger rounded-pill px-3 border border-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="text-center">
+                                {% if boy.status == 0 %}
+                                    <div class="d-flex flex-column gap-2 align-items-center">
+                                        <button onclick="location.href='{% url 'db_status' boy.deliveryboy_id 1 %}'" 
+                                                class="btn btn-success btn-sm rounded-pill px-4 fw-bold shadow-sm w-75">
+                                            <i class="fas fa-check-circle me-1"></i> Approve
+                                        </button>
+                                        <button onclick="location.href='{% url 'db_status' boy.deliveryboy_id 2 %}'" 
+                                                class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm w-75">
+                                            <i class="fas fa-times-circle me-1"></i> Reject
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted small fw-bold">
+                                        <i class="fas fa-lock me-1"></i> Decision Fixed
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fas fa-clipboard-check fa-3x mb-3 opacity-25"></i>
+                                    <p class="mb-0 fw-bold">No Pending Requests</p>
+                                    <small>All applications have been processed.</small>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        </div>
+    </main>
+    <script>
+    setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 4000);
+    </script>
+
+    <style>
+    /* Sirf Logistics Center ke tabs ka active color set karne ke liye */
+    #pills-logistics-tab .nav-link.active { 
+        background-color: #1a237e !important; 
+        color: white !important; 
+        border: none;
+        box-shadow: 0 4px 10px rgba(26, 35, 126, 0.2); /* Thoda extra effect jaisa main dashboard mein hai */
+    }
+
+    /* Logistics ke normal tabs ka background */
+    #pills-logistics-tab .nav-link { 
+        background-color: #f8f9fa; 
+        color: #333; 
+        transition: all 0.3s ease; 
+        border: 1px solid transparent;
+    }
+
+    /* Hover effect sirf logistics tabs ke liye */
+    #pills-logistics-tab .nav-link:hover:not(.active) { 
+        background-color: #e9ecef; 
+    }
+
+    /* Scrollbar Styling (Only for Logistics scroll container) */
+    .logistics-scroll-container::-webkit-scrollbar { width: 5px; }
+    .logistics-scroll-container::-webkit-scrollbar-thumb { 
+        background: #894B8D; 
+        border-radius: 10px; 
+    }
+    .logistics-scroll-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+</style>
+
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function confirmVendorRemoval() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Account deactivation request will be sent to Admin.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, Request Removal!',
+            html: `<p>Enter password to confirm:</p><input type="password" id="swal-input-password" class="swal2-input">`,
+            preConfirm: () => {
+                const password = Swal.getPopup().querySelector('#swal-input-password').value;
+                if (!password) { Swal.showValidationMessage('Password required!'); }
+                return password;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST'; form.action = "{% url 'vendor_request_removal' %}";
+                const csrf = document.createElement('input'); csrf.type='hidden'; csrf.name='csrfmiddlewaretoken'; csrf.value='{{ csrf_token }}';
+                const pass = document.createElement('input'); pass.type='hidden'; pass.name='confirm_password'; pass.value=result.value;
+                form.appendChild(csrf); form.appendChild(pass); document.body.appendChild(form); form.submit();
+            }
+        });
+    }
+    </script>
+    <script>
+    setInterval(function () {
+        fetch("{% url 'check_vendor_status' %}")
+            .then(res => res.json())
+            .then(data => {
+                if (data.status !== 1) {
+                    window.location.href = "{% url 'vendor_login' %}";
+                }
+            });
+    }, 5000);
+</script>
+</body>
+</html>

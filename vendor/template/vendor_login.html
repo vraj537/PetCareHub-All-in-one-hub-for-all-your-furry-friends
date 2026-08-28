@@ -1,0 +1,258 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+
+    <style>
+        :root {
+            --tg-brand-color: #894B8D;
+            --tg-brand-light: #f4eef5;
+        }
+
+        /* Clean Scrollable Setup */
+        body {
+            background-color: var(--tg-brand-light);
+            font-family: 'Baloo Bhaina 2', cursive;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        .login-wrapper {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Fixed Background Doodles */
+        .fixed-doodles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .doodle-asset {
+            position: absolute;
+            filter: grayscale(100%) opacity(0.12);
+        }
+
+        /* Centered Card Design */
+        .login-card {
+            background: #ffffff;
+            border-radius: 40px;
+            border: 6px solid var(--tg-brand-color);
+            box-shadow: 0px 30px 60px rgba(137, 75, 141, 0.1);
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+        }
+
+        .form-grp {
+            margin-bottom: 20px;
+        }
+
+        .form-grp input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 15px;
+            border: 2px solid #f0f0f0;
+            background: #fafafa;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .form-grp input:focus {
+            border-color: var(--tg-brand-color);
+            background: #fff;
+            outline: none;
+            box-shadow: 0px 5px 15px rgba(137, 75, 141, 0.08);
+        }
+
+        .btn-brand {
+            background-color: var(--tg-brand-color);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 18px;
+            font-weight: 700;
+            width: 100%;
+            font-size: 16px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-brand:hover {
+            background-color: #6a3a6d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(137, 75, 141, 0.2);
+        }
+
+        .shake-anim {
+            animation: shake 3s infinite linear;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(15deg); }
+            50% { transform: rotate(25deg); }
+        }
+        /* - Eye Toggle Styling for Login */
+.pass-wrapper input {
+    padding-right: 52px !important; /* Space for eye icon */
+}
+
+.pass-toggle:hover {
+    color: var(--tg-brand-color) !important; /* Purple hover */
+}
+    </style>
+</head>
+
+<body>
+    <div class="fixed-doodles">
+        <img src="{% static 'assets/img/banner/banner_img01.png' %}" class="doodle-asset" style="bottom: -10px; left: -10px; width: 350px;">
+        <img src="{% static 'assets/img/images/about_img.png' %}" class="doodle-asset" style="top: -10px; right: -10px; width: 300px; transform: rotate(-10deg);">
+        <img src="{% static 'assets/img/icon/pet_icon02.svg' %}" class="injectable doodle-asset" style="top: 20%; left: 10%; width: 60px;">
+        <img src="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}" class="injectable doodle-asset" style="bottom: 20%; right: 10%; width: 80px;">
+    </div>
+
+    <main>
+        <div class="login-wrapper">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 d-flex justify-content-center">
+                        <div class="login-card">
+                            <div style="position: absolute; top: -35px; right: -20px; transform: rotate(15deg);">
+                                <img src="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}" alt="" class="injectable shake-anim" style="width: 80px;">
+                            </div>
+
+                            <div class="text-center mb-40">
+                                
+                                <h2 style="margin-top: 10px; font-weight: 800; color: #333;">Vendor Login</h2>
+                            </div>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'vendor_login' in message.tags %}  <div class="alert alert-dismissible fade show shadow-lg" role="alert" 
+             style="border-radius: 10px; background: #fff; border: none; 
+             border-left: 8px solid {% if 'success' in message.tags %}#28a745{% else %}#dc3545{% endif %}; 
+             margin-bottom: 20px; padding: 15px;">
+            <strong style="color: {% if 'success' in message.tags %}#28a745{% else %}#dc3545{% endif %};">
+                {% if 'success' in message.tags %}SUCCESS!{% else %}WAIT!{% endif %}
+            </strong>
+            <p class="mb-0" style="font-size: 14px; color: #555;">{{ message }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" style="margin-top: 5px;"></button>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+                            <form action="{% url 'vendor_login' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Email Address</label>
+                                    <input type="email" name="email" placeholder="Enter Your Email" required>
+                                </div>
+                                <div class="form-grp">
+    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Password</label>
+    <div class="pass-wrapper" style="position: relative;">
+        <input type="password" name="password" id="vendorLoginPass" placeholder="Enter Your Password" required>
+        
+        <button type="button" class="pass-toggle" onclick="togglePass('vendorLoginPass', this)"
+                style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); border: none; background: none; color: #aaa; cursor: pointer; z-index: 5;">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+</div>
+                                <div class="form-check-group d-flex align-items-center justify-content-between mb-25">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remember_me" id="remCheck">
+                                        <label class="form-check-label" for="remCheck" style="font-size: 14px;">Remember Me</label>
+                                    </div>
+                                    <a href="{% url 'vendor_forgot_password_url' %}" style="color: var(--tg-brand-color); font-size: 14px; font-weight: 700;">Forgot Password?</a>
+                                </div>
+                                <button type="submit" class="btn-brand">Sign In 🐾</button>
+                            </form>
+
+                            <div class="text-center mt-30">
+                                <p style="font-size: 15px; color: #666;">Want to sell with us? <a href="{% url 'vendor_register' %}" style="color: var(--tg-brand-color); font-weight: 800;">Register Here</a></p>
+                               <br>
+                               
+                                <div style="
+    text-align: center;
+    margin-top: -22px;">
+    <a href="{% url 'home' %}" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 2px solid #894B8D;
+        color: #894B8D;
+        padding: 8px 24px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        font-family: 'Baloo Bhaina 2', cursive;
+        box-shadow: 0 4px 15px rgba(137,75,141,0.12);
+        transition: all 0.25s ease;"
+        onmouseover="this.style.background='#894B8D'; this.style.color='#fff';"
+        onmouseout="this.style.background='#fff'; this.style.color='#894B8D';">
+        🏠 Back to Home
+    </a>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/svg-inject.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            SVGInject($(".injectable"));
+            setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+        // - Simple Eye Toggle Function
+function togglePass(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+    </script>
+</body>
+</html>

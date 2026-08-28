@@ -1,0 +1,372 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+
+    <style>
+        :root {
+            --tg-brand-color: #894B8D;
+            --tg-brand-light: #f4eef5;
+        }
+
+        body {
+            background-color: var(--tg-brand-light);
+            font-family: 'Baloo Bhaina 2', cursive;
+            margin: 0;
+            overflow-y: auto !important;
+        }
+
+        .register-wrapper {
+            padding: 50px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .fixed-doodles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .doodle-asset {
+            position: absolute;
+            filter: grayscale(100%) opacity(0.12);
+        }
+
+        .register-card {
+            background: #ffffff;
+            border-radius: 40px;
+            border: 6px solid var(--tg-brand-color);
+            box-shadow: 0px 30px 60px rgba(137, 75, 141, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .form-grp {
+            margin-bottom: 15px;
+        }
+
+        .form-grp label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--tg-brand-color);
+            margin-left: 10px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-grp input,
+        .form-grp textarea,
+        .form-grp select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 15px;
+            border: 2px solid #f0f0f0;
+            background: #fafafa;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            transition: 0.3s;
+            outline: none;
+            appearance: none;
+        }
+
+        .form-grp input:focus,
+        .form-grp textarea:focus,
+        .form-grp select:focus {
+            border-color: var(--tg-brand-color);
+            background: #fff;
+            box-shadow: 0px 5px 15px rgba(137, 75, 141, 0.08);
+        }
+
+        .btn-brand {
+            background-color: var(--tg-brand-color);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 18px;
+            font-weight: 700;
+            width: 100%;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-brand:hover {
+            background-color: #6a3a6d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(137, 75, 141, 0.2);
+        }
+
+        .shake-anim {
+            animation: shake 3s infinite linear;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(15deg); }
+            50% { transform: rotate(25deg); }
+        }
+
+        .form-grp select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23894B8D' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            padding-right: 40px !important;
+        }
+        /* Eye Toggle */
+        .pass-wrapper {
+            position: relative;
+        }
+        .pass-wrapper input {
+            padding-right: 52px !important;
+        }
+        .pass-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            font-size: 16px;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+        .pass-toggle:hover {
+            color: var(--tg-brand-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fixed-doodles">
+        <img src="{% static 'assets/img/banner/banner_img01.png' %}" class="doodle-asset" style="bottom: -10px; left: -10px; width: 350px;">
+        <img src="{% static 'assets/img/images/about_img.png' %}" class="doodle-asset" style="top: -10px; right: -10px; width: 300px; transform: rotate(-10deg);">
+        <img src="{% static 'assets/img/icon/pet_icon02.svg' %}" class="injectable doodle-asset" style="top: 20%; left: 10%; width: 60px;">
+        <img src="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}" class="injectable doodle-asset" style="bottom: 20%; right: 10%; width: 80px;">
+    </div>
+
+    <main>
+        <div class="register-wrapper">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 d-flex justify-content-center">
+                        <div class="register-card">
+                            <div style="position: absolute; top: -35px; right: -20px; transform: rotate(15deg);">
+                                <img src="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}" alt="" class="injectable shake-anim" style="width: 80px;">
+                            </div>
+
+                            <div class="text-center mb-30">
+                                <h2 style="margin-top: 10px; font-weight: 800; color: #333;">Vendor Registration</h2>
+                            </div>
+
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if 'vendor_reg' in message.tags %} <div class="alert alert-dismissible fade show shadow-lg" role="alert" 
+                                        style="border-radius: 10px; background: #fff; border: none; 
+                                        border-left: 8px solid {% if 'success' in message.tags %}#28a745{% else %}#dc3545{% endif %}; 
+                                        margin-bottom: 20px; padding: 15px;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <strong style="color: {% if 'success' in message.tags %}#28a745{% else %}#dc3545{% endif %}; font-size: 16px;">
+                                                {% if 'success' in message.tags %}SUCCESS!{% else %}WAIT!{% endif %}
+                                            </strong>
+                                            <span style="color: #555; font-size: 14px;">{{ message }}</span>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" style="margin-top: 5px;"></button>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                            <form action="{% url 'vendor_register' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Shop Name / Vendor Name</label>
+                                    <input type="text" name="vendor_name" placeholder="Enter Shop Name / Vendor Name" required>
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Email Address</label>
+                                    <input type="email" name="email" placeholder="Enter Email Address" required>
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Create Password</label>
+                                    <div class="pass-wrapper">
+                                        <input type="password" name="password" id="vendorPass" placeholder="Create Password" required>
+                                        <button type="button" class="pass-toggle" onclick="togglePass('vendorPass', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Contact Number</label>
+                                    <input type="text" name="contact" placeholder="Enter Contact Number" maxlength="10" required
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Select Area</label>
+                                    <select name="area_id" required>
+                                        <option value="" disabled selected>Choose Your Area</option>
+                                        {% for area in areas %}
+                                        <option value="{{ area.area_id }}">{{ area.area_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Shop Address</label>
+                                    <textarea name="address" placeholder="Enter Shop Address" rows="2" required
+                                        style="width: 100%; padding: 16px 20px; border-radius: 15px; border: 2px solid #f0f0f0; background: #fafafa; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s;"></textarea>
+                                </div>
+
+                                <div class="form-grp">
+                                    <label class="fw-bold" style="color: #555; display: block; margin-bottom: 5px; text-align: left;">Vendor Profile Photo (JPG/PNG) *</label>
+                                    <input type="file" name="vendor_profile" id="vendor_profile" accept="image/jpeg,image/png" required>
+                                    <small style="color: #888;">Max size: 2MB (Formats: JPG, PNG)</small>
+                                </div>
+
+                                <button type="submit" class="btn-brand">Apply for Approval 🐾</button>
+                            </form>
+
+                            <div class="text-center mt-20">
+                                <p style="font-size: 14px; color: #666;">Already a partner? <a href="{% url 'vendor_login' %}" style="color: var(--tg-brand-color); font-weight: 800;">Login Here</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/svg-inject.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            SVGInject($(".injectable"));
+            setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () { $(this).remove(); });
+            }, 5000);
+        });
+
+        document.addEventListener('change', function (e) {
+            if (e.target.name === 'vendor_profile') {
+                const fileSize = e.target.files[0].size / 1024 / 1024; // MB mein convert
+                if (fileSize > 2) {
+                    alert('Profile Photo size exceeds 2MB! Please upload a smaller image.');
+                    e.target.value = ''; // Input clear kar do
+                }
+            }
+        });
+
+        // - Eye Toggle Function
+        function togglePass(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // ── Real-time Field Validation with Red Error Lines ──
+        const validators = {
+            vendor_name: {
+                el: document.querySelector('[name="vendor_name"]'),
+                errId: 'err_name',
+                check: v => /^[A-Za-z\s]+$/.test(v.trim()) && v.trim().length > 1,
+                msg: 'Name should only contain letters and spaces.'
+            },
+            email: {
+                el: document.querySelector('[name="email"]'),
+                errId: 'err_email',
+                check: v => /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v.trim()),
+                msg: 'Enter a valid email starting with a letter (e.g., petcarehub@gmail.com).'
+            },
+            password: {
+                el: document.getElementById('vendorPass'),
+                errId: 'err_password',
+                check: v => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_])[A-Za-z\d!@#$%^&*_]{8,16}$/.test(v),
+                msg: 'Password must be 8-16 characters with uppercase, lowercase, number, and a special character (!@#$%^&*_).'
+            },
+            contact: {
+                el: document.querySelector('[name="contact"]'),
+                errId: 'err_contact',
+                check: v => /^[6-9]\d{9}$/.test(v.trim()),
+                msg: 'Enter a valid 10-digit number starting with 6, 7, 8, or 9.'
+            },
+            area_id: {
+                el: document.querySelector('[name="area_id"]'),
+                errId: 'err_area',
+                check: v => v !== '',
+                msg: 'Please select your area.'
+            },
+            address: {
+                el: document.querySelector('[name="address"]'),
+                errId: 'err_address',
+                check: v => v.trim().length >= 10,
+                msg: 'Address must be at least 10 characters.'
+            }
+        };
+
+        // Error span inject karo har field ke baad
+        Object.values(validators).forEach(({ el, errId, check, msg }) => {
+            if (!el) return;
+            const span = document.createElement('small');
+            span.id = errId;
+            span.style.cssText = 'color:#dc3545; font-size:12px; display:none; margin-top:5px; padding-left:4px;';
+            span.textContent = msg;
+            if (el.id === 'vendorPass') {
+                el.parentElement.parentElement.appendChild(span);
+            } else {
+                el.parentElement.appendChild(span);
+            }
+            el.addEventListener('input', () => validate(el, check, errId, false));
+            el.addEventListener('change', () => validate(el, check, errId, false));
+            el.addEventListener('blur', () => validate(el, check, errId, true));
+        });
+
+        function validate(el, check, errId, isBlur = false) {
+            const val = el.value;
+            const span = document.getElementById(errId);
+            const isValid = check(val);
+            if (!isValid && (val.length > 0 || isBlur)) {
+                el.style.borderColor = '#dc3545';
+                span.style.display = 'block';
+            } else {
+                el.style.borderColor = isValid ? '#28a745' : '#f0f0f0';
+                span.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

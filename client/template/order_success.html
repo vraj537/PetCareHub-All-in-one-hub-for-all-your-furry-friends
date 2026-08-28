@@ -1,0 +1,55 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<main class="py-5 bg-light d-flex align-items-center" style="min-height: 80vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="success-card p-5" style="background: #fff; border-radius: 30px; box-shadow: 0 20px 60px rgba(137, 75, 141, 0.1); border: 1px solid #f1e9f2;">
+                    
+
+                    <h2 class="mb-3" style="color: #4b2c4d; font-weight: 800; font-size: 32px;">Order Successful! 🐾</h2>
+                    
+                    <p class="text-muted mb-4" style="font-size: 16px; line-height: 1.6;">
+                        Thank you for choosing <strong>PetCareHub</strong>! Your order has been placed successfully. We are now preparing your pet's favorite items for delivery.
+                    </p>
+
+                    <div class="order-info mb-4 p-3" style="background: #fdfafb; border-radius: 15px; border: 1px dashed #894B8D;">
+                        <span class="d-block text-muted small" style="color: #894B8D !important;">We've sent a confirmation message to your registered email.</span>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'home' %}" class="btn" style="background: #894B8D; color: #fff; padding: 15px; border-radius: 50px; font-weight: 700; transition: 0.3s; text-decoration: none;">
+                            <i class="fas fa-home me-2"></i> Back to Home
+                        </a>
+                        <a href="{% url 'my_orders' %}" class="btn" style="background: #894B8D; color: #fff; padding: 15px; border-radius: 50px; font-weight: 700; transition: 0.3s; text-decoration: none;">
+                            <i class="fas fa-box-open me-2"></i> Track My Orders
+                        </a>
+                    </div>
+
+                </div>
+                
+                <p class="mt-4 text-muted small">Need any help? <a href="{% url 'contact' %}" style="color: #894B8D; font-weight: 600;">Contact PetCareHub Support</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    /* Smooth Entrance Animation */
+    .success-card {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(137, 75, 141, 0.2);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-purple: #894B8D; /* Matching your contact page theme */
+        --dark-navy: #00235a;
+        --light-bg: #fdfafb;
+    }
+
+    .main-content {
+        background-color: var(--light-bg);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Premium Hero Banner with Glassmorphism */
+    .adoption-hero {
+        background: linear-gradient(135deg, #4a148c 0%, #894B8D 100%);
+        border-radius: 40px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 50px rgba(137, 75, 141, 0.3);
+        margin-top: 30px;
+    }
+
+    .glass-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding: 60px 40px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Floating Doodles */
+    .doodle {
+        position: absolute;
+        opacity: 0.1;
+        color: #fff;
+        z-index: 1;
+    }
+
+    /* Buttons with Contact Page Style */
+    .btn-premium {
+        border-radius: 50px;
+        padding: 16px 40px;
+        font-weight: 800;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+    }
+
+    .btn-white { background: #fff; color: var(--primary-purple); }
+    .btn-insta { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: #fff; }
+
+    .btn-premium:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        color: #fff;
+    }
+
+    /* Partnership & Document Cards */
+    .doc-card {
+        background: #fff;
+        border-radius: 25px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: 0.3s;
+        border-top: 6px solid var(--primary-purple);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .doc-card:hover { transform: translateY(-10px); }
+
+    .icon-circle-large {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+
+    .btn-doc {
+        padding: 15px;
+        border-radius: 15px;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+        margin-top: auto;
+        transition: 0.3s;
+    }
+
+    .btn-noc { background: var(--primary-purple); color: #fff; }
+    .btn-appreciation { background: #28a745; color: #fff; }
+    
+    .btn-doc:hover { opacity: 0.9; color: #fff; transform: scale(1.02); }
+</style>
+
+<main class="main-content">
+    <section class="breadcrumb__area fix" style="background: #f4eef5; padding: 60px 0;">
+        <div class="container text-center">
+            <h2 class="fw-800 mb-2" style="color: var(--primary-purple); font-size: 42px;">Partnership & Adoption Hub</h2>
+            <nav class="breadcrumb justify-content-center fw-bold">
+                <span><a href="{% url 'home' %}" style="color: var(--dark-navy); text-decoration: none;">Home</a></span>
+                <span class="mx-2"><i class="fas fa-angle-right"></i></span>
+                <span style="color: var(--primary-purple);">Adoption Portal</span>
+            </nav>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <div class="adoption-hero mb-5">
+            <div class="doodle" style="top: 10%; left: 5%; transform: rotate(-20deg); font-size: 80px;"><i class="fas fa-dog"></i></div>
+            <div class="doodle" style="bottom: 10%; right: 5%; transform: rotate(15deg); font-size: 80px;"><i class="fas fa-cat"></i></div>
+            
+            <div class="card-body p-5 text-center">
+                <div class="glass-container mx-auto" style="max-width: 1000px;">
+                    <div style="display: inline-block; padding: 8px 25px; background: #fff; color: var(--primary-purple); border-radius: 50px; font-weight: 700; font-size: 13px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        OFFICIAL WELFARE PARTNERSHIP
+                    </div>
+                    <h1 class="display-4 fw-800 text-white mb-4" style="line-height: 1.2;">
+                        FOR <span style="color: #ffd6ff;">PET ADOPTION</span>
+                    </h1>
+                    
+                    <p class="lead text-white mb-5 opacity-90" style="font-size: 1.2rem; max-width: 750px; margin-left: auto; margin-right: auto;">
+                        PetCareHub connects you directly with <strong>Adoption Home Ahmedabad</strong> to ensure every pet receives the love and treatment they deserve.
+                    </p>
+                    
+                    <div class="d-flex justify-content-center flex-wrap gap-4">
+                        <a href="https://kukuram.in/" target="_blank" class="btn-premium btn-white">
+                            <i class="fas fa-external-link-alt"></i> Visit Website
+                        </a>
+                        <a href="https://www.instagram.com/adoptionhome_ahmedabad/" target="_blank" class="btn-premium btn-insta">
+                            <i class="fab fa-instagram"></i> Follow Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="doc-card">
+                    <div class="icon-circle-large" style="background: #f4eef5; color: var(--primary-purple);">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <h3 class="fw-800" style="color: var(--dark-navy);">No Objection Certificate</h3>
+                    <p class="text-muted mb-4">Official verification for the use of adoption platform details within the PETCAREHUB web application project.</p>
+                    <div class="p-3 rounded-4 mb-4" style="background: #fdfafb; border: 1px dashed var(--primary-purple);">
+                        <div class="d-flex justify-content-between small fw-bold">
+                            <span>Ref: DLC/NOC/2026/001</span>
+                            <span style="color: var(--primary-purple);">Expires: 01 Jan 2027</span>
+                        </div>
+                    </div>
+                    <a href="{% static 'assets/docs/NOC_PetCareHub.pdf' %}" target="_blank" class="btn-doc btn-noc">Read NOC Letter</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="doc-card" style="border-top-color: #28a745;">
+                    <div class="icon-circle-large" style="background: #e8f5e9; color: #28a745;">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="fw-800" style="color: var(--dark-navy);">Social Appreciation</h3>
+                    <p class="text-muted mb-4">Recognizing PetCareHub's initiative in leveraging technology to support and simplify the pet care ecosystem.</p>
+                    <div class="p-3 rounded-4 mb-4" style="background: #f4faf5; border: 1px dashed #28a745; color: #1b5e20; font-style: italic;">
+                        "Helping connect potential adopters with rescued animals".
+                    </div>
+                    <a href="{% static 'assets/docs/Appreciation_PetCareHub.pdf' %}" target="_blank" class="btn-doc btn-appreciation">Read Appreciation Letter</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="p-4 rounded-5 shadow-sm bg-white border">
+                    <p class="mb-0 fw-bold" style="color: var(--dark-navy);">
+                        Developed by (PetCareHub Team) students  of President Institute of Computer Application (Gujarat University).
+                        <br><span class="text-muted small">Collaborated with Naitik Bhatt, Owner of Adoption Home Ahmedabad.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

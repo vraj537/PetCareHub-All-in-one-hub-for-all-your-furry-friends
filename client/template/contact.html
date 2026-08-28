@@ -1,0 +1,321 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+        :root {
+            --primary-purple: #894B8D;
+            --dark-navy: #00235a;
+            --light-bg: #fdfafb;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: #444;
+        }
+
+        /* Top Header Section */
+        .support-header {
+            background: linear-gradient(135deg, #f4eef5 0%, #ffffff 100%);
+            padding: 50px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            color: var(--dark-navy);
+        }
+
+        .title-gold {
+            color: var(--primary-purple);
+            font-weight: 800;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        /* Guidelines Cards */
+        .rule-card {
+            background: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            height: 100%;
+            border-top: 5px solid transparent;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Admin Contact Section */
+        .admin-section {
+            background: #fff;
+            border-radius: 25px;
+            padding: 40px;
+            margin-top: 60px;
+            border: 1px solid #eee;
+        }
+
+        .btn-gmail {
+            background: var(--primary-purple);
+            color: #fff !important;
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(137, 75, 141, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-gmail:hover {
+            background: var(--dark-navy);
+            transform: scale(1.05);
+        }
+
+        .contact-info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info-list li {
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-info-list i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
+    </style>
+<main class="fix">
+    <section class="breadcrumb__area fix" style="background: #f4eef5; padding: 80px 0; position: relative; overflow: hidden;">
+        <div class="container text-center">
+            <h2 class="title fw-800 mb-2" style="color: #894B8D; font-family: 'Plus Jakarta Sans'; font-size: 45px;">Help & Support</h2>
+            <nav class="breadcrumb justify-content-center fw-bold">
+                <span><a href="{% url 'home' %}" style="color: #00235a; text-decoration: none;">Home</a></span>
+                <span class="breadcrumb-separator mx-2"><i class="fas fa-angle-right"></i></span>
+                <span style="color: #894B8D;">Contact & FAQ</span>
+            </nav>
+        </div>
+        <div class="breadcrumb__shape-wrap">
+            <img src="{% static 'assets/img/images/breadcrumb_shape01.png' %}" alt="img" class="d-none d-md-block" style="position: absolute; left: 0; top: 0; opacity: 0.4; width: 220px;">
+            <img src="{% static 'assets/img/images/breadcrumb_shape02.png' %}" alt="img" class="d-none d-md-block" style="position: absolute; right: 0; bottom: 0; opacity: 0.4; width: 220px;">
+        </div>
+    </section>
+
+    <section class="contact-info-area py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card border-0 shadow-sm p-4 text-center h-100 rounded-4 contact-card">
+                        <div class="icon-box mx-auto mb-3"><i class="fas fa-map-marker-alt"></i></div>
+                        <h5 class="fw-bold">Office Address</h5>
+                        <p class="text-muted small">A-07, Shayona City, Ahmedabad, Gujarat</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card border-0 shadow-sm p-4 text-center h-100 rounded-4 contact-card">
+                        <div class="icon-box mx-auto mb-3"><i class="fas fa-envelope"></i></div>
+                        <h5 class="fw-bold">Email Us</h5>
+                        <p class="text-muted small">petcarehub07@gmail.com</p>
+                        
+                    <a href="mailto:petcarehub07@gmail.com?subject=Customer%20Support%20Request&body=Hello%20Admin,%0D%0A%0D%0AMy%20Cust%20Id:%20" class="btn-gmail">
+                        <i class="fas fa-envelope me-2"></i> Open Gmail Support
+                    </a>
+                
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mx-auto">
+                    <div class="card border-0 shadow-sm p-4 text-center h-100 rounded-4 contact-card">
+                        <div class="icon-box mx-auto mb-3"><i class="fas fa-phone-alt"></i></div>
+                        <h5 class="fw-bold">Phone Support</h5>
+                        <p class="text-muted small">+91 87803 21278 | +91 92652 44539</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="faq-section py-5" style="background: #fbfbfb;">
+    <div class="container"> <div class="row justify-content-center">
+            <div class="col-12"> <div class="section-title text-center mb-5">
+                    <h3 class="fw-bold" style="color: #00235a;">Frequently Asked Questions</h3>
+                    <p class="text-muted">Find quick answers or jump to the right page 🐾</p>
+                </div>
+
+                <div class="accordion accordion-flush shadow-sm rounded-4 overflow-hidden border" id="smartFaq">
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-bold py-4" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+                                How do I book an appointment with a specialist?
+                            </button>
+                        </h2>
+                        <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#smartFaq">
+                            <div class="accordion-body text-muted py-4">
+                                You can check our doctor's availability and book a slot instantly. 
+                                <div class="mt-3">
+                                    <a href="{% url 'team' %}" class="btn btn-sm rounded-pill px-3" style="background: #894B8D; color: #fff;">Go to Vets Page →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold py-4" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+                                Where can I buy food or toys for my pet?
+                            </button>
+                        </h2>
+                        <div id="q2" class="accordion-collapse collapse" data-bs-parent="#smartFaq">
+                            <div class="accordion-body text-muted py-4">
+                                Our shop has a wide range of premium pet products delivered to your doorstep.
+                                <div class="mt-3">
+                                    <a href="{% url 'product' %}" class="btn btn-sm rounded-pill px-3" style="background: #894B8D; color: #fff;">Browse Shop →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold py-4" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
+                                How can I track my existing orders?
+                            </button>
+                        </h2>
+                        <div id="q3" class="accordion-collapse collapse" data-bs-parent="#smartFaq">
+                            <div class="accordion-body text-muted py-4">
+                                Once your order is placed, you can see the real-time status in your dashboard.
+                                <div class="mt-3">
+                                    <a href="{% url 'my_orders' %}" class="btn btn-sm rounded-pill px-3" style="background: #894B8D; color: #fff;">View My Orders →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold py-4" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
+                                Can I change my delivery address?
+                            </button>
+                        </h2>
+                        <div id="q4" class="accordion-collapse collapse" data-bs-parent="#smartFaq">
+                            <div class="accordion-body text-muted py-4">
+                                Yes, you can update your permanent address and contact details in your profile.
+                                <div class="mt-3">
+                                    <a href="{% url 'edit_profile' %}" class="btn btn-sm rounded-pill px-3" style="background: #894B8D; color: #fff;">Edit Profile →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="guidelines-section py-5" style="background: #fdfafb;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="text-uppercase fw-bold" style="color: #894B8D; letter-spacing: 2px; font-size: 14px;">User Policies</span>
+            <h2 class="fw-800 mt-2" style="color: #00235a; font-size: 36px;">Terms & Conditions</h2>
+            <div style="width: 60px; height: 4px; background: #894B8D; margin: 15px auto; border-radius: 10px;"></div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm p-4 h-100 rounded-4" style="border-top: 5px solid #894B8D !important; transition: 0.3s;">
+                    <div class="icon-box-small mb-3" style="width: 50px; height: 50px; background: rgba(137, 75, 141, 0.1); color: #894B8D; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: #00235a;">1. Appointment & Payments</h5>
+        <p class="text-muted small mt-3" style="line-height: 1.6;">
+            We offer both <strong>Online and Cash</strong> payment options. However, if you choose <strong>Cash</strong> and are marked as <strong>Absent</strong> for 3 consecutive appointments, the cash option will be <strong>permanently blocked</strong> for your account.
+            <br><br>
+            Additionally, if you pay <strong>Online</strong> and fail to attend the appointment, <strong>no refund</strong> will be provided as the specialist's time is reserved exclusively for you.
+        </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm p-4 h-100 rounded-4" style="border-top: 5px solid #dc3545 !important; transition: 0.3s;">
+                    <div class="icon-box-small mb-3" style="width: 50px; height: 50px; background: rgba(220, 53, 69, 0.1); color: #dc3545; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: #00235a;">2. Shop & Cancellation</h5>
+                    <p class="text-muted small mt-3" style="line-height: 1.6;">
+                        Our shop only accepts <strong>online payments</strong>. If you cancel an order before it is assigned to a delivery boy, your refund will be processed in <strong>5-7 business days</strong>. Once assigned, no cancellation is possible.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .fw-800 { font-weight: 800; }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important; }
+</style>
+    <section class="contact-map-area py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="map-holder shadow-sm rounded-4 overflow-hidden border" style="height: 400px;">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.3683883713634!2d72.54148477587422!3d23.08362621406836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e830f60790757%3A0xc6a30c5112e6187!2sShayona%20City!5e0!3m2!1sen!2sin!4v1709999999999!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<style>
+    .fw-800 { font-weight: 800; }
+    .icon-box { width: 60px; height: 60px; background: #f4eef5; color: #894B8D; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .contact-card:hover { transform: translateY(-8px); transition: 0.3s; }
+    .accordion-button:not(.collapsed) { background-color: #f4eef5; color: #894B8D !important; box-shadow: none; }
+    .accordion-button:focus { box-shadow: none; }
+    .btn:hover { background: #6a3a6d !important; transform: scale(1.05); transition: 0.2s; }
+</style>
+{% endblock %}

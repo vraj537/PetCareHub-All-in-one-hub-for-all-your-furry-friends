@@ -1,0 +1,636 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="description" content="PetCareHub - All in one hub for all your furry friends">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon_pet_care.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/odometer.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
+    <style>
+        /* Wishlist button container */
+        .header-action-item a {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Counter Badge Styling */
+        .wishlist-count-badge {
+            position: absolute;
+            top: -8px;
+            /* Adjust karke icon ke upar set karein */
+            right: -10px;
+            /* Adjust karke side mein set karein */
+            background-color: #8b518d;
+            /* Aapka theme purple color */
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 0;
+            border-radius: 50%;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+            /* White border se badge uthkar dikhta hai */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!--Preloader-->
+    <div id="preloader">
+        <div id="loader" class="loader">
+            <div class="loader-container">
+                <div class="loader-icon"><img src="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}" alt="Preloader"></div>
+            </div>
+        </div>
+    </div>
+    <!--Preloader-end -->
+
+    <!-- Scroll-top -->
+    <button class="scroll__top scroll-to-target" data-target="html">
+        <i class="fas fa-angle-up"></i>
+    </button>
+    <!-- Scroll-top-end-->
+
+    <!-- header-area -->
+    <header>
+        <div id="header-fixed-height"></div>
+        <div class="tg-header__top" style="background: #002347; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0;">
+    <div class="container custom-container">
+        <div class="row align-items-center">
+            
+            <div class="col-xl-5 col-lg-6 d-none d-lg-block">
+                <ul class="tg-header__top-info d-flex align-items-center list-wrap gap-4" style="margin:0; padding:0;">
+                    <li style="color: #e0e0e0; font-size: 13px; list-style:none;">
+                        <i class="fas fa-map-marker-alt me-2" style="color: #0DCAF0;"></i>
+                        A-07, Shayona City, Ahmedabad ,Gujarat
+                    </li>
+                    <li style="color: #e0e0e0; font-size: 13px; list-style:none;">
+                        <i class="fas fa-envelope me-2" style="color: #0DCAF0;"></i>
+                        <a href="mailto:petcarehub07@gmail.com" style="color: inherit; text-decoration: none;">petcarehub07@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xl-7 col-lg-6">
+                <div class="d-flex align-items-center justify-content-lg-end justify-content-center flex-wrap gap-3">
+                    
+                    <div class="d-flex align-items-center px-3 py-1 rounded-pill" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); font-family: 'Baloo Bhaina 2';">
+                        <div class="d-flex align-items-center" style="font-size: 13px; color: #fff;">
+                            <i class="fas fa-calendar-check me-2" style="color: #FFC107; filter: drop-shadow(0 0 4px rgba(255,193,7,0.5));"></i>
+                            <span>Request Anytime</span>
+                        </div>
+                        <div style="width: 1px; height: 12px; background: rgba(255,255,255,0.2); margin: 0 15px;"></div>
+                        <div class="d-flex align-items-center" style="font-size: 13px; color: #fff;">
+                            <i class="fas fa-user-shield me-2" style="color: #0DCAF0;"></i>
+                            <span>Vet Confirmation</span>
+                        </div>
+                    </div>
+
+                    <div class="tg-header__top-social ms-2">
+                        <ul class="d-flex align-items-center list-wrap gap-3" style="margin:0; padding:0;">
+                            <li><a href="https://www.instagram.com/petcarehub07/" target="_blank" style="color: #fff; opacity: 0.8; transition: 0.3s;"><i class="fab fa-instagram small"></i></a></li>
+                            <li><a href="https://youtube.com/@petcarehub07" target="_blank" style="color: #fff; opacity: 0.8; transition: 0.3s;"><i class="fab fa-youtube small"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .tg-header__top-social a:hover { color: #0DCAF0 !important; opacity: 1 !important; transform: translateY(-2px); }
+    .tg-header__top-info a:hover { color: #0DCAF0 !important; }
+    @media (max-width: 575px) { .gap-3 { gap: 10px !important; } }
+</style>
+        <div id="sticky-header" class="tg-header__area">
+            <div class="container custom-container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tgmenu__wrap">
+                            <nav class="tgmenu__nav">
+                                <div class="logo" style="margin-right: auto; padding-left: 0; display: flex; align-items: center;">
+        <a href="index.html" style="display: inline-block; line-height: 0;">
+            <img src="{% static 'assets/img/logo/logo1.png' %}" alt="Logo" 
+                 style="display: block; width: 220px; height: auto; max-height: 85px; object-fit: contain;">
+        </a>
+    </div>
+                                <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-lg-flex">
+                                    <ul class="navigation">
+                                        <li><a href="{% url 'home' %}">Home</a>
+                                        </li>
+                                        <li><a href="{% url 'team' %}">Vets</a>
+                                        </li>
+                                        <li><a href="{% url 'product' %}">Shop</a>
+                                        </li>
+                                        <li><a href="{% url 'adoption' %}">Adoption</a>
+                                        </li>
+                                        <li><a href="{% url 'contact' %}">Contact & FAQ</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="header-action-item">
+                                    <a href="{% url 'wishlist_page' %}" class="wishlist-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-heart">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                            </path>
+                                        </svg>
+                                        {% if wishlist_count > 0 %}
+                                        <span class="wishlist-count-badge">{{ wishlist_count }}</span>
+                                        {% endif %}
+                                    </a>
+                                </div>
+
+                                <div class="header-action">
+                                    <ul class="list-wrap">
+                                        <li class="header-shop-cart"
+                                            style="list-style: none !important; display: inline-block !important; margin: 0 15px !important; vertical-align: middle !important;">
+                                            <a href="{% url 'cart' %}"
+                                                style="position: relative !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 40px !important; height: 40px !important;">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+                                                    viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z">
+                                                    </path>
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                                </svg>
+
+                                                {% if cart_item_count > 0 %}
+                                                <span class="badge rounded-pill bg-danger"
+                                                    style="position: absolute !important; top: -2px !important; right: -5px !important; font-size: 10px !important; width: 18px !important; height: 18px !important; display: flex !important; align-items: center !important; justify-content: center !important; border: 2px solid #fff !important; z-index: 999 !important; color: white !important; font-weight: bold;">
+                                                    {{ cart_item_count }}
+                                                </span>
+                                                {% endif %}
+                                            </a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                                <div class="tgmenu__action d-none d-md-block">
+                                    <ul class="list-wrap">
+                                        <li class="header-btn"><a href="{% url 'my_appointments' %}" class="btn"><i
+                                                    class="flaticon-calendar-1"></i>My Appointments</a></li>
+                                        <li class="header-btn Registration-btn" style="position: relative;">
+    <a href="#" class="btn" onclick="toggleDrop('regDrop'); return false;">
+        Registration <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+    </a>
+    <ul id="regDrop" style="
+        display: none; position: absolute; top: calc(100% + 8px); right: 0;
+        background: #fff; border: 2px solid #894B8D; border-radius: 14px;
+        padding: 6px; min-width: 200px; box-shadow: 0 10px 30px rgba(137,75,141,0.15);
+        z-index: 9999; list-style: none; margin: 0; animation: fadeDown 0.2s ease;">
+        <li><a href="{% url 'register' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🐾 Customer
+        </a></li>
+
+        {% if not request.session.cust_id %}
+        <li><a href="{% url 'vet_register' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🩺 Veterinarian
+        </a></li>
+        <li><a href="{% url 'vendor_register' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🛒 Vendor
+        </a></li>
+        <li><a href="{% url 'delivery_register' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🚴 Delivery Boy
+        </a></li>
+        {% endif %}
+    </ul>
+</li>
+                                        <li class="header-btn Login-btn" style="position: relative;">
+    <a href="#" class="btn" onclick="toggleDrop('loginDrop'); return false;">
+        Login <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+    </a>
+    <ul id="loginDrop" style="
+        display: none; position: absolute; top: calc(100% + 8px); right: 0;
+        background: #fff; border: 2px solid #894B8D; border-radius: 14px;
+        padding: 6px; min-width: 200px; box-shadow: 0 10px 30px rgba(137,75,141,0.15);
+        z-index: 9999; list-style: none; margin: 0; animation: fadeDown 0.2s ease;">
+        <li><a href="{% url 'login1' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🐾 Customer </a></li>
+
+        {% if not request.session.cust_id %}
+        <li><a href="{% url 'vet_login' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🩺 Veterinarian
+        </a></li>
+        <li><a href="{% url 'vendor_login' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🛒 Vendor
+        </a></li>
+        <li><a href="{% url 'delivery_login' %}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#444; font-size:14px; font-weight:600; text-decoration:none; transition:0.15s;"
+            onmouseover="this.style.background='#f4eef5'; this.style.color='#894B8D';"
+            onmouseout="this.style.background='transparent'; this.style.color='#444';">
+            🚴 Delivery Boy
+        </a></li>
+        {% endif %}
+    </ul>
+</li>
+<style>
+    @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+<script>
+    function toggleDrop(id) {
+        // Dono dropdown band karo pehle
+        ['regDrop','loginDrop'].forEach(function(d) {
+            if (d !== id) document.getElementById(d).style.display = 'none';
+        });
+        // Target toggle karo
+        var el = document.getElementById(id);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+    // Bahar click karne pe band ho jaye
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.Registration-btn') && !e.target.closest('.Login-btn')) {
+            document.getElementById('regDrop').style.display = 'none';
+            document.getElementById('loginDrop').style.display = 'none';
+        }
+    });
+</script>
+     <li class="nav-item" style="list-style: none; margin-left: 20px; position: relative;">
+    {% if request.session.cust_id %}
+        
+        {% if request.resolver_match.url_name != 'edit_profile' %}
+            <div class="d-flex flex-column align-items-center">
+                
+                <div class="user-profile-avatar rounded-circle border border-2 shadow-sm" 
+                     id="profileDropdownTrigger"
+                     data-bs-toggle="dropdown" 
+                     aria-expanded="false"
+                     style="width: 42px; height: 42px; overflow: hidden; border-color: #894B8D !important; cursor: pointer;">
+                    
+                    {% if request.session.cust_profile and "default.png" not in request.session.cust_profile and "default.png" not in request.session.cust_profile %}
+                        <img src="{{ request.session.cust_profile }}" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'assets/img/users/default.png' %}" alt="Default" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
+                </div>
+
+                <span class="fw-bold text-dark" style="font-family: 'Baloo Bhaina 2'; font-size: 13px; margin-top: 4px; line-height: 1;">
+                    {{ request.session.cust_name }}
+                </span>
+
+                <ul class="dropdown-menu shadow-lg border-0 rounded-3 p-2" 
+                    aria-labelledby="profileDropdownTrigger" 
+                    style="min-width: 180px; position: absolute; top: 50px; right: 0; z-index: 9999; display: none;">
+                    
+                    <li><a class="dropdown-item py-2 px-3 small rounded-2" href="{% url 'edit_profile' %}" style="display: block;"><i class="fas fa-user-edit me-2 text-primary"></i> Edit Profile</a></li>
+                    <li><a class="dropdown-item py-2 px-3 small rounded-2" href="{% url 'my_appointments' %}" style="display: block;"><i class="fas fa-calendar-check me-2 text-success"></i> My Appointments</a></li>
+                    <li><a class="dropdown-item py-2 px-3 small rounded-2" href="{% url 'my_orders' %}" style="display: block;"><i class="fas fa-shopping-bag me-2 text-info"></i> My Orders</a></li>
+                    <li><hr class="dropdown-divider my-1"></li>
+                    <li><a class="dropdown-item py-2 px-3 small rounded-2 text-danger" href="{% url 'logout1' %}" style="display: block;"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        {% endif %}
+
+        <style>
+            .dropdown-toggle::after, .nav-item div::after { display: none !important; content: none !important; }
+            .dropdown-menu.show { 
+                display: block !important; 
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        </style>
+
+    {% endif %}
+</li>
+                                    </ul>
+
+                                </div>
+                                <div class="mobile-nav-toggler">
+                                    <i class="flaticon-layout"></i>
+                                </div>
+                            </nav>
+                        </div>
+
+                        <!-- Mobile Menu  -->
+                        <div class="tgmobile__menu">
+                            <nav class="tgmobile__menu-box">
+                                <div class="close-btn"><i class="fas fa-times"></i></div>
+                                <div class="nav-logo">
+                                    <a href="index.html"><img src="{% static 'assets/img/logo/logo.png' %}"
+                                            alt="Logo"></a>
+                                </div>
+                                <div class="tgmobile__search">
+                                    <form action="#">
+                                        <input type="text" placeholder="Search here...">
+                                        <button><i class="fas fa-search"></i></button>
+                                    </form>
+                                </div>
+                                <div class="tgmobile__menu-outer">
+                                    <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+                                </div>
+                                <div class="social-links">
+                                    <ul class="list-wrap">
+                                        <li><a href="https://www.facebook.com/" target="_blank"><i
+                                                    class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="https://twitter.com" target="_blank"><i
+                                                    class="fab fa-twitter"></i></a></li>
+                                        <li><a href="https://www.whatsapp.com/" target="_blank"><i
+                                                    class="fab fa-whatsapp"></i></a></li>
+                                        <li><a href="https://www.instagram.com/" target="_blank"><i
+                                                    class="fab fa-instagram"></i></a></li>
+                                        <li><a href="https://www.youtube.com/" target="_blank"><i
+                                                    class="fab fa-youtube"></i></a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="tgmobile__menu-backdrop"></div>
+                        <!-- End Mobile Menu -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- header-search -->
+        <div class="search__popup">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search__wrapper">
+                            <div class="search__close">
+                                <button type="button" class="search-close-btn">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="search__form">
+                                <form action="#">
+                                    <div class="search__input">
+                                        <input class="search-input-field" type="text" placeholder="Type keywords here">
+                                        <span class="search-focus-border"></span>
+                                        <button>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
+                                                <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentcolor"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search-popup-overlay"></div>
+
+        {% block content %}
+
+
+        {% endblock %}
+
+        <!-- footer-area -->
+        <footer class="footer__area">
+    <div class="footer__top fix">
+        <div class="container">
+            <div class="row justify-content-between">
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer__widget">
+                        <img src="{% static 'assets/img/logo/footerlogo_removedbg.png'  %}" alt="PetCareHub" style="width: 300px; margin-bottom: 25px;">
+                        <p style="color: #cbd5e0; line-height: 1.8; font-size: 15px;">
+                            The most trusted specialized pet treatment center in Ahmedabad.
+                        </p>
+                        <div class="footer__social" style="margin-top: 25px; display: flex; gap: 20px;">
+                            
+                            <a href="https://www.instagram.com/petcarehub07/" style="color: #fff;"><i class="fab fa-instagram"></i></a>
+                            <a href="https://youtube.com/@petcarehub07" style="color: #fff;"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="footer__widget">
+                        <h4 class="footer__widget-title">Our Services</h4>
+                        <ul class="list-wrap" style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 15px;"><a href="#" style="color: #cbd5e0; text-decoration: none;">Veterinary Appointments</a></li>
+                            <li style="margin-bottom: 15px;"><a href="#" style="color: #cbd5e0; text-decoration: none;">Selling Pet Related Products</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer__widget">
+                        <h4 class="footer__widget-title">Contact Us</h4>
+                        <div class="footer__contact-info">
+                            <p style="color: #cbd5e0; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px;">
+                                <i class="fas fa-map-marker-alt" style="color: #6b46c1; margin-top: 5px;"></i> 
+                                A-07, Shayona City, Ahmedabad ,Gujarat
+                            </p>
+                            <p style="color: #fff; font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                                <i class="fas fa-phone-alt" style="color: #6b46c1;"></i> +91 87803 21278
+                            </p>
+                            <p style="color: #fff; font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                                <i class="fas fa-phone-alt" style="color: #6b46c1;"></i> +91 92652 44539
+                            </p>
+                            <p style="color: #cbd5e0; display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-envelope" style="color: #6b46c1;"></i> petcarehub07@gmail.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer__bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="footer__bottom-menu">
+                        <ul class="list-wrap" style="display: flex; gap: 20px; list-style: none; padding: 0;">
+                            <li><a href="#" style="color: #718096; text-decoration: none; font-size: 14px;">Support</a></li>
+                            <li><a href="#" style="color: #718096; text-decoration: none; font-size: 14px;">Terms & Conditions</a></li>
+                            <li><a href="#" style="color: #718096; text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-end">
+                    <p style="color: #718096; font-size: 14px; margin: 0;">Copyright © 2026. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+        <!-- footer-area-end -->
+
+
+        <!-- JS here -->
+        <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.odometer.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.appear.js' %}"></script>
+        <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.countdown.min.js' %}"></script>
+        <script src="{% static 'assets/js/svg-inject.min.js' %}"></script>
+        <script src="{% static 'assets/js/select2.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'assets/js/ajax-form.js' %}"></script>
+        <script src="{% static 'assets/js/wow.min.js' %}"></script>
+        <script src="{% static 'assets/js/aos.js' %}"></script>
+        <script src="{% static 'assets/js/main.js' %}"></script>
+        <script src="{% static 'assets/js/index.js' %}"></script>
+
+        <script>
+            SVGInject(document.querySelectorAll("img.injectable"));
+        </script>
+
+
+        <script>
+            // 3 second baad pop-up apne aap gayab ho jaye
+            setTimeout(function () {
+                var msgContainer = document.getElementById('django-messages');
+                if (msgContainer) {
+                    msgContainer.style.transition = "opacity 0.5s ease";
+                    msgContainer.style.opacity = "0";
+                    setTimeout(function () { msgContainer.remove(); }, 500);
+                }
+            }, 3000);
+        </script>
+
+        <div id="django-messages"
+            style="position: fixed; top: 100px; right: 20px; z-index: 9999; min-width: 300px; max-width: 350px; word-wrap: break-word;">
+            {% if messages %}
+            {% for message in messages %}
+
+            {# Logic: Agar login success hai ('login_home' tag), toh sirf home page par popup dikhao #}
+            {% if 'login_home' in message.tags %}
+            {% if request.resolver_match.url_name == 'home' %}
+            <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert"
+                style="border-radius: 10px; background: #fff; border: none; border-left: 8px solid #28a745; margin-bottom: 10px; animation: slideInRight 0.5s ease forwards;">
+                <div style="display: flex; flex-direction: column;">
+                    <strong style="color: #28a745; font-size: 16px;">SUCCESS!</strong>
+                    <span style="color: #555; font-size: 14px;">{{ message }}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endif %}
+
+            {% elif 'client_logout_succ' in message.tags %}
+            <div class="alert alert-danger alert-dismissible fade show shadow-lg" role="alert"
+                style="border-radius: 10px; background: #fff; border: none; border-left: 8px solid #dc3545; margin-bottom: 10px; animation: slideInRight 0.5s ease forwards;">
+                <div style="display: flex; flex-direction: column; max-width: 250px;">
+                    <strong style="color: #dc3545; font-size: 16px;">LOGOUT!</strong>
+                    <span style="color: #555; font-size: 14px; word-wrap: break-word;">{{ message }}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+
+            {% elif request.resolver_match.url_name != 'login1' %}
+            <div class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %} alert-dismissible fade show shadow-lg"
+                role="alert"
+                style="border-radius: 10px; background: #fff; border: none; border-left: 8px solid {% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}; margin-bottom: 10px; animation: slideInRight 0.5s ease forwards;">
+                <div style="display: flex; flex-direction: column;">
+                    <strong
+                        style="color: {% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}; font-size: 16px;">
+                        {% if message.tags == 'success' %}SUCCESS!{% else %}FAIL!{% endif %}
+                    </strong>
+                    <span style="color: #555; font-size: 14px;">{{ message }}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endif %}
+
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <style>
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(120%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        </style>
+
+        <script>
+            // 5 second auto-hide logic
+            setTimeout(function () {
+                var container = document.getElementById('django-messages');
+                if (container) {
+                    container.style.transition = "all 0.6s ease";
+                    container.style.opacity = "0";
+                    container.style.transform = "translateX(100px)";
+                    setTimeout(function () { container.remove(); }, 600);
+                }
+            }, 5000);
+        </script>
+
+</body>
+
+</html>

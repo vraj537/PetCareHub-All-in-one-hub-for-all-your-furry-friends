@@ -1,0 +1,215 @@
+{% extends "header1.html" %}
+{% load static %}
+
+{% block content %} 
+<div class="container py-5" style="margin-top: 110px; min-height: 90vh;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #894B8D; font-family: 'Plus Jakarta Sans';">My Order History</h3>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm">
+            <i class="fas fa-home me-2"></i> Back to Home
+        </a>
+    </div>
+
+    {% for group in grouped_orders %}
+    <div class="card mb-5 shadow-sm border-0 p-4" style="border-radius: 25px; background: #fff;">
+
+        <!-- Common Order Header: Dates only -->
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+            <div>
+                <!-- Order ID badge — my_appointments jaisa -->
+                <span class="badge rounded-pill mb-2 d-inline-block"
+                    style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                    #{{ group.order.order_id }}
+                </span>
+                <div>
+                    <span class="text-muted small">Order Date</span>
+                    <h6 class="fw-bold m-0 text-dark">{{ group.order.order_date|date:"d M Y" }}</h6>
+                </div>
+                <div class="mt-1">
+                    <span class="text-muted small">Expected Delivery</span>
+                    <h6 class="fw-bold m-0 text-dark">
+                        {% if group.order.delivery_date %}
+                            {{ group.order.delivery_date|date:"d M Y" }}
+                        {% else %}
+                            To be confirmed
+                        {% endif %}
+                    </h6>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor-wise sections -->
+        {% for vg in group.vendor_groups %}
+        <div class="mb-4 p-3 rounded-4" style="border: 1px solid {% if vg.detail_status == 4 %}#f5c6cb{% else %}#f0e6f1{% endif %};">
+
+            <!-- Vendor Name -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge rounded-pill px-3 py-2" style="background: #f4eef5; color: #894B8D; font-weight: 700;">
+                    🏪 {{ vg.vendor.vendor_name }}
+                </span>
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Status Badge -->
+                    <span class="badge rounded-pill px-3 py-2
+                        {% if vg.detail_status == 4 %}bg-danger text-white
+                        {% elif vg.detail_status == 0 %}bg-warning text-dark
+                        {% elif vg.detail_status == 1 %}bg-info text-white
+                        {% elif vg.detail_status == 2 %}bg-primary text-white
+                        {% else %}bg-success text-white{% endif %}">
+                        {% if vg.detail_status == 4 %}❌ Cancelled
+                        {% elif vg.detail_status == 0 %}🕐 Processing
+                        {% elif vg.detail_status == 1 %}📦 Assigned
+                        {% elif vg.detail_status == 2 %}🚚 Out for Delivery
+                        {% else %}✅ Delivered{% endif %}
+                    </span>
+
+                    <!-- Vendor-wise Cancel Button: sirf tab show ho jab assigned nahi aur cancelled nahi -->
+                    {% if not vg.is_cancelled and not vg.is_assigned and not group.order.is_cancelled %}
+                    <a href="{% url 'cancel_order' group.order.order_id %}?vendor_id={{ vg.vendor.vendor_id }}"
+                    class="btn btn-sm btn-outline-danger rounded-pill fw-bold">
+                        🚫 Cancel
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Products List -->
+            {% for item in vg.products %}
+            <div class="d-flex align-items-center mb-2 p-3 bg-light rounded-4">
+                <img src="{{ item.detail.prod_id.cover_img_path.url }}"
+                    style="width: 65px; height: 65px; object-fit: cover; border-radius: 12px;" class="me-3">
+                <div class="flex-grow-1">
+                    <h6 class="fw-bold mb-1">{{ item.detail.prod_id.prod_name }}</h6>
+                    <p class="small text-muted mb-0">
+                       Qty: {{ item.detail.quantity }} | Unit Price: ₹{{ item.detail.price }}  
+                    </p>
+                </div>
+                <div class="text-end d-flex flex-column align-items-end gap-2">
+                    <div>
+                        <small class="text-muted d-block">Subtotal</small>
+                        <span class="fw-bold text-dark">₹{{ item.subtotal }}</span>
+                    </div>
+                    <!-- Review button: sirf delivered orders pe dikhega -->
+                    {% if vg.detail_status == 3 %}
+                        {% if item.already_rated %}
+                        <button class="btn btn-sm btn-light disabled rounded-pill px-3 border" style="font-size: 11px;">
+                            <i class="fas fa-check-circle text-success me-1"></i> Already Rated
+                        </button>
+                        {% else %}
+                        <button class="btn btn-sm btn-warning rounded-pill px-3" style="font-size: 11px;"
+                            data-bs-toggle="modal"
+                            data-bs-target="#reviewModal{{ item.detail.order_details_id }}">
+                            <i class="fas fa-star me-1"></i> Rate Product
+                        </button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Review Modal: har product ke liye alag (order_details_id se unique) -->
+            {% if vg.detail_status == 3 and not item.already_rated %}
+            <div class="modal fade" id="reviewModal{{ item.detail.order_details_id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content rounded-4 border-0 shadow">
+                        <form method="POST" action="{% url 'submit_order_review' item.detail.prod_id.prod_id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_detail_id" value="{{ item.detail.order_details_id }}">
+                            <div class="modal-body p-4 text-start">
+                                <h5 class="fw-bold mb-3" style="color: #894B8D;">
+                                    Rate: {{ item.detail.prod_id.prod_name }}
+                                </h5>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Rating (1-5)</label>
+                                    <select name="rating" class="form-select rounded-pill">
+                                        <option value="5">5 - Excellent</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="1">1 - Poor</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Comment</label>
+                                    <textarea name="comments" class="form-control rounded-4" rows="3"
+                                        placeholder="Share your experience with this product..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold"
+                                    style="background-color: #894B8D; border: none;">
+                                    Submit Review
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+
+            <!-- Progress Bar (vendor-wise alag) -->
+            <div class="position-relative mx-2 mt-3 mb-1">
+                <div class="progress" style="height: 7px; border-radius: 10px; background-color: #eee;">
+                    {% if vg.detail_status == 4 %}
+                        <div class="progress-bar" style="width: 100%; background-color: #dc3545;"></div>
+                    {% else %}
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            style="width: {% if vg.detail_status == 0 %}10%{% elif vg.detail_status == 1 %}40%{% elif vg.detail_status == 2 %}70%{% else %}100%{% endif %}; background-color: #894B8D;"></div>
+                    {% endif %}
+                </div>
+                {% if vg.detail_status == 4 %}
+                <div class="d-flex justify-content-between mt-2 small fw-bold">
+                    <span class="text-muted">Processing</span>
+                    <span class="text-danger fw-bold">❌ Cancelled</span>
+                </div>
+                {% else %}
+                <div class="d-flex justify-content-between mt-2 small fw-bold">
+                    <span style="color: #894B8D;">Processing</span>
+                    <span class="{% if vg.detail_status >= 1 %}text-purple{% else %}text-muted{% endif %}">Assigned</span>
+                    <span class="{% if vg.detail_status >= 2 %}text-purple{% else %}text-muted{% endif %}">Out for Delivery</span>
+                    <span class="{% if vg.detail_status == 3 %}text-success{% else %}text-muted{% endif %}">Delivered</span>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Vendor-wise Refund Message -->
+            {% if vg.is_cancelled %}
+            <div class="mt-2 p-2 rounded-3 text-center" style="background: #fff0f0; border: 1px solid #f5c6cb;">
+                <small class="text-danger fw-bold">⚠️ {{ vg.vendor.vendor_name }}'s items have been cancelled. Refund will be processed within 5-7 business days.</small>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Common Footer: Address + Total + Cancel -->
+        <div class="p-4 bg-light rounded-4 border-start border-4 mt-2" style="border-color: #894B8D !important;">
+            <div class="row text-center text-md-start align-items-center">
+                <div class="col-md-5 border-end">
+                    <p class="small fw-bold text-muted mb-1">SHIPPING ADDRESS</p>
+                    <p class="small mb-0 text-dark">{{ group.order.address }}</p>
+                </div>
+                <div class="col-md-4 ps-md-4 mt-3 mt-md-0">
+                    <p class="small fw-bold text-muted mb-1">ORDER TOTAL</p>
+                    <h4 class="fw-800 mb-0" style="color: #894B8D;">₹{{ group.order.total_amount }}</h4>
+                    <small class="text-muted">Payment Mode: Online</small>
+                </div>
+                <!-- Cancel button ab vendor group mein hoga, yahan sirf empty div -->
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+    <div class="text-center py-5">
+        <i class="fas fa-shopping-bag fa-4x mb-3 opacity-25"></i>
+        <h4 class="text-muted">No orders found! 🐾</h4>
+        <a href="{% url 'product' %}" class="btn btn-primary rounded-pill px-5 mt-3" style="background: #894B8D; border: none;">Shop Now</a>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .text-purple { color: #894B8D !important; }
+    .fw-800 { font-weight: 800; }
+    .card { transition: box-shadow 0.3s ease; border: 1px solid #f0f0f0 !important; }
+    .card:hover { box-shadow: 0 15px 30px rgba(137, 75, 141, 0.1) !important; }
+</style>
+{% endblock %}

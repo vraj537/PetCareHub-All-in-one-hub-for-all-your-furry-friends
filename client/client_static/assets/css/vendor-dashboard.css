@@ -1,0 +1,52 @@
+:root { 
+            --tg-brand-color: #894B8D; 
+            --tg-brand-dark: #6A3A6D;
+            --tg-body-bg: #F8F4F9;
+        }
+        body { background-color: var(--tg-body-bg); font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* --- RESTORED ATTRACTIVE HEADER --- */
+        .header-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 18px 0;
+            box-shadow: 0 10px 30px rgba(137, 75, 141, 0.05);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .header-flex { display: flex; align-items: center; justify-content: space-between; }
+        .logo img { width: 150px; }
+
+        /* Restored Menu Links */
+        .main-menu ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 30px; }
+        .main-menu ul li a { 
+            text-decoration: none; color: #333; font-weight: 800; font-size: 15px; transition: 0.3s; 
+        }
+        .main-menu ul li a:hover { color: var(--tg-brand-color); }
+
+        .dashboard-card { 
+            background: #fff; border: none; border-radius: 24px; 
+            box-shadow: 0 10px 40px rgba(137, 75, 141, 0.06); padding: 30px; margin-bottom: 25px;
+        }
+        
+        .stat-widget {
+            background: linear-gradient(135deg, var(--tg-brand-color) 0%, var(--tg-brand-dark) 100%);
+            color: #fff; border-radius: 20px; padding: 25px; margin-bottom: 20px;
+        }
+
+        .sidebar-link { 
+            display: flex; align-items: center; padding: 14px 20px; 
+            color: #555; text-decoration: none; border-radius: 15px; margin-bottom: 8px; font-weight: 600;
+        }
+        .sidebar-link.active { background: var(--tg-brand-color); color: #fff; }
+
+        .btn-brand { background: var(--tg-brand-color); color: #fff; border-radius: 12px; font-weight: 700; border: none; padding: 12px 25px; transition: 0.3s; }
+        
+        .product-img-sm { width: 55px; height: 55px; object-fit: cover; border-radius: 10px; border: 1px solid #eee; }
+        .vendor-profile-img { width: 100px; height: 100px; object-fit: cover; border-radius: 25px; border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .img-preview-box { width: 100%; height: 120px; border: 2px dashed #ddd; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; background: #fafafa; }
+        .img-preview-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+        .badge-pending { background: #fff4e5; color: #ff9800; }
+        .badge-shipped { background: #eef2ff; color: #4c6ef5; }
+        .badge-delivered { background: #e6fcf5; color: #0ca678; }

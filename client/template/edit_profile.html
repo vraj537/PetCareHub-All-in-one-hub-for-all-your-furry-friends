@@ -1,0 +1,343 @@
+{% extends 'header1.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    #ep-tabs .nav-link.active {
+        background-color: #894B8D !important;
+        color: white !important;
+    }
+    #ep-tabs .nav-link {
+        background-color: #f8f9fa;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+    #ep-tabs .nav-link:hover:not(.active) {
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 card border-0 shadow-lg rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #894B8D;">
+            <i class="fas fa-user-edit me-2"></i> Edit Profile
+        </h3>
+        <a href="{% url 'home' %}" class="text-decoration-none small fw-bold" style="color: #894B8D;">
+            <i class="fas fa-arrow-left me-1"></i> Back to Home
+        </a>
+    </div>
+    
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-pills mb-4 gap-2" id="ep-tabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active fw-bold px-4 py-2 rounded-pill shadow-sm"
+                    id="ep-profile-tab" data-bs-toggle="pill" data-bs-target="#ep-profile-pane" type="button">
+                ✏️ Edit Profile
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                    id="ep-security-tab" data-bs-toggle="pill" data-bs-target="#ep-security-pane" type="button">
+                🔒 Security
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="ep-tabs-content">
+        <div class="tab-pane fade show active" id="ep-profile-pane">
+            <form method="POST" enctype="multipart/form-data" id="edit-profile-form">
+                {% csrf_token %}
+                
+                <div class="row align-items-center mb-5 p-3 rounded-4" style="background-color: #fcf8ff;">
+                    <div class="col-md-3 text-center">
+                        <div class="position-relative d-inline-block">
+                            <img id="profile-preview" 
+                                src="{% if customer.user_profile %}{{ customer.user_profile.url }}{% else %}{% static 'assets/img/users/default.png' %}{% endif %}" 
+                                class="rounded-circle border border-3 shadow" 
+                                style="width: 140px; height: 140px; object-fit: cover; border-color: #894B8D !important; transition: opacity 0.3s ease;">
+                            
+                            <input type="file" name="profile_pic" id="profile-file-input" class="d-none" accept="image/*">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-9 gap-2">
+                        <h5 class="fw-bold mb-2">Profile Picture</h5>
+                        <div id="photo-action-buttons" class="d-flex flex-wrap gap-2 mt-2">
+                            <button type="button" id="change-photo-btn" class="btn btn-sm btn-primary rounded-pill px-4" onclick="document.getElementById('profile-file-input').click()" style="background-color: #894B8D; border: none;">
+                                <i class="fas fa-upload me-1"></i> 
+                                <span id="btn-text">{% if customer.user_profile %}Change Photo{% else %}Choose Photo{% endif %}</span>
+                            </button>
+                            
+                            <button type="button" id="remove-photo-btn" class="btn btn-sm btn-outline-danger rounded-pill px-4" onclick="removePhoto()" style="{% if not customer.user_profile %}display: none;{% endif %}">
+                                <i class="fas fa-trash-alt me-1"></i> Remove
+                            </button>
+                        </div>
+                        <p class="small text-muted mt-2 mb-0">* Allowed formats: JPG, PNG, JPEG. Max size 2MB.</p>
+                    </div>
+                    
+                    <input type="hidden" name="remove_photo_flag" id="remove-photo-flag" value="0">
+                </div>
+
+                <div class="row g-4">
+                    <!-- Full Name -->
+                    <div class="col-12">
+                        <label class="form-label fw-bold mb-1">
+                            <i class="fas fa-user me-1" style="color:#894B8D;"></i> Full Name
+                        </label>
+                        <input type="text" name="name" id="ep_name" value="{{ customer.cust_name }}"
+                            class="form-control rounded-pill px-4 py-2" required
+                            placeholder="Enter your full name">
+                        <small id="ep_name_err" class="text-danger d-none">Please enter a valid name (letters only, no repeated characters).</small>
+                    </div>
+
+                    <!-- Email (read-only) -->  
+                    <div class="col-12">
+                        <label class="form-label fw-bold mb-1">
+                            <i class="fas fa-envelope me-1" style="color:#894B8D;"></i> Email Address
+                        </label>
+                        <input type="email" value="{{ customer.email }}"
+                            class="form-control rounded-pill px-4 py-2 bg-light text-muted"
+                            readonly disabled>
+                        <small class="text-muted ms-2">* Email cannot be changed.</small>
+                    </div>
+
+                    <!-- Contact + Area — side by side -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold mb-1">
+                            <i class="fas fa-phone me-1" style="color:#894B8D;"></i> Contact Number
+                        </label>
+                        <div class="input-group">
+                            <input type="text" name="contact" id="ep_contact" value="{{ customer.contact }}"
+                                class="form-control rounded-pill px-4 py-2" required
+                                maxlength="10" placeholder="10-digit mobile number">
+                            <span class="input-group-text border-0 bg-transparent d-none" id="ep_contact_tick">
+                                <i class="fas fa-check-circle text-success"></i>
+                            </span>
+                        </div>
+                        <small id="ep_contact_err" class="text-danger d-none">Must be 10 digits starting with 6-9.</small>
+                    </div>
+
+                    <!-- Area Dropdown -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold mb-1">
+                            <i class="fas fa-location-dot me-1" style="color:#894B8D;"></i> Area / Pincode
+                        </label>
+                        <select name="area_id" id="ep_area" class="form-select rounded-pill px-4 py-2" required>
+                            <option value="">-- Select Area --</option>
+                            {% for area in areas %}
+                            <option value="{{ area.area_id }}"
+                                {% if area.area_id == customer.area_id.area_id %}selected{% endif %}>
+                                {{ area.area_name }} - {{ area.pincode }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <small id="ep_area_err" class="text-danger d-none">Please select your area.</small>
+                    </div>
+
+                    <!-- Address — full width neeche -->
+                    <div class="col-12">
+                        <label class="form-label fw-bold mb-1">
+                            <i class="fas fa-map-marker-alt me-1" style="color:#894B8D;"></i> Residential Address
+                        </label>
+                        <textarea name="address" id="ep_address" class="form-control rounded-4 px-4 py-2"
+                                rows="2" required
+                                placeholder="Enter your address (min 10 characters)">{{ customer.address }}</textarea>
+                        <small id="ep_address_err" class="text-danger d-none">Address must be at least 10 characters.</small>
+                    </div>
+                </div>
+
+                <div class="mt-5 border-top pt-4 text-end">
+                    <button type="submit" id="ep_save_btn" class="btn btn-primary rounded-pill px-5 fw-bold" 
+                            style="background: #894B8D; border: none; opacity: 0.5;" disabled>
+                        Save Changes 🐾
+                    </button>
+                </div>
+            </form>
+        </div><!-- end ep-profile-pane -->
+
+        <!-- Security Tab -->
+        <div class="tab-pane fade" id="ep-security-pane">
+            <h5 class="fw-bold mb-4">Security — Update Password</h5>
+            <form action="{% url 'client_change_password' %}" method="POST" id="ep-sec-form">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="small fw-bold mb-1">Current Password</label>
+                        <input type="password" name="old_password" class="form-control rounded-pill px-4" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold mb-1">New Password</label>
+                        <div class="input-group">
+                            <input type="password" name="new_password" id="ep_new_p" class="form-control rounded-pill px-4" required>
+                            <button class="btn btn-outline-secondary rounded-pill ms-2" type="button"
+                                    onclick="toggleEpPass('ep_new_p', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div id="ep_strength_bar" class="progress-bar" style="width:0%"></div>
+                        </div>
+                        <small id="ep_strength_text" class="text-muted">Password strength</small>
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold mb-1">Confirm New Password</label>
+                        <div class="input-group">
+                            <input type="password" name="confirm_password" id="ep_conf_p" class="form-control rounded-pill px-4" required>
+                            <button class="btn btn-outline-secondary rounded-pill ms-2" type="button"
+                                    onclick="toggleEpPass('ep_conf_p', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small id="ep_match_text" class="d-none mt-1"></small>
+                    </div>
+                </div>
+                <button type="submit" id="ep_pass_btn"
+                        class="btn btn-primary w-100 rounded-pill py-2 fw-bold mt-4"
+                        style="background: #894B8D; border: none;" disabled>
+                    Update Password 🔒
+                </button>
+            </form>
+        </div><!-- end ep-security-pane -->
+    </div><!-- end tab-content -->
+</div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const fileInput      = document.getElementById('profile-file-input');
+        const previewImg     = document.getElementById('profile-preview');
+        const flagInput      = document.getElementById('remove-photo-flag');
+        const removeBtn      = document.getElementById('remove-photo-btn');
+        const btnTextSpan    = document.getElementById('btn-text');
+        const staticDefaultUrl = "{% static 'assets/img/users/default.png' %}";
+
+        // Photo Select
+        fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                flagInput.value = "0";
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.opacity = "1";
+                    btnTextSpan.innerText = "Change Photo";
+                    if (removeBtn) removeBtn.style.display = "inline-flex";
+                };
+                reader.readAsDataURL(file);
+                validateForm();
+            }
+        });
+
+        // Photo Remove — no confirm alert
+        window.removePhoto = function () {
+            previewImg.style.opacity = "0.5";
+            setTimeout(() => {
+                previewImg.src = staticDefaultUrl;
+                flagInput.value = "1";
+                fileInput.value = "";
+                btnTextSpan.innerText = "Choose Photo";
+                if (removeBtn) removeBtn.style.display = "none";
+                previewImg.style.opacity = "1";
+            }, 300);
+        };
+
+        // Validation
+        function validateForm() {
+            const name    = document.getElementById('ep_name').value.trim();
+            const contact = document.getElementById('ep_contact').value.trim();
+            const address = document.getElementById('ep_address').value.trim();
+            const area    = document.getElementById('ep_area').value;
+            const photo   = document.getElementById('profile-file-input');
+
+            const nameValid    = /^[a-zA-Z\s]+$/.test(name) && name.length > 1 && !/^(.)\1+$/i.test(name.replace(/\s/g, ''));
+            const contactValid = /^[6-9]\d{9}$/.test(contact);
+            const addressValid = address.length >= 10;
+            const areaValid    = area !== '';
+
+            let photoValid = true;
+            if (photo && photo.files.length > 0) {
+                const file = photo.files[0];
+                const allowed = ['image/jpeg', 'image/jpg', 'image/png'];
+                const maxSize = 2 * 1024 * 1024;
+                photoValid = allowed.includes(file.type) && file.size <= maxSize;
+            }
+
+            // Error messages
+            document.getElementById('ep_name_err').classList.toggle('d-none', nameValid);
+            document.getElementById('ep_contact_err').classList.toggle('d-none', contactValid);
+            document.getElementById('ep_address_err').classList.toggle('d-none', addressValid);
+            document.getElementById('ep_area_err').classList.toggle('d-none', areaValid);
+
+            // Green tick
+            document.getElementById('ep_contact_tick').classList.toggle('d-none', !contactValid);
+
+            // is-valid / is-invalid borders
+            document.getElementById('ep_name').classList.toggle('is-valid', nameValid);
+            document.getElementById('ep_name').classList.toggle('is-invalid', !nameValid && name.length > 0);
+            document.getElementById('ep_contact').classList.toggle('is-valid', contactValid);
+            document.getElementById('ep_contact').classList.toggle('is-invalid', !contactValid && contact.length > 0);
+            document.getElementById('ep_address').classList.toggle('is-valid', addressValid);
+            document.getElementById('ep_address').classList.toggle('is-invalid', !addressValid && address.length > 0);
+            document.getElementById('ep_area').classList.toggle('is-valid', areaValid);
+
+            // Save button
+            const btn = document.getElementById('ep_save_btn');
+            btn.disabled = !(nameValid && contactValid && addressValid && areaValid && photoValid);
+            btn.style.opacity = btn.disabled ? '0.5' : '1';
+        }
+
+        // Listeners
+        document.getElementById('ep_name').addEventListener('input', validateForm);
+        document.getElementById('ep_contact').addEventListener('input', validateForm);
+        document.getElementById('ep_address').addEventListener('input', validateForm);
+        document.getElementById('ep_area').addEventListener('change', validateForm);
+
+        // Run on load
+        validateForm();
+    });
+
+    // Security Tab Validation
+    function validateEpSecurity() {
+        const newP  = document.getElementById('ep_new_p').value;
+        const confP = document.getElementById('ep_conf_p').value;
+        let strength = 0;
+        if (newP.length >= 8) strength++;
+        if (/[A-Z]/.test(newP)) strength++;
+        if (/[0-9]/.test(newP)) strength++;
+        if (/[!@#$%^&*]/.test(newP)) strength++;
+
+        const bar    = document.getElementById('ep_strength_bar');
+        const text   = document.getElementById('ep_strength_text');
+        const colors = ['','bg-danger','bg-warning','bg-info','bg-success'];
+        const labels = ['','Weak','Fair','Good','Strong'];
+        bar.className   = 'progress-bar ' + (colors[strength] || '');
+        bar.style.width = (strength * 25) + '%';
+        text.textContent = newP.length ? (labels[strength] || '') : 'Password strength';
+
+        const isMatch = newP === confP && confP.length > 0;
+        const matchEl = document.getElementById('ep_match_text');
+        if (confP.length) {
+            matchEl.classList.remove('d-none');
+            matchEl.textContent = isMatch ? 'Passwords match ✓' : 'Passwords do not match';
+            matchEl.style.color = isMatch ? 'green' : 'red';
+        } else {
+            matchEl.classList.add('d-none');
+        }
+        document.getElementById('ep_pass_btn').disabled = !(strength >= 2 && isMatch);
+    }
+
+    function toggleEpPass(id, btn) {
+        const inp = document.getElementById(id);
+        const isText = inp.type === 'text';
+        inp.type = isText ? 'password' : 'text';
+        btn.innerHTML = isText ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    }
+
+    document.getElementById('ep_new_p').addEventListener('input', validateEpSecurity);
+    document.getElementById('ep_conf_p').addEventListener('input', validateEpSecurity);
+    validateEpSecurity();
+</script>
+{% endblock %}

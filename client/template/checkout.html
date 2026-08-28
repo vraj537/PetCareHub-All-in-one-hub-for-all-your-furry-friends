@@ -1,0 +1,311 @@
+{% extends 'header1.html' %}
+
+{% load mathfilters %}
+
+{% load static %}
+{% block content %}
+
+<style>
+    /* FIX: Header Overlap during scroll */
+    header,
+    .tg-header__area,
+    #sticky-header {
+        z-index: 2000 !important;
+        position: relative;
+    }
+
+    /* FIX: Summary card z-index */
+    .sticky-summary {
+        position: sticky;
+        top: 120px;
+        z-index: 100;
+    }
+
+    .pay-field {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .payment-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .pay-tab {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #894B8D;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        color: #894B8D;
+    }
+
+    .pay-tab.active {
+        background: #894B8D;
+        color: #fff;
+    }
+
+    .btn-order {
+        background: #894B8D;
+        color: #fff;
+        width: 100%;
+        padding: 15px;
+        border-radius: 50px;
+        text-align: center;
+        font-weight: 800;
+        border: none;
+        cursor: pointer;
+        display: block;
+        text-decoration: none;
+    }
+
+    .cart-pro-card {
+        background: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+    }
+
+    .section-h {
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: #333;
+        border-left: 4px solid #894B8D;
+        padding-left: 15px;
+    }
+</style>
+
+<main class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-pro-card">
+                    <h4 class="section-h">1. Review Your Bowl 🐾</h4>
+                    <div id="checkout-items-container">
+                        {% for item in checkout_items %}
+                        <div class="checkout-item-row d-flex align-items-center mb-3 p-3"
+                            style="background: #fff; border-radius: 12px; border: 1px solid #eee;">
+                            <div class="item-thumb me-3">
+                                <img src="{{ item.product.cover_img_path.url }}" alt="{{ item.product.prod_name }}"
+     style="width: 80px; border-radius: 8px; object-fit: cover; height: 80px;">
+                            </div>
+                            <div class="item-details flex-grow-1">
+                                <h5 class="mb-1" style="color: #894B8D; font-weight: 700;">{{ item.product.prod_name }}
+                                </h5>
+                                <p class="mb-0 text-muted">₹{{ item.product.price }} x {{ item.quantity }}</p>
+                            </div>
+                            <div class="item-total">
+                                <span class="h5 fw-bold" style="color: #333;">₹{{ item.total_price }}</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-center py-3">Your bowl is currently empty! 🐾</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                    <div class="cart-pro-card">
+                        <h4 class="section-h">2. Delivery Address 📍</h4>
+
+                        <div class="p-3" style="border:1px solid #eee; border-radius:10px;">
+                            <h6>{{ customer.cust_name }}</h6>
+                            <p class="mb-1">{{ customer.address }}</p>
+                            <p class="mb-0">
+                                {{ customer.area_id.area_name }} - {{ customer.area_id.pincode }}
+                            </p>
+                            <p>{{ customer.contact }}</p>
+                        </div>
+
+                        <div class="mt-3">
+                            <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary btn-sm">
+                                Change Address
+                            </a>
+                        </div>
+                    </div>
+
+                <!-- =============================================
+                    SECTION 3: SECURE PAYMENT
+                    - Razorpay custom handler use kar rahe hain
+                    - Payment success hone ke baad razorpay_payment_id
+                    hidden field mein save hoga aur form checkout/ pe POST hoga
+                    ============================================= -->
+                <div id="payment-section" class="cart-pro-card">
+                    <div class="premium-payment-wrapper">
+                        <h4 class="section-h">3. Secure Payment 🔒</h4>
+
+                        <!-- Yeh form Razorpay success ke baad checkout/ pe POST karega -->
+                        {% if prod_id %}
+                            <!-- Buy It Now: prod_id URL mein pass karo -->
+                            <form id="order-form" method="POST" action="{% url 'checkout_single' prod_id %}">
+                            {% else %}
+                            <!-- Cart: normal checkout URL -->
+                            <form id="order-form" method="POST" action="{% url 'checkout' %}">
+                        {% endif %}
+                            {% csrf_token %}
+
+                            <!-- Address hidden field: Address section se value yahan aayegi -->
+                            <input type="hidden" name="address" id="hidden-address">
+
+                            <!-- Razorpay Payment ID: JS se fill hoga payment success pe -->
+                            <input type="hidden" name="razorpay_payment_id" id="hidden-payment-id">
+
+                            <input type="hidden" name="qty" id="hidden-qty" value="{{ checkout_items.0.quantity }}">
+
+                            <div class="payment-info-box">
+                                <i class="fas fa-shield-check secure-icon"></i>
+                                <p>Click below to complete your payment via our secure partner.</p>
+                                <div class="amount-display">Total: ₹{{ grand_total }}</div>
+                            </div>
+
+                            <!-- Custom Razorpay Button -->
+                            <button type="button" id="rzp-pay-btn" class="btn-order mt-3">
+                                Pay with Razorpay
+                            </button>
+                            <button type="submit" class="btn-order mt-3" style="background:#0b5227;">
+                                Quick Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                <style>
+                    /* Container Box */
+                    .premium-payment-wrapper {
+                            background: #fff;
+                        border-radius: 20px;
+                        padding: 30px;
+                        border: 1px solid #f1e9f2;
+                        box-shadow: 0 15px 35px rgba(137, 75, 141, 0.08);
+                        text-align: center;
+                    }
+
+                    /* Info Box */
+                    .payment-info-box {
+                        margin: 20px 0;
+                        padding: 20px;
+                        background: #fdfafb;
+                        border-radius: 15px;
+                        border: 1px dashed #e5dbe6;
+                    }
+
+                    .secure-icon {
+                        font-size: 40px;
+                        color: #28a745;
+                        margin-bottom: 15px;
+                        display: block;
+                    }
+
+                    .amount-display {
+                        font-size: 24px;
+                        font-weight: 800;
+                        color: #4b2c4d;
+                        margin-top: 10px;
+                    }
+
+                    /* Targetting Razorpay's Default Button */
+                    .payment-form-custom input[type="submit"],
+                    .razorpay-payment-button {
+                        background: linear-gradient(135deg, #894B8D 0%, #4b2c4d 100%) !important;
+                        color: #fff !important;
+                        border: none !important;
+                        padding: 16px 45px !important;
+                        font-size: 18px !important;
+                        font-weight: 700 !important;
+                        border-radius: 50px !important;
+                        cursor: pointer !important;
+                        box-shadow: 0 8px 20px rgba(137, 75, 141, 0.3) !important;
+                        transition: all 0.3s ease !important;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        width: 100%;
+                    }
+
+                    .payment-form-custom input[type="submit"]:hover {
+                        transform: translateY(-3px) !important;
+                        box-shadow: 0 12px 25px rgba(137, 75, 141, 0.4) !important;
+                    }
+
+                    /* Form Cleanup */
+                    .payment-form-custom {
+                        border: none !important;
+                        padding: 0 !important;
+                    }
+                </style>
+
+                <div class="col-lg-4">
+                    <div class="cart-pro-card sticky-summary">
+
+                        <h3>Your Order Details 🐾</h3>
+                        {% for item in checkout_items %}
+                        <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>{{ item.product.prod_name }} (x{{ item.quantity }})</span>
+                            <span>₹{{ item.total_price }}</span>
+                        </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-between fw-bold mt-3">
+                            <span>Grand Total:</span>
+                            <span class="text-primary">₹{{ grand_total }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('rzp-pay-btn').onclick = function(e) {
+
+        // Address ab static hai — customer profile se directly le lo
+        var address = "{{ customer.address|escapejs }}";
+        if (!address) {
+            alert('Please update your address in profile before checkout!');
+            return;
+        }
+        // Hidden field mein daalo taaki POST mein jaye
+        document.getElementById('hidden-address').value = address;
+
+        // Razorpay options configure karo
+        var options = {
+            "key": "rzp_test_SNQx37pa2es1Wb",
+            "amount": "{{ grand_total|mul:100 }}",
+            "currency": "INR",
+            "name": "PetCareHub",
+            "description": "Premium Pet Healthcare",
+            "image": "{% static 'assets/img/logo/logo.png' %}",
+            "theme": { "color": "#894B8D" },
+            "prefill": {
+                "name": "{{ request.session.cust_name }}",
+            },
+
+            // Payment SUCCESS hone pe chalega
+            "handler": function(response) {
+                // Razorpay payment ID hidden field mein save karo
+                document.getElementById('hidden-payment-id').value = response.razorpay_payment_id;
+
+                // Form checkout/ pe POST karega — Order DB mein save hoga
+                document.getElementById('order-form').submit();
+            },
+
+            // Payment cancel/dismiss hone pe
+            "modal": {
+                "ondismiss": function() {
+                    alert('Payment cancelled. Your order was not placed.');
+                }
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    };
+</script>
+{% endblock %}

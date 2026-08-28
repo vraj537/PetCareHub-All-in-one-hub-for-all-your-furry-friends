@@ -1,0 +1,672 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* ===== MAIN IMAGE BOX ===== */
+.product__details-images-wrap .tab-content {
+    width: 100%;
+    aspect-ratio: 1 / 1;   /* 🔥 SQUARE BOX */
+    background: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* All tab panes */
+.product__details-images-wrap .tab-pane {
+    position: absolute;
+    inset: 0;
+    display: none;
+}
+.product__details-images-wrap .tab-pane.fade.show.active {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+/* 🔥 MAIN FIX (yaha galti thi pehle) */
+.main-product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+/* ===== THUMBNAILS ===== */
+.product__details-images-wrap .nav-tabs {
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.product__details-images-wrap .nav-tabs img.thumb-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: #f9f9f9;
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+</style>
+<main class="fix">
+    <section class="breadcrumb__area fix">
+        <div class="container">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="breadcrumb__content">
+                        <h3 class="title">{{ product.prod_name }} Details</h3>
+                        <nav class="breadcrumb">
+                            <span><a href="{% url 'home' %}">Home</a></span>
+                            <span class="breadcrumb-separator"><i class="flaticon-right-arrow-angle"></i></span>
+                            <span>{{ product.prod_name }}</span>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="breadcrumb__img">
+                        <img src="{% static 'assets/img/images/breadcrumb_img.png' %}" alt="img" data-aos="fade-left"
+                            data-aos-delay="800">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumb__shape-wrap">
+            <img src="{% static 'assets/img/images/breadcrumb_shape01.png' %}" alt="img" data-aos="fade-down-right"
+                data-aos-delay="400">
+            <img src="{% static 'assets/img/images/breadcrumb_shape02.png' %}" alt="img" data-aos="fade-up-left"
+                data-aos-delay="400">
+        </div>
+    </section>
+
+    <section class="product__details-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product__details-images-wrap">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="itemMain-tab-pane" role="tabpanel">
+                                <a href="{{ product.cover_img_path.url }}" class="popup-image"
+   style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:#f9f9f9;">
+    
+    <img src="{{ product.cover_img_path.url }}" 
+         alt="{{ product.prod_name }}"
+         style="max-width:100%; max-height:100%; object-fit:contain;">
+</a>
+                            </div>
+                            {% for image in gallery %}
+                            <div class="tab-pane fade" id="item{{ forloop.counter }}-tab-pane" role="tabpanel">
+                                <a href="{{ image.image_path.url }}" class="popup-image"
+   style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:#f9f9f9;">
+    
+    <img src="{{ image.image_path.url }}" 
+         alt="Gallery Image"
+         style="max-width:100%; max-height:100%; object-fit:contain;">
+</a>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#itemMain-tab-pane"
+                                    type="button">
+                                    <img src="{{ product.cover_img_path.url }}" alt="Main" class="thumb-img">
+                                </button>
+                            </li>
+                            {% for image in gallery %}
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#item{{ forloop.counter }}-tab-pane" type="button">
+                                    <img src="{{ image.image_path.url }}" alt="Thumbnail" class="thumb-img">
+                                </button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="product__details-content">
+                        <span class="tag">{{ product.category_id.category_name }}</span>
+                        <h2 class="title">{{ product.prod_name }}</h2>
+                        <div class="product__reviews-wrap">
+                            <div class="product__reviews">
+                                <div class="rating">
+                                    {% for i in full_stars %}
+                                    <i class="fas fa-star" style="color: #ffb400;"></i>
+                                    {% endfor %}
+
+                                    {% for i in empty_stars %}
+                                    <i class="far fa-star" style="color: #ddd;"></i>
+                                    {% endfor %}
+                                </div>
+                                <span>({{ display_rating }})</span>
+                            </div>
+                        </div>
+                        <h4 class="price">₹{{ product.price }}</h4>
+
+                        {% if product.qty > 0 %}
+                        <div class="mt-2 mb-3" style="background:#fff0f5; border:1px dashed #894B8D; padding:12px 18px; border-radius:10px;">
+                            <span style="font-size: 15px; color: #4b2c4d; font-weight:600;">
+                                <i class="fas fa-truck" style="color: #894B8D; margin-right:6px;"></i>
+                                Expected Delivery:
+                                <span style="font-weight:700; color:#000;">
+                                    {{ expected_delivery|date:"l, d F Y" }}
+                                </span>
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        {% if product.qty == 0 %}
+                        <div class="mb-3">
+                            <span style="background:#dc3545; color:#fff; font-size:12px; font-weight:700; padding:5px 15px; border-radius:20px;">
+                                OUT OF STOCK
+                            </span>
+                        </div>
+                        {% elif product.qty <= 3 %}
+                        <div class="mb-3">
+                            <span style="background:#ff9800; color:#fff; font-size:12px; font-weight:700; padding:5px 15px; border-radius:20px;">
+                                Only {{ product.qty }} left — Order soon!
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <p>{{ product.description }}</p>
+
+                        {% if product.qty > 0 %}
+                        <form id="add-to-cart-form" action="{% url 'add_to_cart' product.prod_id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="product__details-qty d-flex align-items-center mb-20">
+                                <div class="custom-qty-selector d-flex align-items-center me-3"
+                                    style="border: 2px solid #894B8D; border-radius: 5px; height: 55px; background: #fff;">
+
+                                    <button type="button" onclick="changeQty(-1)"
+                                        style="width: 45px; height: 100%; border: none; background: #f8f4f9; color: #894B8D; font-weight: 800; font-size: 20px;">−</button>
+
+                                    <input type="text" name="quantity" id="prod-qty" value="1" readonly
+                                        style="width: 60px; text-align: center; border: none; font-weight: 800; font-size: 18px; color: #333;">
+
+                                    <button type="button" onclick="changeQty(1)"
+                                        style="width: 45px; height: 100%; border: none; background: #f8f4f9; color: #894B8D; font-weight: 800; font-size: 20px;">+</button>
+                                </div>
+
+                                <button type="submit" class="btn"
+                                    style="height: 55px; background: #333; color: #fff; padding: 0 30px; border-radius: 12px; font-weight: 700; border: none;">
+                                    Add To Cart
+                                </button>
+                            </div>
+                        </form>
+                        <a href="#" id="buy-now-btn" class="buy-btn">Buy it Now</a>
+                        {% else %}
+                        <div class="product__details-qty d-flex align-items-center mb-20">
+                            <button class="btn" style="height:55px; background:#ccc; color:#666; padding:0 40px; border-radius:12px; font-weight:700; border:none; cursor:not-allowed;" disabled>
+                                Out of Stock
+                            </button>
+                        </div>
+                        {% endif %}
+
+                        <div class="product__wishlist-wrap">
+                            <a href="{% url 'add_to_wishlist' product.prod_id %}" 
+       class="wishlist-link d-flex align-items-center text-decoration-none">
+        
+        <div class="wishlist-icon-circle d-flex align-items-center justify-content-center me-3" 
+             style="width: 45px; height: 45px; border: 1px solid #e5e5e5; border-radius: 50%; background: transparent;">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
+                 {% if product.prod_id in user_wishlist_ids %}
+                    fill="red" stroke="red" 
+                 {% else %}
+                    fill="none" stroke="#4b2c4d" 
+                 {% endif %}
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+        </div>
+
+        <span style="color: #00235a; font-weight: 600; font-size: 18px; font-family: 'Plus Jakarta Sans', sans-serif;">
+            {% if product.prod_id in user_wishlist_ids %}
+                Added to Wishlist
+            {% else %}
+                Add To Wishlist
+            {% endif %}
+        </span>
+    </a>
+</div>
+
+<style>
+    /* Screenshot match karne ke liye clean styles */
+    .wishlist-link:hover .wishlist-icon-circle {
+        border-color: #894B8D !important;
+        transition: 0.3s;
+    }
+    
+    .wishlist-link:hover span {
+        color: #894B8D !important;
+        transition: 0.3s;
+    }
+
+    .wishlist-link svg {
+        transition: all 0.3s ease;
+    }
+</style>
+                        
+                    </div>
+                </div>
+
+                <div class="row mt-50">
+                    <div class="col-12">
+                        <div class="product-desc-wrap">
+                            <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                                <li class="nav-item"><button class="nav-link active" id="description-tab"
+                                        data-bs-toggle="tab" data-bs-target="#description-tab-pane">Description</button>
+                                </li>
+                                <li class="nav-item"><button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
+                                        data-bs-target="#reviews-tab-pane">Reviews</button></li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent2">
+                                <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel">
+                                    <p>{{ product.description }}</p>
+                                </div>
+
+                                <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel">
+                                    <div class="product__reviews-content">
+                                        <h4 class="title">Customer Reviews ({{ reviews.count }})</h4>
+
+                                        {% for review in reviews %}
+<div class="review__item d-flex align-items-start mb-20" 
+     style="border-bottom: 1px solid #f1f1f1; padding-bottom: 20px; transition: all 0.3s ease;">
+    
+    <div class="review__avatar me-3">
+        {% if review.cust_id.user_profile %}
+            <img src="{{ review.cust_id.user_profile.url }}" alt="{{ review.cust_id.cust_name }}"
+                 style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
+        {% else %}
+            <img src="{% static 'assets/img/users/default.png' %}" alt="Default Avatar"
+                 style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid #eee;">
+        {% endif %}
+    </div>
+
+    <div class="review__body w-100">
+        <div class="review__info d-flex align-items-center justify-content-between mb-1">
+            <div class="user-meta">
+                <strong style="font-size: 16px; color: #4b2c4d;">{{ review.cust_id.cust_name }}</strong>
+                <span class="ms-2" style="color: #ffb400; font-size: 14px;">
+                    {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <small class="text-muted" style="font-size: 12px;">{{ review.feedback_date|date:"M d, Y" }}</small>
+        </div>
+        
+        <p class="mt-2" style="color: #666; line-height: 1.6; font-size: 14px; margin-bottom: 0;">
+            {{ review.comments }}
+        </p>
+    </div>
+</div>
+
+{% empty %}
+<div class="text-center py-4" style="background: #fdfafb; border-radius: 10px; border: 1px dashed #e5dbe6;">
+    <p class="mb-0" style="color: #894B8D; font-weight: 500;">
+        No reviews yet for this product. Be the first to share your experience! 🐾
+    </p>
+</div>
+{% endfor %}
+
+                                        <div class="mt-40 p-4 text-center"
+                                            style="background: #fdfafb; border-radius: 15px; border: 1px dashed #e5dbe6;">
+                                            <i class="fas fa-shopping-bag fa-2x mb-3" style="color: #894B8D; opacity: 0.5;"></i>
+                                            <h5 class="fw-bold mb-2" style="color: #4b2c4d;">Purchased this product?</h5>
+                                            <p class="text-muted small mb-0">
+                                                You can rate and review products from 
+                                                <a href="{% url 'my_orders' %}" style="color: #894B8D; font-weight: 700; text-decoration: underline;">
+                                                    My Orders
+                                                </a> 
+                                                after delivery. 🐾
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <style>
+                                    /* Modern Star Rating CSS */
+                                    .star-rating {
+                                        display: flex;
+                                        flex-direction: row-reverse;
+                                        justify-content: flex-end;
+                                        gap: 5px;
+                                    }
+
+                                    .star-rating input {
+                                        display: none;
+                                    }
+
+                                    .star-rating label {
+                                        font-size: 28px;
+                                        color: #e0d5e1;
+                                        cursor: pointer;
+                                        transition: all 0.2s ease;
+                                        margin: 0;
+                                    }
+
+                                    .star-rating input:checked~label,
+                                    .star-rating label:hover,
+                                    .star-rating label:hover~label {
+                                        color: #ffb400;
+                                        transform: scale(1.1);
+                                    }
+
+                                    .form-control:focus {
+                                        border-color: #894B8D !important;
+                                        box-shadow: 0 0 0 0.2rem rgba(137, 75, 141, 0.1) !important;
+                                    }
+
+                                    /* CSS for Interactive Star Selection */
+                                    .star-rating {
+                                        display: flex;
+                                        flex-direction: row-reverse;
+                                        justify-content: flex-end;
+                                    }
+
+                                    .star-rating input {
+                                        display: none;
+                                    }
+
+                                    .star-rating label {
+                                        font-size: 30px;
+                                        color: #ddd;
+                                        cursor: pointer;
+                                        transition: color 0.2s;
+                                    }
+
+                                    .star-rating input:checked~label,
+                                    .star-rating label:hover,
+                                    .star-rating label:hover~label {
+                                        color: #ffb400;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="related-product-area mt-80">
+    <div class="section__title-two mb-40">
+        <h2 class="title">Related Products <img src="{% static 'assets/img/images/title_shape.svg' %}" alt=""></h2>
+    </div>
+
+    <div class="product__item-wrap" style="position: relative; padding: 0; overflow: visible;">
+        <div class="swiper product-active-details" style="overflow: hidden;"> 
+            <div class="swiper-wrapper">
+                {% for related in related_products %}
+                <div class="swiper-slide">
+                    <div class="product__item" style="border: 1px solid #f0f0f0; border-radius: 15px; background: #fff; margin: 10px; transition: 0.3s;">
+                        <div class="product__thumb" style="padding: 25px; background: #f9f9f9; border-radius: 12px; position: relative;">
+                               <a href="{% url 'product_details' related.prod_id %}">
+    <div style="width:100%; height:230px; display:flex; align-items:center; justify-content:center; background:#f9f9f9; border-radius:12px;">
+        
+        <img src="{{ related.cover_img_path.url }}" 
+             alt="{{ related.prod_name }}" 
+             style="max-width:100%; max-height:100%; object-fit:contain;">
+             
+    </div>
+</a>
+                            
+                            
+                            <div class="product__action">
+                                <a href="{% url 'add_to_wishlist' related.prod_id %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+                                         {% if related.prod_id in user_wishlist_ids %} fill="red" stroke="red" {% else %} fill="none" stroke="currentColor" {% endif %}
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                </a>
+                                <a href="{% url 'product_details' related.prod_id %}"><i class="flaticon-loupe"></i></a>
+                            </div>
+
+                            <div class="product__add-cart">
+                                <form action="{% url 'add_to_cart' related.prod_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn" style="width: 100%; background: #894B8D; color: #fff; border: none; font-weight: 700;">
+                                        <i class="flaticon-shopping-bag"></i> Add To Cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="product__content mt-3 text-start p-3">
+                            <div class="rating mb-1" style="color: #ffb400; font-size: 14px;">
+                                <i class="fas fa-star"></i>
+                                <span style="color: #333; font-weight: 700; margin-left: 3px;">
+                                    {{ related.avg_rating|default:"0.0"|stringformat:".1f" }}
+                                </span>
+                                <span style="color: #999; font-size: 12px; margin-left: 5px;">
+                                    ({{ related.review_count|default:"0" }} Reviews)
+                                </span>
+                            </div>
+                            
+                            <h4 class="title" style="font-size: 16px; min-height: 45px;">
+                                <a href="{% url 'product_details' related.prod_id %}" style="color: #00235a; text-decoration: none;">{{ related.prod_name }}</a>
+                            </h4>
+                            
+                            <div class="price-box">
+                                <h3 class="price" style="color: #894B8D; font-weight: 800; font-size: 22px; margin: 0;">₹{{ related.price }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="swiper-button-prev custom-nav-inside"></div>
+        <div class="swiper-button-next custom-nav-inside"></div>
+    </div>
+</div>
+
+<style>
+    /* CSS for Inside Arrows and Big Cards */
+    .custom-nav-inside {
+        top: 38% !important; /* Image area ke center mein alignment */
+        width: 42px !important;
+        height: 42px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 50% !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        color: #894B8D !important;
+        z-index: 10 !important;
+        transition: 0.3s;
+    }
+    
+    .custom-nav-inside:hover {
+        background: #894B8D !important;
+        color: #fff !important;
+    }
+    
+    .custom-nav-inside::after {
+        font-size: 18px !important;
+        font-weight: 900 !important;
+    }
+
+    /* Arrows ko pehle aur aakhri card ke edges ke andar rakha hai */
+    .swiper-button-prev.custom-nav-inside { left: 15px !important; }
+    .swiper-button-next.custom-nav-inside { right: 15px !important; }
+
+    .product__item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Card bada karne ke liye slidesPerView: 3 use kiya hai
+    new Swiper('.product-active-details', {
+        slidesPerView: 3, 
+        spaceBetween: 20,
+        loop: false, 
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            0: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1200: { slidesPerView: 3 }
+        }
+    });
+});
+</script>
+            </div>
+    </section>
+</main>
+
+<script>
+    const MAX_QTY = {{ product.qty }};
+
+    function changeQty(amt) {
+        let q = document.getElementById('prod-qty');
+        if (!q) return;
+        let v = parseInt(q.value) + amt;
+        if (v < 1) v = 1;
+        if (v > MAX_QTY) v = MAX_QTY;
+        q.value = v;
+    }
+    {% if product.qty > 0 %}
+    document.getElementById('buy-now-btn').addEventListener('click', function (e) {
+        e.preventDefault();
+        const qty = document.getElementById('prod-qty').value;
+        window.location.href = "{% url 'checkout_single' product.prod_id %}?qty=" + qty;
+    });
+    {% endif %}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewField = document.getElementById('review_comments');
+    const submitBtn = document.getElementById('submitReviewBtn');
+    const errorDiv = document.getElementById('review-error');
+
+    function validateReview() {
+        const val = reviewField.value.trim();
+        
+        // 1. Count Alphanumeric (A-Z, 0-9) - Kam se kam 3 hone chahiye
+        const alnumMatches = val.match(/[a-zA-Z0-9]/g) || [];
+        const alnumCount = alnumMatches.length;
+
+        // 2. Check for Letters (A-Z) - Sirf numbers block karne ke liye
+        const hasLetters = /[a-zA-Z]/.test(val);
+
+        // Final condition: Kam se kam 3 chars aur usme letters ho
+        const isValid = alnumCount >= 3 && hasLetters;
+
+        if (val.length > 0 && !isValid) {
+            // Galat input par error dikhao aur button block karo
+            errorDiv.style.display = 'block';
+            reviewField.style.borderColor = 'red';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+            submitBtn.style.cursor = "not-allowed";
+        } else if (isValid) {
+            // Sahi input par button active karo
+            errorDiv.style.display = 'none';
+            reviewField.style.borderColor = '#28a745'; // Green border for success
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1";
+            submitBtn.style.cursor = "pointer";
+        } else {
+            // Empty field par reset
+            errorDiv.style.display = 'none';
+            reviewField.style.borderColor = '#e5dbe6';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+        }
+    }
+
+    // Input event listener for real-time check
+    if (reviewField) {
+        reviewField.addEventListener('input', validateReview);
+    }
+});
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Form ID match honi chahiye
+        $('#add-to-cart-form').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }, // Django ko batane ke liye ki ye AJAX hai
+                success: function (data) {
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: data.message,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        setTimeout(function () { location.reload(); }, 2000);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.href = "{% url 'login1' %}";
+                    } else if (xhr.status === 400) {
+                        // Stock limit ya out of stock error
+                        const data = xhr.responseJSON;
+                        Swal.fire({
+                            title: 'Cannot Add!',
+                            text: data.message || 'Stock limit reached.',
+                            icon: 'warning',
+                            confirmButtonColor: '#894B8D'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+<!-- this is for when after giving the review it won't refresh and go to the description -->
+<script>
+    $(document).ready(function () {
+        // 1. Handle Tab Persistence after refresh
+        if (window.location.hash === '#reviews-tab-pane') {
+            // Switch to Review Tab
+            $('#description-tab').removeClass('active');
+            $('#description-tab-pane').removeClass('show active');
+            $('#reviews-tab').addClass('active');
+            $('#reviews-tab-pane').addClass('show active');
+
+            // Scroll to reviews
+            document.getElementById('reviews-tab-pane').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 2. Star Rating Validation
+        $('#review-form').on('submit', function (e) {
+            // Check if any radio button with name 'rating' is checked
+            if (!$("input[name='rating']:checked").val()) {
+                e.preventDefault(); // Stop form submission
+
+                // Show Popup
+                Swal.fire({
+                    title: 'Rating Required!',
+                    text: 'Please select at least one star to rate this product. 🐾',
+                    icon: 'warning',
+                    confirmButtonColor: '#894B8D'
+                });
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}

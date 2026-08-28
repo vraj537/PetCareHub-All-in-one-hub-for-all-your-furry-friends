@@ -1,0 +1,251 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Custom Availability Badges for PetPal Theme */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .status-online {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .status-on-leave {
+        background: linear-gradient(135deg, #17a2b8 0%, #007bff 100%);
+    }
+
+    .status-offline {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    }
+
+    .status-badge i {
+        font-size: 10px;
+        margin-right: 6px;
+    }
+
+    /* Subtle pulse for Online status */
+    .status-online i {
+        animation: pulse-green 2s infinite;
+    }
+
+    @keyframes pulse-green {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.4;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+   /* Restores the circular white badge style from your screenshot */
+/* Removes the white background and styles the stars on the blue overlay */
+/* Container for the 5 stars on the blue overlay */
+.team__social {
+    background: transparent !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0; /* HIDDEN BY DEFAULT */
+    visibility: hidden;
+    transition: all 0.4s ease-in-out !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* SHOW STARS ONLY ON HOVER */
+.team__item:hover .team__social {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay-stars {
+    color: #ffc107; /* Gold stars */
+    font-size: 20px;
+    letter-spacing: 2px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.overlay-rating-num {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.mask-img-wrap {
+    width: 200px;
+    height: 200px;
+}
+</style>
+<main class="fix">
+
+    <section class="breadcrumb__area fix">
+        <div class="container">
+            <div class="row align-items-end">
+                <div class="col-lg-8">
+                    <div class="breadcrumb__content">
+                        <h3 class="title">Our Expert Team</h3>
+                        <nav class="breadcrumb">
+                            <span property="itemListElement" typeof="ListItem">
+                                <a href="{% url 'home' %}">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator"><i class="flaticon-right-arrow-angle"></i></span>
+                            <span property="itemListElement" typeof="ListItem">Team</span>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="breadcrumb__img">
+                        <img src="{% static 'assets/img/images/breadcrumb_img.png' %}" alt="img" data-aos="fade-left"
+                            data-aos-delay="800">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumb__shape-wrap">
+            <img src="{% static 'assets/img/images/breadcrumb_shape01.png' %}" alt="img" data-aos="fade-down-right"
+                data-aos-delay="400">
+            <img src="{% static 'assets/img/images/breadcrumb_shape02.png' %}" alt="img" data-aos="fade-up-left"
+                data-aos-delay="400">
+        </div>
+    </section>
+    <section class="team__area-three">
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for item in vets %}
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-8">
+                <div class="team__item">
+                    <div class="team__item-img">
+                        <div class="mask-img-wrap">
+                            {% if item.vet_profile %}
+                            <img src="{{ item.vet_profile.url }}" alt="{{ item.vet_name }}"
+                                style="width: 100%; height: 100%; object-fit: contain; object-position: center;">
+                            {% else %}
+                            <img src="{% static 'assets/img/team/team_img01.jpg' %}" alt="Default Image">
+                            {% endif %}
+                        </div>
+
+                        <div class="team__item-img-shape">
+                            <div class="shape-one"><img src="{% static 'assets/img/team/team_img_shape01.svg' %}" alt="" class="injectable"></div>
+                            <div class="shape-two"><img src="{% static 'assets/img/team/team_img_shape02.svg' %}" alt="" class="injectable"></div>
+                        </div>
+
+                        <div class="team__social">
+                            {% with rating=item.avg_rating|default:0 %}
+                            <div class="overlay-stars">
+                                <i class="{% if rating >= 1 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 2 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 3 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 4 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 5 %}fas{% else %}far{% endif %} fa-star"></i>
+                            </div>
+                            <span class="overlay-rating-num">
+                                {{ rating|stringformat:".1f" }} ({{ item.review_count }} Reviews)
+                            </span>
+                            {% endwith %}
+                        </div>
+                    </div>
+
+                    <div class="team__item-content text-center">
+                        <h4 class="title">
+                            <a href="{% url 'vet_details' item.vet_id %}">{{ item.vet_name }}</a>
+                        </h4>
+                        <span class="d-block mb-2 text-muted small">{{ item.specialization }}</span>
+                        <span class="d-block mb-2 text-primary fw-bold" style="font-size: 12px; letter-spacing: 0.5px;">
+                            <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ item.area_id.area_name|upper }}
+                        </span>
+                        <div class="mb-2" style="color: #ffc107; font-size: 13px;">
+                            {% with rating=item.avg_rating|default:0 %}
+                                <i class="{% if rating >= 1 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 2 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 3 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 4 %}fas{% else %}far{% endif %} fa-star"></i>
+                                <i class="{% if rating >= 5 %}fas{% else %}far{% endif %} fa-star"></i>
+                            {% endwith %}
+                        </div>
+
+                        <div class="availability-container">
+                            {% if item.availability_status == 1 %}
+                                <div class="status-badge status-online"><i class="fas fa-circle"></i> Online</div>
+                            {% else %}
+                                <div class="status-badge status-offline"><i class="fas fa-moon"></i> Offline</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+    <div class="brand__area-five">
+        <div class="container">
+            <div class="swiper brand-active">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img01.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img02.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img03.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img04.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img05.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img06.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img07.png' %}" alt="img">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand__item brand__item-two">
+                            <img src="{% static 'assets/img/brand/h2_brand_img03.png' %}" alt="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- brand-area-end -->
+</main>
+{% endblock %}

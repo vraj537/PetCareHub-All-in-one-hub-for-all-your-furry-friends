@@ -1,0 +1,212 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* - PetCareHub Premium Future Page CSS */
+:root {
+    --pch-purple: #894B8D;
+    --pch-navy: #00235a;
+    --pch-bg: #f8f7fa;
+}
+
+body {
+    background-color: var(--pch-bg);
+    margin: 0;
+    padding: 0;
+}
+
+/* --- 1. Hero Section Fix --- */
+.future-hero {
+    background: linear-gradient(135deg, #00235a 0%, #894B8D 100%);
+    border-radius: 0 0 80px 80px;
+    padding: 100px 0 160px; /* Space for countdown overlap */
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Visibility for Hero Text */
+.future-hero h1 {
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 48px;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.future-hero p {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* --- 2. Countdown Spacing Fix --- */
+.countdown-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: -90px; /* Pulling boxes up onto the purple background */
+    position: relative;
+    z-index: 10;
+    padding: 0 15px;
+}
+
+.time-unit {
+    background: #ffffff;
+    padding: 30px 15px;
+    border-radius: 25px;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.time-unit:hover {
+    transform: translateY(-8px);
+}
+
+.time-unit h2 {
+    color: var(--pch-purple);
+    font-weight: 800;
+    font-size: 3.5rem;
+    margin: 0;
+    line-height: 1;
+}
+
+.time-unit span {
+    color: var(--pch-navy);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    display: block;
+    margin-top: 8px;
+}
+
+/* --- 3. Enhancement Cards --- */
+.enhancement-card {
+    background: #ffffff;
+    border-radius: 35px;
+    padding: 45px 35px;
+    height: 100%;
+    transition: all 0.4s ease;
+    border: 1px solid #eee;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(137, 75, 141, 0.05);
+}
+
+.enhancement-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 55px rgba(137, 75, 141, 0.15);
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    background: #f4eef5;
+    color: var(--pch-purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 25px;
+}
+
+.enhancement-card h3 {
+    color: var(--pch-navy);
+    font-weight: 700;
+}
+
+/* --- 4. Footer Alignment --- */
+.academic-box {
+    background: white;
+    border-radius: 25px;
+    border: 1px solid #eee;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+</style>
+
+<main>
+    <section class="future-hero">
+        <div class="container">
+            <h1 class="fw-800 display-4">Future Enhancement</h1>
+            <p class="lead opacity-75">Coming Soon: New Features for Better Pet Care By PetCareHub</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="countdown-wrapper">
+            <div class="time-unit"> <h2 id="days">00</h2> <span>Days</span> </div>
+            <div class="time-unit"> <h2 id="hours">00</h2> <span>Hours</span> </div>
+            <div class="time-unit"> <h2 id="minutes">00</h2> <span>Mins</span> </div>
+            <div class="time-unit"> <h2 id="seconds">00</h2> <span>Secs</span> </div>
+        </div>
+    </div>
+
+    <section class="container py-5 mt-5 mb-5">
+        <div class="row g-4 justify-content-center">
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="enhancement-card">
+                    <div class="icon-circle"><i class="fas fa-bath"></i></div>
+                    <h3 class="fw-bold" style="color: var(--pch-navy);">Pet Grooming</h3>
+                    <p class="text-muted">We are planning to add a professional grooming section where you can book spa, hair-cut, and bath services for your pets at home.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="enhancement-card">
+                    <div class="icon-circle"><i class="fas fa-home"></i></div>
+                    <h3 class="fw-bold" style="color: var(--pch-navy);">Pet Shelter</h3>
+                    <p class="text-muted">A dedicated shelter module to help homeless animals find temporary homes and medical care until they are adopted.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="enhancement-card">
+                    <div class="icon-circle"><i class="fas fa-dog"></i></div>
+                    <h3 class="fw-bold" style="color: var(--pch-navy);">Training Center</h3>
+                    <p class="text-muted">Expert training programs to help pet owners teach basic manners and advanced skills to their dogs and cats.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <div class="p-4 text-center rounded-5 bg-white border shadow-sm">
+            <p class="mb-0 fw-bold" style="color: var(--pch-navy);">
+                Project Developed by: <strong>RATHOD VRAJ SAGARBHAI</strong> | <strong>PRAJAPATI ANSH HITESHBHAI</strong> | <strong>JADAV AAYUSH BABUBHAI</strong>
+                <br><span class="text-muted small">President Institute of Computer Application (Gujarat University)</span>
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Simple 6 Month Countdown
+    const target = new Date();
+    target.setMonth(target.getMonth() + 6);
+
+    function runCounter() {
+        const now = new Date().getTime();
+        const diff = target - now;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = d;
+        document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+        document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+        document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+    }
+    setInterval(runCounter, 1000);
+    runCounter();
+</script>
+{% endblock %}

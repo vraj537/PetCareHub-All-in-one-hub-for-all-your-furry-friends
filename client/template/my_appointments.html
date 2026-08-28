@@ -1,0 +1,324 @@
+{% extends 'header1.html' %}
+{% load mathfilters %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #894B8D;">
+            My Medical History <i class="fas fa-paw ms-1"></i>
+        </h3>
+        
+        {% if request.GET.from == 'bookings' %}
+            <a href="{% url 'team' %}" class="btn rounded-pill px-4 fw-bold shadow-sm" style="background-color: #894B8D; color: white; border: none;">
+                <i class="fas fa-user-md me-1"></i> Back To Vets
+            </a>
+        {% else %}
+            <a href="{% url 'home' %}" class="btn rounded-pill px-4 fw-bold shadow-sm" style="background-color: #894B8D; color: white; border: none;">
+                <i class="fas fa-home me-1"></i> Back To Home
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="table-responsive bg-white shadow-sm rounded-4 p-4 border">
+        <table class="table align-middle border-0" style="min-width: 900px;">
+            <thead>
+                <tr class="text-muted small text-uppercase border-bottom">
+                    <th style="width: 22%; vertical-align: middle;">Doctor Details</th>
+                    <th style="width: 20%; vertical-align: middle;">Schedule</th>
+                    <th style="width: 20%; vertical-align: middle;">Current Status</th>
+                    <th class="text-center" style="width: 38%; vertical-align: middle;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in appointments %}
+                <tr style="vertical-align: top; border-bottom: 1px solid #f0f0f0;">
+                    <td class="py-3">
+                        <span class="badge rounded-pill mb-1 d-inline-block"
+                            style="background-color: #f4eef5; color: #894B8D; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                            #{{ app.appointment_id }}
+                        </span>
+                        <div class="fw-bold text-dark">Dr. {{ app.vet_id.vet_name }}</div>
+                        <div class="small text-muted">{{ app.vet_id.specialization }}</div>
+                    </td>
+                    <td class="py-3">
+                        <div class="fw-bold">{{ app.appointment_date|date:"D, d M Y" }}</div>
+                        <div class="small text-muted">{{ app.appointment_date|time:"h:i A" }}</div>
+                    </td>
+                    <td class="py-3">
+                        {% if app.appointment_status == 0 %}
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                            <i class="fas fa-hourglass-half me-1"></i> Waiting for Approval
+                        </span>
+                        {% elif app.appointment_status == 1 %}
+                        <span class="badge bg-success px-3 py-2 rounded-pill">
+                            <i class="fas fa-check-circle me-1"></i> Request Accepted
+                        </span>
+                        {% elif app.appointment_status == 2 %}
+                        <span class="badge bg-danger px-3 py-2 rounded-pill">
+                            <i class="fas fa-times-circle me-1"></i>
+                            {% if app.cancel_reason == "Auto-rejected: Vet did not respond in time." %}
+                                Not Responded in Time
+                            {% else %}
+                                Rejected by Vet
+                            {% endif %}
+                        </span>
+                        {% elif app.appointment_status == 3 %}
+                        <span class="badge bg-primary px-3 py-2 rounded-pill">
+                            <i class="fas fa-calendar-check me-1"></i> Confirmed
+                        </span>
+                        {% elif app.appointment_status == 4 %}
+                        <span class="badge bg-dark px-3 py-2 rounded-pill">
+                            <i class="fas fa-check-double me-1"></i> Completed
+                        </span>
+                        {% elif app.appointment_status == 5 %}
+                        <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                            <i class="fas fa-user-slash me-1"></i> Marked as Absent
+                        </span>
+                        {% elif app.appointment_status == 7 %}
+                        <span class="badge bg-secondary text-white px-3 py-2 rounded-pill">
+                            <i class="fas fa-times-circle me-1"></i>
+                            {% if app.cancel_reason == "Vet is currently offline." %}
+                                Cancelled — Vet Offline
+                            {% else %}
+                                Cancelled by Vet
+                            {% endif %}
+                        </span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-center py-3" style="vertical-align: top;">
+                        {% if app.appointment_status == 0 %}
+                        <small class="text-muted italic">Awaiting Vet's Response</small>
+
+                        {% elif app.appointment_status == 1 and not app.payment_mode %}
+<div class="p-3 border rounded-4 bg-white shadow-sm text-center">
+    <div class="text-danger fw-bold mb-3 d-flex align-items-center justify-content-center" style="font-size: 13px;">
+        <i class="fas fa-clock me-2"></i> Expires in: 
+        <span class="payment-timer ms-1" data-start="{{ app.payment_timer_start.isoformat }}">--:--</span>
+    </div>
+
+    <form id="rzp-form-{{ app.appointment_id }}" 
+            method="POST" 
+            action="{% url 'appointment_payment' %}">
+        {% csrf_token %}
+        <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+        <input type="hidden" name="razorpay_payment_id" 
+            id="rzp-pid-{{ app.appointment_id }}">
+
+        <button type="button"
+                class="btn w-100 rounded-pill fw-bold text-white mb-2"
+                style="background-color:#0d6efd; font-size:15px; padding:10px 20px; border:none; transition:0.3s ease;"
+                onclick="openRazorpay('{{ app.appointment_id }}', {{ app.charges }})">
+            <i class="fas fa-credit-card me-1"></i> Pay Online (Razorpay)
+        </button>
+    </form>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+        <input type="hidden" name="confirm_payment" value="1">
+        
+        {% if not customer.is_cash_blocked %}
+        <button name="payment_mode" value="2" class="btn w-100 rounded-pill fw-bold text-white shadow-sm" 
+                style="background-color: #894B8D; font-size: 15px; padding: 10px 20px; border: none; transition: 0.3s ease;">
+            Pay Cash At Clinic
+        </button>
+        {% else %}
+        <div class="alert alert-danger py-2 mb-0 rounded-pill fw-bold" style="font-size: 12px;">
+            <i class="fas fa-ban me-1"></i> Cash Payments Blocked
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+
+                        {% elif app.appointment_status == 6 %}
+                        <div class="p-2 border rounded-3 bg-info bg-opacity-10 shadow-sm">
+                            <p class="small fw-bold mb-2">Vet suggested new time. Accept?</p>
+                            <form method="POST" class="d-flex gap-2 justify-content-center">
+                                {% csrf_token %}
+                                <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+                                <input type="hidden" name="handle_reschedule" value="1">
+                                <button name="action" value="accept" class="btn btn-sm btn-success rounded-pill px-3">Accept</button>
+                                <button name="action" value="reject" class="btn btn-sm btn-outline-danger rounded-pill px-3">Reject</button>
+                            </form>
+                        </div>
+
+                        {% elif app.appointment_status == 3 %}
+                        <div class="text-success small fw-bold">
+                            <i class="fas fa-info-circle"></i> Ready for Visit<br>
+                            <span class="text-muted">Mode: {% if app.payment_mode == 1 %}Online{% else %}Cash{% endif %}</span>
+                        </div>
+
+                        {% elif app.appointment_status == 4 %}
+                        <div class="d-flex flex-column gap-2 align-items-center">
+                            {% if app.medical_report %}
+                            <a href="{{ app.medical_report.url }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                <i class="fas fa-file-download me-1"></i> View Report
+                            </a>
+                            {% else %}
+                            <small class="text-muted italic">Report Pending</small>
+                            {% endif %}
+
+                            {% if app.appointment_id in rated_app_ids %}
+                            <button class="btn btn-sm btn-light disabled rounded-pill px-3 border" style="font-size: 11px;">
+                                <i class="fas fa-check-circle text-success me-1"></i> Already Rated
+                            </button>
+                            {% else %}
+                            <button class="btn btn-sm btn-warning rounded-pill px-3" style="font-size: 11px;" data-bs-toggle="modal" data-bs-target="#feedbackModal{{app.appointment_id}}">
+                                <i class="fas fa-star me-1"></i> Rate Doctor
+                            </button>
+                            {% endif %}
+                        </div>
+
+                        <div class="modal fade" id="feedbackModal{{app.appointment_id}}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content rounded-4 border-0 shadow">
+                                    <form method="POST" action="{% url 'submit_vet_feedback' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="vet_id" value="{{ app.vet_id.vet_id }}">
+                                        <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+                                        <div class="modal-body p-4 text-start">
+                                            <h5 class="fw-bold mb-3">Rate Dr. {{ app.vet_id.vet_name }}</h5>
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold">Rating (1-5)</label>
+                                                <select name="rating" class="form-select rounded-pill">
+                                                    <option value="5">5 - Excellent</option>
+                                                    <option value="4">4 - Very Good</option>
+                                                    <option value="3">3 - Good</option>
+                                                    <option value="2">2 - Fair</option>
+                                                    <option value="1">1 - Poor</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold">Comment</label>
+                                                <textarea name="comments" class="form-control rounded-4" rows="3" placeholder="Share your experience..." required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold" style="background-color: #894B8D; border:none;">Submit Review</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% elif app.appointment_status == 7 %}
+                        <div class="text-center">
+                            <small class="text-muted d-block">Appointment Closed</small>
+                            {% if app.cancel_reason == "Vet is currently offline." %}
+                            <div class="bg-light p-2 mt-1 rounded-3 border" style="font-size: 10px;">
+                                <i class="fas fa-moon text-secondary me-1"></i> Vet went offline — appointment auto-cancelled.
+                            </div>
+                            {% elif app.cancel_reason %}
+                            <div class="bg-light p-2 mt-1 rounded-3 border" style="font-size: 10px;">
+                                <i class="fas fa-info-circle text-secondary"></i> "{{ app.cancel_reason }}"
+                            </div>
+                            {% endif %}
+
+                            <!-- Refund msg: sirf online payment wale cancelled appointments ke liye -->
+                            {% if app.payment_mode == 1 %}
+                            <div class="mt-2 p-2 rounded-3 text-start" style="background: #f0fff4; border: 1px solid #b7ebc8; font-size: 11px;">
+                                <i class="fas fa-undo-alt text-success me-1"></i>
+                                <strong class="text-success">Refund Initiated:</strong>
+                                Your payment of <strong>₹{{ app.charges }}</strong> will be credited back to your original payment method within <strong>2–3 working days</strong>.
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% elif app.appointment_status == 2 %}
+                        <div class="text-center">
+                            <small class="text-danger fw-bold">
+                                {% if app.cancel_reason == "Auto-rejected: Vet did not respond in time." %}
+                                    ⏰ Vet did not respond in time
+                                {% else %}
+                                    ❌ Cancelled/Rejected
+                                {% endif %}
+                            </small>
+                            {% if app.cancel_reason and app.cancel_reason != "Auto-rejected: Vet did not respond in time." %}
+                            <div class="bg-light p-2 mt-1 rounded-3 border" style="font-size: 10px;">
+                                <i class="fas fa-info-circle text-secondary"></i> "{{ app.cancel_reason }}"
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% elif app.appointment_status == 5 %}
+                        <div class="text-center">
+                            <small class="text-muted d-block">Appointment Closed (Absent)</small>
+                            {% if app.payment_mode == 1 %}
+                            <div class="mt-2 p-2 rounded-3 text-start" style="background: #fff8f0; border: 1px solid #f5c6a0; font-size: 11px;">
+                                <i class="fas fa-exclamation-triangle text-warning me-1"></i>
+                                <strong class="text-warning">No Refund Applicable:</strong>
+                                You missed your appointment. As per our policy, payments are <strong>non-refundable</strong> in case of no-show.
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-5 text-muted">
+                        <i class="fas fa-folder-open d-block mb-2 fs-2"></i> No medical history found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    // Timer (unchanged)
+    function updateTimers() {
+        const timers = document.querySelectorAll('.payment-timer');
+        timers.forEach(timer => {
+            const dateStr = timer.getAttribute('data-start');
+            if (!dateStr || dateStr === "None") { timer.innerHTML = "00m 00s"; return; }
+            const startTime = new Date(dateStr).getTime();
+            const expiryTime = startTime + (30 * 60 * 1000);
+            const now = new Date().getTime();
+            const distance = expiryTime - now;
+            if (distance < 0) {
+                timer.innerHTML = "EXPIRED";
+                timer.parentElement.classList.remove('text-danger');
+                timer.parentElement.classList.add('text-muted');
+            } else {
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                timer.innerHTML = (minutes < 10 ? "0"+minutes : minutes) + "m " + (seconds < 10 ? "0"+seconds : seconds) + "s";
+            }
+        });
+    }
+    setInterval(updateTimers, 1000);
+    updateTimers();
+
+    // ✅ NEW: Razorpay custom handler (product order jaisa)
+    function openRazorpay(appId, charges) {
+        var options = {
+            "key": "rzp_test_SNQx37pa2es1Wb",
+            "amount": charges * 100,  // paise mein
+            "currency": "INR",
+            "name": "PetCareHub",
+            "description": "Doctor Consultation Fees",
+            "image": "{% static 'assets/img/logo/logo.png' %}",
+            "theme": { "color": "#0d6efd" },
+            "prefill": {
+                "name": "{{ request.session.cust_name }}"
+            },
+            "handler": function(response) {
+                // Payment success: ID hidden field mein daalo, form POST karo
+                document.getElementById('rzp-pid-' + appId).value = response.razorpay_payment_id;
+                document.getElementById('rzp-form-' + appId).submit();
+            },
+            "modal": {
+                "ondismiss": function() {
+                    alert('Payment cancelled. Appointment not confirmed.');
+                }
+            }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+</script>
+
+{% endblock %}

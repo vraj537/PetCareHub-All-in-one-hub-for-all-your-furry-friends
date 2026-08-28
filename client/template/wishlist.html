@@ -1,0 +1,96 @@
+{% extends 'header1.html' %}
+{% load static %}
+{% block content %}
+
+<main class="fix">
+    <section class="breadcrumb__area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="breadcrumb__content">
+                        <h3 class="title">My Wishlist ❤️</h3>
+                        <nav class="breadcrumb">
+                            <span><a href="{% url 'home' %}">Home</a></span>
+                            <span class="breadcrumb-separator"><i class="flaticon-right-arrow-angle"></i></span>
+                            <span>Wishlist</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cart__area pt-100 pb-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="table-responsive">
+                        <table class="table cart-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                           <tbody>
+    {% for item in items %}
+    <tr style="vertical-align: middle;"> <td style="min-width: 300px;">
+            <div class="d-flex align-items-center">
+                <img src="{{ item.prod_id.cover_img_path.url }}" width="80" height="80" 
+     class="me-3" style="border-radius: 10px; object-fit: cover; border: 1px solid #eee;">
+                <div>
+                    <h6 class="mb-0" style="font-weight: 600; color: #333;">{{ item.prod_id.prod_name }}</h6>
+                    <small class="text-muted">{{ item.prod_id.category_id.category_name }}</small>
+                </div>
+            </div>
+        </td>
+        
+        <td>
+            <h6 class="mb-0" style="font-weight: 700; color: #8b518d;">₹{{ item.prod_id.price }}</h6>
+        </td>
+        
+        <td>
+            <div class="d-flex align-items-center">
+                <form action="{% url 'add_to_cart' item.prod_id.prod_id %}" method="POST" class="me-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-sm" style="padding: 10px 20px; white-space: nowrap;">
+                        Add to Cart
+                    </button>
+                </form>
+                
+                <a href="{% url 'add_to_wishlist' item.prod_id.prod_id %}" 
+                   class="text-danger p-2" 
+                   title="Remove"
+                   style="background: #fff5f5; border-radius: 8px; line-height: 1;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </a>
+            </div>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" class="text-center py-5">
+            <div class="empty-wishlist">
+                <img src="{% static 'assets/img/images/empty_cart.png' %}" alt="" style="width: 150px; opacity: 0.5;">
+                <h5 class="mt-4">Your Wishlist is Empty! 🐾</h5>
+                <a href="{% url 'product' %}" class="btn mt-2">Shop Now</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

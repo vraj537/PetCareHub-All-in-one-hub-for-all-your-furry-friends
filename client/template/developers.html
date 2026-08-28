@@ -1,0 +1,237 @@
+{% extends 'header1.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root {
+        --pch-purple: #894B8D; /* Hamari Pyaari Purple */
+        --pch-navy: #00235a;
+        --pch-light-bg: #fdfafb;
+    }
+
+    .main-content {
+        background-color: var(--pch-light-bg);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Breadcrumb Customization */
+    .breadcrumb__area {
+        background: #f4eef5;
+        padding: 60px 0;
+    }
+
+    /* University Section */
+    .uni-section {
+        background: #fff;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 10px 30px rgba(137, 75, 141, 0.05);
+        border: 1px solid #eee;
+    }
+
+    /* Team Card Styling */
+    .faculty-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+        border-bottom: 5px solid var(--pch-purple);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .faculty-card:hover { transform: translateY(-10px); }
+    .faculty-img img { width: 100%; height: 280px; object-fit: cover; }
+    .faculty-info { padding: 20px; text-align: center; }
+
+    /* Developer Table Premium Styling */
+    .developer-table-wrap {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(137, 75, 141, 0.1);
+    }
+    .developer-table { margin-bottom: 0; }
+    .developer-table thead {
+        background: linear-gradient(135deg, var(--pch-navy) 0%, var(--pch-purple) 100%);
+        color: white;
+    }
+    .developer-table th { padding: 20px; border: none; font-weight: 700; text-transform: uppercase; }
+    .developer-table td { padding: 18px; vertical-align: middle; font-weight: 600; color: var(--pch-navy); border-color: #f4eef5; }
+    .developer-table tbody tr:hover { background-color: #fdf5ff; }
+
+    .pch-title-tagline {
+        color: var(--pch-purple);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: block;
+        margin-bottom: 10px;
+    }
+    /* - Header Friendly Interesting Background */
+body {
+    margin: 0;
+    padding: 0;
+    /* 1. Light Premium Grey-Purple Tint */
+    background-color: #f8f7fa; 
+    
+    /* 2. Subtle Mesh Gradient (Jo sirf niche dikhega, header ke paas nahi) */
+    background-image: 
+        radial-gradient(at 100% 100%, rgba(137, 75, 141, 0.05) 0px, transparent 40%),
+        radial-gradient(at 0% 100%, rgba(0, 35, 90, 0.05) 0px, transparent 40%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* 3. Card Shadow ko thoda "Deep" kiya hai taaki is light background par card uth kar dikhe */
+.faculty-card {
+    background: #ffffff !important;
+    border-radius: 30px !important;
+    border: 1px solid #eaeaea !important;
+    border-bottom: 6px solid #894B8D !important; /* PetCareHub Purple */
+    box-shadow: 0 15px 40px rgba(137, 75, 141, 0.12) !important;
+    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+.faculty-card:hover {
+    transform: translateY(-10px) !important;
+    box-shadow: 0 25px 50px rgba(137, 75, 141, 0.2) !important;
+}
+</style>
+
+<main class="main-content">
+    <section class="breadcrumb__area fix">
+        <div class="container text-center">
+            <h2 class="fw-800 mb-2" style="color: var(--pch-purple); font-size: 45px;">Our Visionaries</h2>
+            <nav class="breadcrumb justify-content-center fw-bold">
+                <span><a href="{% url 'home' %}" style="color: var(--pch-navy); text-decoration: none;">Home</a></span>
+                <span class="mx-2"><i class="fas fa-angle-right"></i></span>
+                <span style="color: var(--pch-purple);">Developers & Faculty</span>
+            </nav>
+        </div>
+    </section>
+
+    <div class="container py-5 mt-4">
+    <div class="uni-section text-center shadow-lg" style="background: linear-gradient(135deg, #4a148c 0%, #894B8D 100%); border-radius: 40px; padding: 70px 40px; border: none; position: relative; overflow: hidden;">
+        
+        <div style="position: absolute; top: 15px; left: 15px; opacity: 0.08; color: white; font-size: 130px; transform: rotate(-15deg); pointer-events: none;"><i class="fas fa-graduation-cap"></i></div>
+        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.08; color: white; font-size: 130px; transform: rotate(15deg); pointer-events: none;"><i class="fas fa-university"></i></div>
+
+        <div class="d-flex align-items-center justify-content-center flex-wrap mb-5 gap-4 position-relative" style="z-index: 2;">
+            
+            <div style="background: white; padding: 20px; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 220px; height: 200px; display: flex; align-items: center; justify-content: center;">
+                <img src="{% static 'assets/img/logo/gu.png' %}" alt="Gujarat University" style="max-width: 100%; height: auto; object-fit: contain;">
+            </div>
+            
+            <div class="d-none d-md-block" style="width: 2px; height: 100px; background: rgba(255,255,255,0.2); margin: 0 10px;"></div>
+            
+            <div class="naac-badge p-4 rounded-4 d-flex flex-column align-items-center justify-content-center" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); width: 220px; height: 200px;">
+                <span class="text-white-50 d-block small fw-bold text-uppercase mb-2" style="letter-spacing: 1.5px; font-size: 15px;">NAAC Grade</span>
+                <div style="display: flex; align-items: baseline;">
+                    <span style="color: #ffffff; font-size: 52px; font-weight: 900; line-height: 1;">A</span>
+                    <span style="font-size: 38px; color: #FFC107; font-weight: 900; margin-left: 4px; line-height: 1;">+</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="position-relative" style="z-index: 2;">
+            <h2 style="color: #ffffff; font-weight: 800; font-size: 40px; letter-spacing: -0.5px; margin-bottom: 5px;">Academic Excellence</h2>
+            
+            <div style="width: 80px; height: 4px; background: #FFC107; margin: 15px auto 25px; border-radius: 10px; box-shadow: 0 0 15px rgba(255,193,7,0.4);"></div>
+
+            <p class="mx-auto" style="max-width: 850px; font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.9); font-weight: 500;">
+                Developed by students of <strong style="color: #ffffff;">President Institute of Computer Application</strong>. 
+                We extend our heartfelt gratitude to <strong style="color: #ffffff;">Gujarat University</strong> for providing the academic foundation and world-class guidance to build <strong style="color: #ffd6ff;">PetCareHub</strong>.
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="pch-title-tagline">Academic Support</span>
+            <h2 style="color: var(--pch-navy); font-weight: 800;">Our Expert Faculty</h2>
+        </div>
+        <div class="row justify-content-center g-4">
+    <div class="col-md-5 col-lg-4 d-flex">
+        <div class="faculty-card w-100 d-flex flex-column">
+            <div class="faculty-info d-flex flex-column justify-content-center flex-grow-1">
+                <h5 class="fw-bold mb-1">Kinjal Patel</h5>
+                <hr style="border-top: 1px solid #eee; width: 80%; margin: 10px auto;">
+                <p class="small text-muted mb-3">(President Institute Of Computer Application)</p>
+                <span class="text-muted small fw-bold text-uppercase mt-auto">Internal Mentor</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5 col-lg-4 d-flex">
+        <div class="faculty-card w-100 d-flex flex-column">
+            <div class="faculty-info d-flex flex-column justify-content-center flex-grow-1">
+                <h5 class="fw-bold mb-1">Kruti Champaneri</h5>
+                <hr style="border-top: 1px solid #eee; width: 80%; margin: 10px auto;">
+                <p class="small text-muted mb-3">(Clickaway IT Solutions)</p>
+                <br> <span class="text-muted small fw-bold text-uppercase mt-auto">External Mentor</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* - Styling for consistent card height */
+    .faculty-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        transition: 0.3s;
+        border-bottom: 6px solid #894B8D; /* Hamari Pyaari Purple theme */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        height: 100%; /* Height ensure karne ke liye */
+    }
+
+    .faculty-info {
+        height: 100%;
+    }
+
+    .faculty-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(137, 75, 141, 0.1);
+    }
+</style>
+    </div>
+
+    <div class="container py-5 mb-5">
+        <div class="text-center mb-5">
+            <span class="pch-title-tagline">The Tech Team</span>
+            <h2 style="color: var(--pch-navy); font-weight: 800;">Our Talented Developers</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="developer-table-wrap">
+                    <table class="table developer-table text-center bg-white">
+                        <thead>
+                            <tr>
+                                <th>Developer Name</th>
+                                <th>Identification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>RATHOD VRAJ SAGARBHAI</td>
+                                <td class="text-muted">#</td>
+                            </tr>
+                            <tr>
+                                <td>PRAJAPATI ANSH HITESHBHAI</td>
+                                <td class="text-muted">#</td>
+                            </tr>
+                            <tr>
+                                <td>JADAV AAYUSH BABUBHAI</td>
+                                <td class="text-muted">#</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

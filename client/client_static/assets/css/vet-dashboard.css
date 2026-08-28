@@ -1,0 +1,57 @@
+:root { 
+            --tg-brand-color: #894B8D; 
+            --tg-brand-dark: #6A3A6D;
+            --tg-body-bg: #F8F4F9;
+        }
+        body { background-color: var(--tg-body-bg); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+        
+        /* --- NEW ATTRACTIVE HEADER --- */
+        .header-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 10px 30px rgba(137, 75, 141, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(137, 75, 141, 0.1);
+        }
+        .header-flex { display: flex; align-items: center; justify-content: space-between; }
+        .logo img { width: 150px; }
+        
+        .main-menu ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 30px; }
+        .main-menu ul li a { 
+            text-decoration: none; color: #333; font-weight: 800; font-size: 15px; transition: 0.3s; 
+        }
+        .main-menu ul li a:hover { color: var(--tg-brand-color); }
+
+        /* Existing Dashboard Elements */
+        .vet-breadcrumb-box { 
+            background: linear-gradient(135deg, #894B8D 0%, #6A3A6D 100%); 
+            padding: 60px 0; 
+            border-radius: 0 0 40px 40px;
+            color: #fff;
+        }
+        .vet-title { color: #ffffff !important; font-weight: 800; margin-bottom: 5px; }
+        .vet-subtitle { color: rgba(255,255,255,0.9) !important; font-weight: 600; }
+
+        .dashboard-wrapper { padding: 40px 0 80px; }
+
+        .dashboard-card { 
+            background: #fff; border: none; border-radius: 24px; 
+            box-shadow: 0 10px 40px rgba(137, 75, 141, 0.08); 
+            padding: 30px; margin-bottom: 30px;
+        }
+
+        .vet-name-sidebar { color: var(--tg-brand-color) !important; font-weight: 800; margin-top: 15px; }
+        .profile-img-main { width: 140px; height: 140px; object-fit: cover; border-radius: 30px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .review-card { border-left: 4px solid var(--tg-brand-color); background: #fdfafd; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+
+        .btn-action { border-radius: 12px; font-weight: 700; font-size: 14px; padding: 12px; width: 100%; border: none; margin-bottom: 10px; transition: 0.3s; }
+        .btn-accept { background: #28a745; color: white; }
+        .btn-upload { background: var(--tg-brand-color); color: white; }
+        .btn-claim { background: #ffc107; color: #333; }
+
+        .modal-content { border-radius: 25px; border: none; overflow: hidden; }
+        .form-control { border-radius: 12px; padding: 12px; border: 2px solid #eee; }

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vet-dashboard.css' %}">
+
+    <style>
+        /* Active Tab Style */
+        #pills-tab .nav-link.active {
+            background-color: #1a237e !important;
+            color: white !important;
+        }
+
+        /* Inactive Tab Style */
+        #pills-tab .nav-link {
+            background-color: #f8f9fa; /* Light Grey */
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover Effect */
+        #pills-tab .nav-link:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+    </style>
+    <style>
+        :root {
+            --primary-purple: #894B8D;
+            --dark-navy: #00235a;
+            --light-bg: #fdfafb;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: #444;
+        }
+
+        /* Top Header Section */
+        .support-header {
+            background: linear-gradient(135deg, #f4eef5 0%, #ffffff 100%);
+            padding: 50px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            color: var(--dark-navy);
+        }
+
+        .title-gold {
+            color: var(--primary-purple);
+            font-weight: 800;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        /* Guidelines Cards */
+        .rule-card {
+            background: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            height: 100%;
+            border-top: 5px solid transparent;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Admin Contact Section */
+        .admin-section {
+            background: #fff;
+            border-radius: 25px;
+            padding: 40px;
+            margin-top: 60px;
+            border: 1px solid #eee;
+        }
+
+        .btn-gmail {
+            background: var(--primary-purple);
+            color: #fff !important;
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(137, 75, 141, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-gmail:hover {
+            background: var(--dark-navy);
+            transform: scale(1.05);
+        }
+
+        .contact-info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info-list li {
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-info-list i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+<header class="header-area">
+        <div class="container">
+            <div class="header-flex d-flex align-items-center justify-content-between py-3">
+                <div class="logo">
+                    <a href="/"><img src="{% static 'assets/img/logo/logo1.png' %}" alt="PetPal Logo" style="width: 200px; height:70px;"></a>
+                </div>
+                <nav class="main-menu d-none d-lg-block">
+                    <ul class="d-flex list-unstyled m-0 gap-4">
+                        <li><a href="{% url 'vet_dashboard' %}" class="text-dark fw-bold">Home</a></li>
+                        <li><a href="{% url 'vet_contact' %}" class="text-dark fw-bold">Support</a></li>
+                    </ul>
+                </nav>
+                <div class="header-btn">
+                    <a href="{% url 'vet_logout'%}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="vet-breadcrumb-box py-5" style="background-color: #f4eef5;">
+        <div class="container text-center">
+            <h2 class="vet-title fw-bold" style="color: #894B8D;">Vet Dashboard</h2>
+            <p class="vet-subtitle text-muted" id="header-id-info">
+            </p>
+        </div>
+    </div>
+    <header class="support-header">
+        <div class="container text-center">
+            <h1 class="title-gold">Vet Guidelines</h1>
+            <p class="text-muted">Everything you need to know about PetCareHub 🐾</p>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: var(--primary-purple);">
+                    <div class="icon-circle" style="background: #f4eef5; color: var(--primary-purple);">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h5 class="fw-bold">1. Request Management</h5>
+                    <p class="text-muted small">When a client books an appointment, you must <b>Accept</b> or <b>Reject</b> within your schedule. <b>Accepting</b> triggers a 30-minute payment window for the client.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: var(--success-green);">
+                    <div class="icon-circle" style="background: #e8f5e9; color: var(--success-green);">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <h5 class="fw-bold">2. Uploading Reports</h5>
+                    <p class="text-muted small">To mark an appointment as <b>Completed</b>, you must upload the <b>Medical Report</b>. Your consultation fees are credited to your earnings only after this step.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: var(--danger-red);">
+                    <div class="icon-circle" style="background: #ffebee; color: var(--danger-red);">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <h5 class="fw-bold">3. No-Show Policy</h5>
+                    <p class="text-muted small">If a client fails to arrive, use the <b>Mark Absent</b> button. This issues <b>1 Strike</b> to the user. After <b>3 Strikes</b>, the system blocks their <b>Cash payment</b> option permanently.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center mt-2">
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: #ffc107;"> <div class="icon-circle" style="background: #fff8e1; color: #ffc107;">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <h5 class="fw-bold">4. Schedule Locking</h5>
+                    <p class="text-muted small">After your initial login and schedule setup, you can only update your timings <b>once every 12 hours</b>. This ensures stability for active bookings.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: #0dcaf0;"> <div class="icon-circle" style="background: #e0fcff; color: #0dcaf0;">
+                        <i class="fas fa-plane-departure"></i>
+                    </div>
+                    <h5 class="fw-bold">5. Going Offline</h5>
+                    <p class="text-muted small">To go offline, you must provide a <b>reason</b>. If you have active appointments during those dates, the system will <b>cancel</b> them and notify the clients.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="rule-card" style="border-top-color: #6c757d;"> <div class="icon-circle" style="background: #f1f3f5; color: #6c757d;">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h5 class="fw-bold">6. Account Removal</h5>
+                    <p class="text-muted small">To request account removal, you must verify your identity by entering your <b>password</b>. Your request will then be sent to the Admin for final approval.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-section text-center">
+            <h3 class="fw-bold mb-3" style="color: var(--dark-navy);">Technical Support</h3>
+            <p class="text-muted mb-4">Facing issues with payments or your dashboard? Contact our admin directly.</p>
+            
+            <div class="row align-items-center">
+                <div class="col-md-5">
+                    <a href="mailto:petcarehub07@gmail.com?subject=Vet%20Support%20Request&body=Hello%20Admin,%0D%0A%0D%0AMy%20Vet%20ID:%20" class="btn-gmail">
+                        <i class="fas fa-envelope me-2"></i> Open Gmail Support
+                    </a>
+                </div>
+                <div class="col-md-2 text-muted d-none d-md-block">
+                    <div style="width: 1px; height: 100px; background: #eee; margin: 0 auto;"></div>
+                </div>
+                <div class="col-md-5 text-start mt-4 mt-md-0">
+                    <ul class="contact-info-list">
+                        <li><i class="fas fa-phone-alt"></i> +91 87803 21278 | +91 92652 44539</li>
+                        <li><i class="fas fa-envelope"></i> petcarehub07@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> A-07, Shayona City, Ahmedabad, Gujarat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-5 text-muted small">
+            &copy; 2026 PetCareHub. All Rights Reserved.
+        </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

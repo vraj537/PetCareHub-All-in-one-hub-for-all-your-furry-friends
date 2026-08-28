@@ -1,0 +1,62 @@
+:root {
+            --tg-brand-color: #894B8D;
+            --tg-brand-dark: #6A3A6D;
+        }
+
+        .payment-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+
+        /* Summary Box matching fast-track style */
+        .summary-box {
+            background: #fdfafd;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px dashed var(--tg-brand-color);
+            margin-bottom: 30px;
+        }
+
+        /* Payment Tabs (Matches Cart logic) */
+        .pay-tab {
+            border: 2px solid #f4f4f4;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            font-weight: 700;
+            background: #fff;
+        }
+        .pay-tab.active {
+            border-color: var(--tg-brand-color);
+            background: #fdfafd;
+            color: var(--tg-brand-color);
+        }
+
+        .form-control {
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        .pay-now-btn {
+            background: var(--tg-brand-color);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            text-transform: uppercase;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .pay-now-btn:hover {
+            background: var(--tg-brand-dark);
+            transform: translateY(-2px);
+        }

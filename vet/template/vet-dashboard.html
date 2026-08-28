@@ -1,0 +1,1034 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vet-dashboard.css' %}">
+
+    <style>
+        /* Active Tab Style */
+        #pills-tab .nav-link.active {
+            background-color: #1a237e !important;
+            color: white !important;
+        }
+
+        /* Inactive Tab Style */
+        #pills-tab .nav-link {
+            background-color: #f8f9fa; /* Light Grey */
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover Effect */
+        #pills-tab .nav-link:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="header-area">
+        <div class="container">
+            <div class="header-flex d-flex align-items-center justify-content-between py-3">
+                <div class="logo">
+                    <a href="/"><img src="{% static 'assets/img/logo/logo1.png' %}" alt="PetPal Logo" style="width: 200px; height:70px;"></a>
+                </div>
+                <nav class="main-menu d-none d-lg-block">
+                    <ul class="d-flex list-unstyled m-0 gap-4">
+                        <li><a href="{% url 'vet_dashboard' %}" class="text-dark fw-bold">Home</a></li>
+                        <li><a href="{% url 'team' %}" class="text-dark fw-bold">View Vets</a></li>
+                        <li><a href="{% url 'vet_contact' %}" class="text-dark fw-bold">Support</a></li>
+                    </ul>
+                </nav>
+                <div class="header-btn">
+                    <a href="{% url 'vet_logout'%}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="vet-breadcrumb-box py-5" style="background-color: #f4eef5;">
+        <div class="container text-center">
+            <h2 class="vet-title fw-bold" style="color: #894B8D;">Vet Dashboard</h2>
+            <p class="vet-subtitle text-muted" id="header-id-info">
+                Dr. {{ vet.vet_name }} | Vet_id: {{ vet.vet_id }} | {{ vet.specialization }}
+            </p>
+        </div>
+    </div>
+
+    <main class="dashboard-wrapper py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="stat-widget shadow-sm" style="background: #894B8D; border-radius: 25px; padding: 30px; color: #ffffff;">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">Total Earnings</small>
+                        <h2 class="mt-2 mb-1" style="font-size: 38px; font-weight: 800; color: #ffffff;">₹{{ total_earnings }}</h2>
+                        <div class="small mt-2" style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-wallet me-1"></i> Based on actual fees collected
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-widget shadow-sm" style="background: #333333; border-radius: 25px; padding: 30px; color: #ffffff;">
+                        <small class="text-uppercase fw-bold" style="letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">Appointments Done</small>
+                        <h2 class="mt-2 mb-1" style="font-size: 38px; font-weight: 800; color: #ffffff;">{{ completed_count }}</h2>
+                        <div class="small mt-2" style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-check-circle me-1"></i> Successfully treated
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="p-3 shadow-sm text-center bg-white" style="border-radius: 15px; border-bottom: 4px solid #894B8D;">
+                        <small class="text-muted fw-bold d-block text-uppercase" style="font-size: 10px;">Total Received</small>
+                        <h4 class="fw-bold m-0" style="color: #894B8D;">{{ total_received }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 shadow-sm text-center bg-white" style="border-radius: 15px; border-bottom: 4px solid #dc3545;">
+                        <small class="text-muted fw-bold d-block text-uppercase" style="font-size: 10px;">Rejected</small>
+                        <h4 class="fw-bold m-0" style="color: #dc3545;">{{ total_rejected }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 shadow-sm text-center bg-white" style="border-radius: 15px; border-bottom: 4px solid #ffc107;">
+                        <small class="text-muted fw-bold d-block text-uppercase" style="font-size: 10px;">Cancelled</small>
+                        <h4 class="fw-bold m-0" style="color: #ffc107;">{{ total_cancelled }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 shadow-sm text-center bg-white" style="border-radius: 15px; border-bottom: 4px solid #6c757d;">
+                        <small class="text-muted fw-bold d-block text-uppercase" style="font-size: 10px;">Absent</small>
+                        <h4 class="fw-bold m-0" style="color: #6c757d;">{{ total_absent }}</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="dashboard-card text-center p-4 bg-white shadow-sm rounded-4 mb-4">
+                        {% if vet.vet_profile %}
+                        <img src="{{ vet.vet_profile.url }}" id="main-profile-img" class="profile-img-main mb-3"
+                            style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #894B8D;">
+                        {% else %}
+                        <img src="{% static 'assets/img/team/team01.png' %}" id="main-profile-img"
+                            class="profile-img-main mb-3" style="width: 120px; border-radius: 50%;">
+                        {% endif %}
+
+                        <h4 class="vet-name-sidebar mb-1 fw-bold" id="display-name">Dr. {{ vet.vet_name }}</h4>
+                        <p class="text-muted small" id="display-address">
+                            <i class="fas fa-map-marker-alt me-2 text-danger"></i><strong>{{ vet.area_id.area_name }}</strong>
+                        </p>
+
+                        <div class="availability-badge mb-3">
+                            {% if vet.availability_status == 1 %}
+                            <span class="badge bg-success rounded-pill px-3">Online</span>
+                            {% else %}
+                            <span class="badge bg-secondary rounded-pill px-3"
+                                style="background-color: #393f61 !important;">Offline</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="mt-4">
+                            {% if vet.documents %}
+                            <a href="{{ vet.documents.url }}" target="_blank"
+                                class="btn btn-outline-info btn-sm w-100 rounded-pill mb-2 fw-bold">
+                                <i class="fas fa-file-pdf me-2"></i>My Documents
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0">Weekly Schedule</h5>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal"
+                                data-bs-target="#firstLoginModal">Edit</button>
+                        </div>
+                        <div class="schedule-list small">
+                            {% for item in current_schedule %}
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span class="text-muted">{{ item.get_day_of_week_display }}</span>
+                                <span class="fw-bold text-dark">{{ item.open_time|time:"H:i" }} - {{ item.close_time|time:"H:i" }}</span>
+                            </div>
+                            {% empty %}
+                            <p class="text-danger small text-center py-2">No schedule set yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <h5 class="fw-bold mb-3">Clinic Details</h5>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2"><strong>Email:</strong> {{ vet.email }}</li>
+                            <li class="mb-2"><strong>Contact:</strong> {{ vet.contact }}</li>
+                            <li class="mb-2"><strong>Consultation Fee:</strong> ₹{{ vet.charges }}</li>
+                            <li class="mb-2"><strong>Clinic Address:</strong> ₹{{ vet.address }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4 mb-4">
+                        <label class="small fw-bold mb-1">Set Availability Status:</label>
+                        <select id="statusSelector" class="form-select form-select-sm rounded-pill shadow-sm" onchange="handleStatusToggle(this)">
+                            <option value="1" {% if vet.availability_status == 1 %}selected{% endif %}>Online (Available)</option>
+                            <option value="0" {% if vet.availability_status == 0 or vet.availability_status == 2 %}selected{% endif %}>Offline / Schedule Leave</option>
+                        </select>
+                    </div>
+
+                    <form id="onlineForm" method="POST" style="display:none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_availability" value="1">
+                        <input type="hidden" name="availability_status" value="1">
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top text-center">
+                        <p class="small text-muted mb-2">No longer wish to practice on PetCareHub?</p>
+                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-4 fw-bold" onclick="confirmRemoval()">
+                            <i class="fas fa-user-times me-2"></i>Request Permanent Removal
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="dashboard-card p-4 bg-white shadow-sm rounded-4">
+                        <ul class="nav nav-pills mb-4 gap-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="pills-appt-tab" data-bs-toggle="pill" data-bs-target="#pills-appt" type="button"
+                                    role="tab">Patient Requests</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews" type="button" 
+                                    role="tab">Reviews</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="pills-edit-tab" data-bs-toggle="pill" data-bs-target="#pills-edit" type="button"
+                                    role="tab">✏️ Edit Profile</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                    id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button"
+                                    role="tab">🔒 Security</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-appt" role="tabpanel">
+                                <h5 class="fw-bold mb-4">Appointments Queue</h5>
+
+                                <div class="appointment-list-wrapper" style="max-height: 500px; overflow-y: auto; border-radius: 15px;">
+                                <div class="table-responsive">
+                                    <table class="table align-middle border-0">
+                                        <thead class="table-light">
+                                            <tr class="small fw-bold text-muted text-uppercase">
+                                                <th>Pet & Owner</th>
+                                                <th>Schedule</th>
+                                                <th>Problem</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for app in appointments %}
+                                            <tr>
+                                                <td>
+                                                    <span class="badge rounded-pill mb-1 d-inline-block"
+                                                        style="background-color: #eef2ff; color: #1a237e; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">
+                                                        #{{ app.appointment_id }}
+                                                    </span>
+                                                    <div class="fw-bold text-dark">{{ app.cust_id.cust_name }}</div>
+                                                    <div class="small text-muted">Pet: {{ app.app_for }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="small fw-bold text-primary">{{app.appointment_date|date:"d M, Y" }}</div>
+                                                    <div class="small text-muted">{{ app.appointment_date|time:"h:i A"}}</div>
+                                                </td>
+                                                <td class="small text-muted">"{{ app.description }}"</td>
+                                                <td class="text-center">
+                                                    {% if app.appointment_status == 0 %}
+                                                    <form method="POST" class="d-flex gap-2 justify-content-center">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+                                                        <input type="hidden" name="manage_appointment" value="1">
+                                                        <button type="submit" name="action" value="1" class="btn btn-sm btn-success rounded-pill px-3 fw-bold">Accept</button>
+                                                        <button type="submit" name="action" value="2" class="btn btn-sm btn-outline-danger rounded-pill px-3">Reject</button>
+                                                    </form>
+
+                                                    {% elif app.appointment_status == 1 %}
+                                                    <div class="text-center">
+                                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm">
+                                                            <i class="fas fa-hourglass-half me-1"></i> Payment Awaiting
+                                                        </span>
+                                                    </div>
+
+                                                    {% elif app.appointment_status == 3 %}
+                                                    <div class="d-flex flex-column gap-2 align-items-center" style="min-width: 150px;">
+                                                        {% if app.payment_mode == 1 %}
+                                                            <span class="badge bg-info text-white px-3 py-1 rounded-pill mb-1 w-100" style="font-size: 11px;">
+                                                                <i class="fas fa-check-circle me-1"></i> Paid (Online)
+                                                            </span>
+                                                        {% elif app.payment_mode == 2 %}
+                                                            <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-1 w-100 border border-warning" style="font-size: 11px; font-weight: bold;">
+                                                                <i class="fas fa-hand-holding-usd me-1"></i> Cash: ₹{{ vet.charges }}
+                                                            </span>
+                                                        {% endif %}
+                                                        
+                                                        <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold w-100" 
+                                                                data-bs-toggle="modal" data-bs-target="#completeApptModal{{ app.appointment_id }}">
+                                                            Upload Report
+                                                        </button>
+
+                                                        <form method="POST" class="w-100">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+                                                            <input type="hidden" name="manage_appointment" value="1">
+                                                            <button type="submit" name="action" value="5"
+                                                                class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-bold w-100 absent-btn"
+                                                                data-appt-time="{{ app.appointment_date.isoformat }}"
+                                                                style="opacity: 0.35; cursor: not-allowed;"
+                                                                disabled>
+                                                                Mark Absent
+                                                            </button>
+                                                        </form>
+                                                    </div>
+
+                                                    {% elif app.appointment_status == 6 %}
+                                                    <div class="text-center">
+                                                        <span class="badge bg-info-subtle text-info border border-info rounded-pill px-3 py-2">
+                                                            <i class="fas fa-calendar-alt me-1"></i> Reschedule Sent
+                                                        </span>
+                                                        <p class="text-muted mt-1 mb-0" style="font-size: 10px;">Waiting for Client</p>
+                                                    </div>
+
+                                                    {% elif app.appointment_status == 4 %}
+                                                        <span class="badge bg-success rounded-pill px-3 py-2 text-white">Completed ✅</span>
+                                                    {% elif app.appointment_status == 2 %}
+                                                        {% if app.cancel_reason == "Auto-rejected: Vet did not respond in time." %}
+                                                            <span class="badge bg-secondary rounded-pill px-3 py-2 text-white">
+                                                                ⏰ Auto-Rejected
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="badge bg-danger rounded-pill px-3 py-2 text-white">Rejected by You ❌</span>
+                                                        {% endif %}
+                                                    {% elif app.appointment_status == 5 %}
+                                                        <span class="badge bg-secondary rounded-pill px-3 py-2 text-white">Absent 🚫</span>
+                                                    {% elif app.appointment_status == 7 %}
+                                                        <span class="badge bg-secondary rounded-pill px-3 py-2 text-white">Cancelled 📁</span>
+                                                    {% endif %}
+
+                                                    <div class="modal fade" id="completeApptModal{{ app.appointment_id }}" tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content rounded-4 text-start">
+                                                                <div class="modal-header border-0">
+                                                                    <h5 class="modal-title fw-bold">Complete Appointment</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <form action="{% url 'vet_dashboard' %}" method="POST" enctype="multipart/form-data">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="app_id" value="{{ app.appointment_id }}">
+                                                                    <input type="hidden" name="manage_appointment" value="1"> 
+                                                                    <div class="modal-body">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label small fw-bold">Medical Report (PDF/JPG)</label>
+                                                                            <input type="file" name="medical_report" class="form-control" required accept=".pdf,image/*">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer border-0">
+                                                                        <button type="submit" name="action" value="4" class="btn btn-primary w-100 rounded-pill">Finalize Report</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr><td colspan="4" class="text-center py-4 text-muted">No new requests. 🐾</td></tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-edit" role="tabpanel">
+                                <h5 class="fw-bold mb-4" style="color: #894B8D;">Professional Settings</h5>
+                                
+                                <form action="{% url 'vet_dashboard' %}" method="POST" enctype="multipart/form-data" id="profileUpdateForm" class="needs-validation" novalidate>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="update_profile" value="1">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="small fw-bold mb-1">Display Name</label>
+                                            <input type="text" name="new_name" id="v_name"
+                                                class="form-control rounded-pill" 
+                                                value="{{ vet.vet_name }}" required>
+                                            <small id="v_name_err" class="text-danger d-none">Please enter a valid name (letters only, no repeated characters).</small>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="small fw-bold mb-1">Contact No.</label>
+                                            <div class="input-group">
+                                                <input type="tel" name="new_contact" id="v_contact"
+                                                    class="form-control rounded-pill" 
+                                                    value="{{ vet.contact }}" required maxlength="10">
+                                                <span class="input-group-text border-0 bg-transparent d-none" id="v_contact_tick">
+                                                    <i class="fas fa-check-circle text-success"></i>
+                                                </span>
+                                            </div>
+                                            <small id="v_contact_err" class="text-danger d-none">Must be 10 digits starting with 6-9.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="small fw-bold mb-1">Clinic Address</label>
+                                        <textarea name="new_address" id="v_address"
+                                                class="form-control rounded-4" rows="2" required
+                                                placeholder="Enter full clinic address (min 10 characters)">{{ vet.address }}</textarea>
+                                        <small id="v_address_err" class="text-danger d-none">Address must be at least 10 characters.</small>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="small fw-bold mb-1">Expertise</label>
+                                            <input type="text" value="{{ vet.specialization }}"
+                                                class="form-control rounded-pill bg-light text-muted"
+                                                readonly disabled>
+                                            <small class="text-muted ms-2">* Expertise cannot be changed.</small>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="small fw-bold mb-1">Fees (₹)</label>
+                                            <input type="number" name="new_charges" id="v_charges"
+                                                class="form-control rounded-pill" 
+                                                value="{{ vet.charges }}" required min="99" max="5000">
+                                            <small id="v_charges_err" class="text-danger d-none">Fees must be between ₹99 and ₹5000.</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="small fw-bold mb-1" style="color: #894B8D;">New Profile Picture</label>
+                                        <input type="file" name="new_profile" id="v_photo"
+                                            class="form-control rounded-3" 
+                                            accept="image/jpeg,image/jpg,image/png">
+
+                                        <small id="v_photo_err" class="text-danger d-none">Only JPG/PNG allowed, max 2MB.</small>
+                                    </div>
+
+                                    <button type="submit" id="v_save_btn" 
+                                            class="btn btn-primary w-100 rounded-pill py-2 fw-bold" 
+                                            style="background-color: #894B8D; border: none; opacity: 0.5;" disabled>
+                                        Update Records 🐾
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-security" role="tabpanel">
+                                <h5 class="fw-bold mb-4">Security — Update Password</h5>
+                                <form action="{% url 'vet_change_password' %}" method="POST" id="vet-sec-form">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Current Password</label>
+                                            <input type="password" name="old_password" class="form-control rounded-pill" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="new_password" id="vt_new_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button" onclick="toggleVetPass('vt_new_p', this)"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                            <div class="progress mt-2" style="height: 5px;">
+                                                <div id="vt_strength_bar" class="progress-bar" style="width:0%"></div>
+                                            </div>
+                                            <small id="vt_strength_text" class="text-muted">Password strength</small>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="small fw-bold mb-1">Confirm New Password</label>
+                                            <div class="input-group">
+                                                <input type="password" name="confirm_password" id="vt_conf_p" class="form-control rounded-pill" required>
+                                                <button class="btn btn-outline-secondary rounded-pill ms-2" type="button" onclick="toggleVetPass('vt_conf_p', this)"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                            <small id="vt_match_text" class="d-none mt-1"></small>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="vt_pass_btn" class="btn btn-primary w-100 rounded-pill py-2 fw-bold mt-4" style="background-color: #894B8D; border: none;" disabled>
+                                        Update Password 🔒
+                                    </button>
+                                </form>
+                            </div>
+
+                            <script>
+                                function validateVetEditForm() {
+                                    const name    = document.getElementById('v_name').value.trim();
+                                    const contact = document.getElementById('v_contact').value.trim();
+                                    const address = document.getElementById('v_address').value.trim();
+                                    const charges = document.getElementById('v_charges').value.trim();
+                                    const photo   = document.getElementById('v_photo');
+
+                                    const nameValid    = /^[a-zA-Z\s]+$/.test(name) && name.length > 1 && !/^(.)\1+$/i.test(name.replace(/\s/g,''));
+                                    const contactValid = /^[6-9]\d{9}$/.test(contact);
+                                    const addressValid = address.length >= 10;
+                                    const chargesVal   = parseInt(charges);
+                                    const chargesValid = !isNaN(chargesVal) && chargesVal >= 99 && chargesVal <= 5000;
+
+                                    let photoValid = true;
+                                    if (photo && photo.files.length > 0) {
+                                        const file = photo.files[0];
+                                        const allowed = ['image/jpeg', 'image/jpg', 'image/png'];
+                                        const maxSize = 2 * 1024 * 1024;
+                                        photoValid = allowed.includes(file.type) && file.size <= maxSize;
+                                        document.getElementById('v_photo_err').classList.toggle('d-none', photoValid);
+                                    }
+
+                                    document.getElementById('v_name_err').classList.toggle('d-none', nameValid);
+                                    document.getElementById('v_contact_err').classList.toggle('d-none', contactValid);
+                                    document.getElementById('v_address_err').classList.toggle('d-none', addressValid);
+                                    document.getElementById('v_charges_err').classList.toggle('d-none', chargesValid);
+                                    document.getElementById('v_contact_tick').classList.toggle('d-none', !contactValid);
+
+                                    document.getElementById('v_name').classList.toggle('is-valid', nameValid);
+                                    document.getElementById('v_name').classList.toggle('is-invalid', !nameValid && name.length > 0);
+                                    document.getElementById('v_contact').classList.toggle('is-valid', contactValid);
+                                    document.getElementById('v_contact').classList.toggle('is-invalid', !contactValid && contact.length > 0);
+                                    document.getElementById('v_address').classList.toggle('is-valid', addressValid);
+                                    document.getElementById('v_address').classList.toggle('is-invalid', !addressValid && address.length > 0);
+                                    document.getElementById('v_charges').classList.toggle('is-valid', chargesValid);
+                                    document.getElementById('v_charges').classList.toggle('is-invalid', !chargesValid && charges.length > 0);
+
+                                    const btn = document.getElementById('v_save_btn');
+                                    btn.disabled = !(nameValid && contactValid && addressValid && chargesValid && photoValid);
+                                    btn.style.opacity = btn.disabled ? '0.5' : '1';
+                                }
+
+                                document.getElementById('v_name').addEventListener('input', validateVetEditForm);
+                                document.getElementById('v_contact').addEventListener('input', validateVetEditForm);
+                                document.getElementById('v_address').addEventListener('input', validateVetEditForm);
+                                document.getElementById('v_charges').addEventListener('input', validateVetEditForm);
+                                document.getElementById('v_photo').addEventListener('change', validateVetEditForm);
+                                validateVetEditForm();
+                            </script>
+
+                            <script>
+                                // --- Vet Security Tab Validation ---
+                                function validateVetSecurity() {
+                                    const newP = document.getElementById('vt_new_p').value;
+                                    const confP = document.getElementById('vt_conf_p').value;
+                                    let strength = 0;
+                                    if (newP.length >= 8) strength++;
+                                    if (/[A-Z]/.test(newP)) strength++;
+                                    if (/[0-9]/.test(newP)) strength++;
+                                    if (/[!@#$%^&*]/.test(newP)) strength++;
+
+                                    const bar = document.getElementById('vt_strength_bar');
+                                    const text = document.getElementById('vt_strength_text');
+                                    const colors = ['','bg-danger','bg-warning','bg-info','bg-success'];
+                                    const labels = ['','Weak','Fair','Good','Strong'];
+                                    bar.className = 'progress-bar ' + (colors[strength] || '');
+                                    bar.style.width = (strength * 25) + '%';
+                                    text.textContent = newP.length ? (labels[strength] || '') : 'Password strength';
+
+                                    const isMatch = newP === confP && confP.length > 0;
+                                    const matchEl = document.getElementById('vt_match_text');
+                                    if (confP.length) {
+                                        matchEl.classList.remove('d-none');
+                                        matchEl.textContent = isMatch ? 'Passwords match ✓' : 'Passwords do not match';
+                                        matchEl.style.color = isMatch ? 'green' : 'red';
+                                    } else {
+                                        matchEl.classList.add('d-none');
+                                    }
+                                    document.getElementById('vt_pass_btn').disabled = !(strength >= 2 && isMatch);
+                                }
+
+                                function toggleVetPass(id, btn) {
+                                    const inp = document.getElementById(id);
+                                    const isText = inp.type === 'text';
+                                    inp.type = isText ? 'password' : 'text';
+                                    btn.innerHTML = isText ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                                }
+
+                                document.getElementById('vt_new_p').addEventListener('input', validateVetSecurity);
+                                document.getElementById('vt_conf_p').addEventListener('input', validateVetSecurity);
+                                validateVetSecurity();
+                            </script>
+
+                            <div class="tab-pane fade" id="pills-reviews" role="tabpanel">
+                                <h5 class="fw-bold mb-4" style="color: #894B8D;">Patient Reviews</h5>
+                                    <div class="review-list" style="max-height: 500px; overflow-y: auto;">
+                                        {% for r in reviews %}
+                                        <div class="p-3 mb-3 border rounded-4 bg-white shadow-sm d-flex gap-3">
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                                <i class="fas fa-user-md text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="fw-bold m-0">{{ r.cust_id.cust_name }}</h6>
+                                                    <small class="text-muted">{{ r.feedback_date|date:"d M, Y" }}</small>
+                                                </div>
+                                                <div class="text-warning small mb-1">
+                                                {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+                                                {% endfor %}
+                                                </div>
+                                                <p class="small text-muted mb-0">"{{ r.comments }}"</p>
+                                            </div>
+                                        </div>
+                                        {% empty %}
+                                        <div class="text-center py-5">
+                                            <p class="text-muted">No feedback yet. 🐾</p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+<div class="modal fade" id="offlineModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 bg-danger-subtle">
+                <h5 class="modal-title fw-bold text-danger">
+                    <i class="fas fa-calendar-times me-2"></i>Schedule Absence
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="update_availability" value="1">
+                <input type="hidden" name="availability_status" value="0">
+                <div class="modal-body p-4">
+                    <div class="alert alert-danger border-0 rounded-4 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fas fa-exclamation-circle fa-2x"></i>
+                            <div>
+                                <strong class="d-block">Important Warning!</strong>
+                                <small>Selecting a date range will <b>instantly cancel</b> all existing appointments.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="small fw-bold mb-1">From Date</label>
+                            <input type="date" name="start_date" id="vacStart" class="form-control rounded-pill shadow-sm" required min="{{ today|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-6">
+                            <label class="small fw-bold mb-1">To Date</label>
+                            <input type="date" name="end_date" id="vacEnd" class="form-control rounded-pill shadow-sm" required min="{{ today|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-bold mb-1">Reason for Absence (Mandatory)</label>
+                        <textarea name="offline_reason" class="form-control rounded-4 shadow-sm" rows="3" placeholder="Example: Medical Emergency" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-3 bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Back</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Confirm & Cancel Appointments</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="firstLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header border-0 bg-light">
+                <h5 class="modal-title fw-bold" style="color: #894B8D;">Set Your Weekly Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'update_vet_schedule' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body p-4">
+            
+                    <div class="alert alert-warning border-0 rounded-4 mb-4" style="background-color: #fffbf0;">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fas fa-lock text-warning fa-lg"></i>
+                            <div>
+                                <strong class="text-warning d-block small">Per-Day Schedule Lock Policy 🔒</strong>
+                                <p class="text-muted mb-0" style="font-size: 11px;">
+                                    Each day is <b>locked for 12 hours</b> after saving. 
+                                    🔒 Locked days are disabled — other days can be freely edited.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <table class="table table-borderless align-middle">
+                        <tbody>
+                            {% for day in prefilled_days %}
+                            <tr {% if day.is_locked %}style="opacity: 0.55; background: #f9f9f9;"{% endif %}>
+                                <td class="fw-bold">
+                                    {{ day.name }}
+                                    {% if day.is_locked %}
+                                        <span class="badge bg-warning text-dark ms-1" style="font-size: 9px;">🔒 Locked</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <select name="open_{{ day.index }}"
+                                            class="form-select rounded-pill open-time-select"
+                                            data-day="{{ day.index }}"
+                                            {% if day.is_locked %}disabled{% endif %}>
+                                        <option value="">Select Opening</option>
+                                        {% for slot in time_slots %}
+                                            {% if not slot.is_midnight %}
+                                            <option value="{{ slot.value }}" data-index="{{ slot.index }}"
+                                                {% if day.open_val == slot.value %}selected{% endif %}>
+                                                {{ slot.display }}
+                                            </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="close_{{ day.index }}"
+                                            class="form-select rounded-pill close-time-select"
+                                            data-day="{{ day.index }}"
+                                            {% if day.is_locked %}disabled{% endif %}>
+                                        <option value="">Select Closing</option>
+                                        {% for slot in time_slots %}
+                                            <option value="{{ slot.value }}" data-index="{{ slot.index }}"
+                                                {% if day.close_val == slot.value %}selected{% endif %}>
+                                                {{ slot.display }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <input type="hidden" name="force_online" id="forceOnlineInput" value="0">
+                    <button type="submit" id="saveScheduleBtn"
+                            class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow"
+                            style="background-color: #894B8D; border: none; opacity: 0.5;" disabled>
+                        Save Schedule
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const saveBtn = document.getElementById('saveScheduleBtn');
+
+    // Naya Validation Function: Jo button ko control karega
+    function validateScheduleForm() {
+        let atLeastOneDayComplete = false;
+        let hasIncompleteDay = false;
+
+        // Saare 7 dinon ko check karein
+        for (let i = 0; i < 7; i++) {
+            const openVal = document.querySelector(`.open-time-select[data-day="${i}"]`).value;
+            const closeVal = document.querySelector(`.close-time-select[data-day="${i}"]`).value;
+
+            // 1. Check for Partial Entry (Agar sirf ek bhara ho)
+            if ((openVal && !closeVal) || (!openVal && closeVal)) {
+                hasIncompleteDay = true;
+            }
+
+            // 2. Check for Complete Entry (Agar dono bhare hon)
+            if (openVal && closeVal) {
+                atLeastOneDayComplete = true;
+            }
+        }
+
+        // Final Decision: Kam se kam 1 poora din hona chahiye AND koi adha-adhura din nahi hona chahiye
+        if (saveBtn) {
+            if (atLeastOneDayComplete && !hasIncompleteDay) {
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = "1";
+                saveBtn.style.cursor = "pointer";
+            } else {
+                saveBtn.disabled = true;
+                saveBtn.style.opacity = "0.5";
+                saveBtn.style.cursor = "not-allowed";
+            }
+        }
+    }
+
+    // Tera original logic class selector ke saath
+    document.querySelectorAll('.open-time-select').forEach(select => {
+        select.addEventListener('change', function() {
+            const dayId = this.getAttribute('data-day');
+            const selectedOption = this.options[this.selectedIndex];
+            const openIndex = parseInt(selectedOption.getAttribute('data-index'));
+
+            const closeSelect = document.querySelector(`.close-time-select[data-day="${dayId}"]`);
+            
+            if (!closeSelect) return;
+
+            // 1. Agar user ne 'Select Opening' chuna
+            if (isNaN(openIndex)) {
+                Array.from(closeSelect.options).forEach(opt => {
+                    opt.disabled = false;
+                    opt.style.display = 'block';
+                });
+            } else {
+                // 2. Closing options filter karein
+                Array.from(closeSelect.options).forEach(option => {
+                    if (!option.value) return; 
+
+                    const closeIndex = parseInt(option.getAttribute('data-index'));
+                    
+                    if (closeIndex <= openIndex) {
+                        option.disabled = true;
+                        option.style.display = 'none';
+                    } else {
+                        option.disabled = false;
+                        option.style.display = 'block';
+                    }
+                });
+
+                // 3. Reset logic
+                const currentCloseOption = closeSelect.options[closeSelect.selectedIndex];
+                const currentCloseIdx = parseInt(currentCloseOption.getAttribute('data-index'));
+                
+                if (!isNaN(currentCloseIdx) && currentCloseIdx <= openIndex) {
+                    closeSelect.value = "";
+                }
+            }
+
+            // HAR CHANGE PAR VALIDATION CHECK KARO
+            validateScheduleForm();
+        });
+
+        // Pre-filled data check (Page Load)
+        if (select.value !== "") {
+            select.dispatchEvent(new Event('change'));
+        }
+    });
+
+    // Close selects par bhi listener lagao taaki validation trigger ho sake
+    document.querySelectorAll('.close-time-select').forEach(cSelect => {
+        cSelect.addEventListener('change', validateScheduleForm);
+    });
+
+    // Pehli baar load hone par button state set karein
+    document.addEventListener('DOMContentLoaded', function() {
+        validateScheduleForm();
+
+        // --- Custom Bootstrap-Style Messages (Client Look) ---
+        {% if messages %}
+            const msgContainer = document.createElement('div');
+            msgContainer.id = 'django-messages';
+            msgContainer.style = "position: fixed; top: 100px; right: 20px; z-index: 9999; min-width: 300px; max-width: 350px; word-wrap: break-word;";
+            document.body.appendChild(msgContainer);
+
+            {% for message in messages %}
+                const alertDiv = document.createElement('div');
+
+                // Check message tags and content
+                const mTags = "{{ message.tags }}";
+                const mText = "{{ message|safe }}".toLowerCase();
+
+                // Force success if tag is 'success' OR if it's a login/update success message
+                let isSuccess = mTags.includes('success') || mText.includes('success') || mText.includes('login') || mText.includes('updated');
+        
+                const themeColor = isSuccess ? '#28a745' : '#dc3545';
+                const labelText = isSuccess ? 'SUCCESS!' : 'FAIL!';
+                
+                alertDiv.className = `alert alert-${isSuccess ? 'success' : 'danger'} alert-dismissible fade show shadow-lg`;
+                alertDiv.style = `border-radius: 10px; background: #fff; border: none; border-left: 8px solid ${isSuccess ? '#28a745' : '#dc3545'}; margin-bottom: 10px; animation: slideInRight 0.5s ease forwards; display: flex; align-items: center; padding: 15px 20px;`;
+                
+                alertDiv.innerHTML = `
+                    <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                        <strong style="color: ${isSuccess ? '#28a745' : '#dc3545'}; font-size: 16px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;">
+                            ${isSuccess ? 'SUCCESS!' : 'FAIL!'}
+                        </strong>
+                        <span style="color: #555; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;">{{ message|safe }}</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" style="position: static; padding: 0; margin-left: 10px;"></button>
+                `;
+                msgContainer.appendChild(alertDiv);
+            {% endfor %}
+
+            // 5 second baad gayab hone ka logic
+            setTimeout(function () {
+                msgContainer.style.transition = "all 0.6s ease";
+                msgContainer.style.opacity = "0";
+                msgContainer.style.transform = "translateX(100px)";
+                setTimeout(function () { msgContainer.remove(); }, 600);
+            }, 5000);
+        {% endif %}
+        
+        // Status Check Interval
+        setInterval(function () {
+            fetch("{% url 'check_vet_status' %}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.status !== undefined && data.status !== 1 && data.status !== 'no_session') {
+                    window.location.href = "{% url 'vet_login' %}";
+                }
+            });
+        }, 5000);
+
+        // First Login Modal
+        {% if vet.is_first_login %}
+            const firstLoginModal = new bootstrap.Modal(document.getElementById('firstLoginModal'));
+            firstLoginModal.show();
+        {% endif %}
+
+        // Mark Absent — appointment + 1 hour ke baad enable karo
+        function checkAbsentButtons() {
+            const now = new Date();
+            document.querySelectorAll('.absent-btn').forEach(function(btn) {
+                const apptTime = new Date(btn.getAttribute('data-appt-time'));
+                const allowedAfter = new Date(apptTime.getTime() + 60 * 60 * 1000); // +1 hour
+                if (now >= allowedAfter) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            });
+        }
+        checkAbsentButtons();
+        setInterval(checkAbsentButtons, 60000); // har 1 minute check karo
+    });
+    
+</script>
+
+<style>
+    /* Slide-in Animation jo client side design ke liye zaroori hai */
+    @keyframes slideInRight {
+        from {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Message gayab hone ke liye */
+    .fade-out-custom {
+        transform: translateX(100px);
+        opacity: 0;
+        transition: all 0.6s ease;
+    }
+</style>
+
+<script>
+    function handleStatusToggle(select) {
+    if (select.value === "1") {
+        // Step 3 logic: Check if schedule exists
+        const hasSchedule = {% if current_schedule.exists %}true{% else %}false{% endif %};
+        
+        if (!hasSchedule) {
+            // Agar schedule nahi hai, to status wapas 0 kar do aur modal dikhao
+            select.value = "0";
+
+            // Jab online toggle se modal khule, hidden input ko '1' kar do
+            document.getElementById('forceOnlineInput').value = "1";
+
+            var myModal = new bootstrap.Modal(document.getElementById('firstLoginModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            myModal.show();
+        } else {
+            // Agar schedule hai, to normally submit kar do
+            document.getElementById('onlineForm').submit();
+        }
+    } else {
+        // Tera original offline logic bina kisi change ke
+        var offModal = new bootstrap.Modal(document.getElementById('offlineModal'));
+        offModal.show();
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('vacStart').value = todayStr;
+        document.getElementById('vacEnd').value = todayStr;
+        document.getElementById('offlineModal').addEventListener('hidden.bs.modal', function () {
+            if (select.value === "0") { select.value = "1"; }
+        });
+    }
+}
+
+    function confirmRemoval() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Account deactivation request will be sent to Admin.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, Request Removal!',
+            html: `<p>Enter password to confirm:</p><input type="password" id="swal-input-password" class="swal2-input">`,
+            preConfirm: () => {
+                const password = Swal.getPopup().querySelector('#swal-input-password').value;
+                if (!password) { Swal.showValidationMessage('Password required!'); }
+                return password;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST'; form.action = "{% url 'request_removal' %}";
+                const csrf = document.createElement('input'); csrf.type='hidden'; csrf.name='csrfmiddlewaretoken'; csrf.value='{{ csrf_token }}';
+                const pass = document.createElement('input'); pass.type='hidden'; pass.name='confirm_password'; pass.value=result.value;
+                form.appendChild(csrf); form.appendChild(pass); document.body.appendChild(form); form.submit();
+            }
+        });
+    }
+</script>
+
+<script>
+// Absent button: appointment time + 1 hour ke baad enable hoga (IST)
+function checkAbsentButtons() {
+    const buttons = document.querySelectorAll('.absent-btn');
+    
+    // India ka current time
+    const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+
+    buttons.forEach(btn => {
+        const apptTimeStr = btn.getAttribute('data-appt-time');
+        if (!apptTimeStr) return;
+
+        // Appointment time IST mein convert karo
+        const apptTime = new Date(new Date(apptTimeStr).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+        
+        // Enable time = appointment time + 1 hour
+        const enableTime = new Date(apptTime.getTime() + 60 * 60 * 1000);
+
+        if (nowIST >= enableTime) {
+            // Enable karo
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        } else {
+            // Abhi bhi disabled — remaining time dikhao tooltip mein
+            const diff = enableTime - nowIST;
+            const mins = Math.floor(diff / 60000);
+            const hrs = Math.floor(mins / 60);
+            const remMins = mins % 60;
+            const timeLeft = hrs > 0 ? `${hrs}h ${remMins}m` : `${remMins}m`;
+            btn.title = `Available after appointment ends (in ${timeLeft})`;
+        }
+    });
+}
+
+// Page load pe check karo
+checkAbsentButtons();
+
+// Har minute check karo — real-time enable hoga
+setInterval(checkAbsentButtons, 60000);
+</script>

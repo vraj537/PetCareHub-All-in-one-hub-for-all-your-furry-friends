@@ -75,10 +75,14 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
 - Every table in the system, exportable and searchable
 
 ---
-
-## 🖼️ Screen Layouts
-
-Every screen across all five roles — registration, login, dashboards, shop, checkout, and admin tables — is documented with full-page screenshots in [`SCREEN_LAYOUTS.pdf`](SCREEN_LAYOUTS.pdf).
+<div style="margin-bottom: 20px;">
+  <h2>🖼️ Screen Layouts</h2>
+  <p>Every screen across all five roles — registration, login, dashboards, shop, checkout, and admin tables — is documented below:</p>
+  
+  <iframe src="SCREEN_LAYOUTS.pdf" width="100%" height="700px" style="border: 1px solid #ccc; border-radius: 8px;">
+    <p>Your browser does not support iframes. <a href="SCREEN_LAYOUTS.pdf">Download the PDF</a>.</p>
+  </iframe>
+</div>
 
 ---
 

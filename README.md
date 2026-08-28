@@ -75,8 +75,140 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
 - Every table in the system, exportable and searchable
 
 ---
-[![View PDF](https://img.shields.io/badge/PDF-View_Full_Documentation-red?style=for-the-badge&logo=adobeacrobatreader)](./SCREEN_LAYOUTS.pdf)
+## 🖼️ Screenshots
 
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_01.png" alt="Screenshot 1" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_02.png" alt="Screenshot 2" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_03.png" alt="Screenshot 3" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_04.png" alt="Screenshot 4" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_05.png" alt="Screenshot 5" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_06.png" alt="Screenshot 6" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_07.png" alt="Screenshot 7" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_08.png" alt="Screenshot 8" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_09.png" alt="Screenshot 9" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_10.png" alt="Screenshot 10" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_11.png" alt="Screenshot 11" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_12.png" alt="Screenshot 12" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_13.png" alt="Screenshot 13" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_14.png" alt="Screenshot 14" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_15.png" alt="Screenshot 15" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_16.png" alt="Screenshot 16" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_17.png" alt="Screenshot 17" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_18.png" alt="Screenshot 18" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_19.png" alt="Screenshot 19" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_20.png" alt="Screenshot 20" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_21.png" alt="Screenshot 21" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_22.png" alt="Screenshot 22" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_23.png" alt="Screenshot 23" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_24.png" alt="Screenshot 24" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_25.png" alt="Screenshot 25" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_26.png" alt="Screenshot 26" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_27.png" alt="Screenshot 27" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_28.png" alt="Screenshot 28" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_29.png" alt="Screenshot 29" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_30.png" alt="Screenshot 30" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_31.png" alt="Screenshot 31" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_32.png" alt="Screenshot 32" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_33.png" alt="Screenshot 33" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_34.png" alt="Screenshot 34" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_35.png" alt="Screenshot 35" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_36.png" alt="Screenshot 36" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_37.png" alt="Screenshot 37" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_38.png" alt="Screenshot 38" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_39.png" alt="Screenshot 39" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_40.png" alt="Screenshot 40" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_41.png" alt="Screenshot 41" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_42.png" alt="Screenshot 42" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_43.png" alt="Screenshot 43" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_44.png" alt="Screenshot 44" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_45.png" alt="Screenshot 45" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_46.png" alt="Screenshot 46" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_47.png" alt="Screenshot 47" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_48.png" alt="Screenshot 48" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_49.png" alt="Screenshot 49" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_50.png" alt="Screenshot 50" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_51.png" alt="Screenshot 51" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_52.png" alt="Screenshot 52" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_53.png" alt="Screenshot 53" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_54.png" alt="Screenshot 54" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_55.png" alt="Screenshot 55" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_56.png" alt="Screenshot 56" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_57.png" alt="Screenshot 57" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_58.png" alt="Screenshot 58" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_59.png" alt="Screenshot 59" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_60.png" alt="Screenshot 60" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_61.png" alt="Screenshot 61" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_62.png" alt="Screenshot 62" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_63.png" alt="Screenshot 63" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_64.png" alt="Screenshot 64" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_65.png" alt="Screenshot 65" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_66.png" alt="Screenshot 66" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_67.png" alt="Screenshot 67" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_68.png" alt="Screenshot 68" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_69.png" alt="Screenshot 69" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_70.png" alt="Screenshot 70" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_71.png" alt="Screenshot 71" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_72.png" alt="Screenshot 72" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_73.png" alt="Screenshot 73" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_74.png" alt="Screenshot 74" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_75.png" alt="Screenshot 75" width="100%" /></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="screenshots/image_76.png" alt="Screenshot 76" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_77.png" alt="Screenshot 77" width="100%" /></td>
+    <td align="center" width="33%"><img src="screenshots/image_78.png" alt="Screenshot 78" width="100%" /></td>
+  </tr>
+</table>
 ---
 
 ## 🧰 Built With

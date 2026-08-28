@@ -75,10 +75,7 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
 - Every table in the system, exportable and searchable
 
 ---
-
-## 🖼️ Screen Layouts
-
-Every screen across all five roles — registration, login, dashboards, shop, checkout, and admin tables — is documented with full-page screenshots in [`SCREEN_LAYOUTS.pdf`](SCREEN_LAYOUTS.pdf).
+[![View PDF](https://img.shields.io/badge/PDF-View_Full_Documentation-red?style=for-the-badge&logo=adobeacrobatreader)](./SCREEN_LAYOUTS.pdf)
 
 ---
 

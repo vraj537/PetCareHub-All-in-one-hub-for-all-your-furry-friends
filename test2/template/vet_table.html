@@ -1,0 +1,144 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Vet Table </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>VET_ID</th>
+                                            <th>AREA</th>
+                                            <th>NAME</th>
+                                            <th>PASSWORD</th>
+                                            <th>EMAIL</th>
+                                            <th>PROFILE</th>
+                                            <th>SPECIALIZATION</th>
+                                            <th>DOCS</th>
+                                            <th>CONTACT</th>
+                                            <th>STATUS</th>
+                                            <th>CHARGES</th>
+                                            <th>ADDRESS</th>
+                                            <th>OTP</th>
+                                            <th>OTP_USED</th>
+                                            <th>OPEN_TIME</th>
+                                            <th>CLOSE_TIME</th>
+                                            <th>LAST_TIMING_UPDATE</th>
+                                            <th>IS_FIRST_LOGIN</th>
+                                            <th>CANCEL_COUNT</th>
+                                            <th>AVAILABILITY</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.vet_id }}</td>
+                                            <td>{{ item.area_id.area_name }}</td>
+                                            <td>{{ item.vet_name }}</td>
+                                            <td>********</td>
+                                            <td>{{ item.email }}</td>
+                                            <td>
+                                                {% if item.vet_profile %}
+                                                <a href="{{ item.vet_profile.url }}" target="_blank">
+                                                    <img src="{{ item.vet_profile.url }}" class="admin-table-img"
+                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+                                                        alt="Vet">
+                                                </a>
+                                                {% else %}
+                                                <span class="badge badge-light">No Image</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.specialization }}</td>
+                                            <td>
+                                                {% if item.documents %}
+                                                <a href="{{ item.documents.url }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-info">View PDF 📄</a>
+                                                {% else %}
+                                                <span class="text-danger small">No Docs</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.contact }}</td>
+                                            <td>
+                                                {% if item.status == 1 %}
+                                                <span class="badge badge-success">Approved (1)</span>
+                                                {% elif item.status == 2 %}
+                                                <span class="badge badge-danger">Rejected (2)</span>
+                                                {% elif item.status == 3 %}
+                                                <span class="badge badge-warning">Restricted (3)</span>
+                                                {% elif item.status == 4 %}
+                                                <span class="badge badge-dark">Removal Requested (4)</span>
+                                                {% else %}
+                                                <span class="badge badge-info">Waiting (0)</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.charges }}</td>
+                                            <td>{{ item.address }}</td>
+                                            <td>******</td>
+                                            <td>******</td>
+                                            <td>{{ item.open_time }}</td>
+                                            <td>{{ item.close_time }}</td>
+                                            <td>{{ item.last_timing_update }}</td>
+                                            <td>{{ item.is_first_login }}</td>
+                                            <td>{{ item.cancel_count }}</td>
+                                            <td>
+                                                {% if item.availability_status == 1 %}
+                                                <div class="badge badge-success">Online</div>
+                                                {% elif item.availability_status == 2 %}
+                                                <div class="badge badge-primary" style="background-color: #007bff;">On
+                                                    Leave</div>
+                                                {% else %}
+                                                <div class="badge badge-secondary" style="background-color: #393f61;">
+                                                    Offline</div>
+                                                {% endif %}
+                                            </td>
+
+                                            <td class="align-middle text-center">
+                                                {% if item.status == 0 %}
+                                                <a href="{% url 'update_vet_status' item.vet_id 'approve' %}"
+                                                    class="btn btn-sm btn-success">Accept</a>
+                                                    <br><br>
+                                                <a href="{% url 'update_vet_status' item.vet_id 'reject' %}"
+                                                    class="btn btn-sm btn-danger">Reject</a>
+                                                {% elif item.status == 1 %}
+                                                <a href="{% url 'update_vet_status' item.vet_id 'restrict' %}"
+                                                    class="btn btn-sm btn-warning">Restrict</a>
+                                                {% elif item.status == 3 %}
+                                                <a href="{% url 'update_vet_status' item.vet_id 'approve' %}"
+                                                    class="btn btn-sm btn-primary">Reactivate</a>
+                                                {% elif item.status == 4 %}
+                                                <a href="{% url 'delete_vet' item.vet_id %}"
+                                                    class="btn btn-sm btn-dark">Confirm</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="{% static 'assets/js/page/datatables.js' %}"></script>
+{% endblock %}

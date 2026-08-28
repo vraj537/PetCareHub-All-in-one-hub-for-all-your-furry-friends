@@ -1,0 +1,447 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">
+                        <h1>Profile</h1>
+                        <div class="section-header-breadcrumb">
+                            <div class="breadcrumb-item active"><a href="{% url 'dashboard' %}"><i
+                                        class="fas fa-home"></i></a></div>
+                            <div class="breadcrumb-item">Admin</div>
+                            <div class="breadcrumb-item">Profile</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            {% if messages %}
+            {% for message in messages %}
+            <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %} alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                    <i
+                        class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                    &nbsp; {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+    <div class="row mt-sm-4" 
+            style="background-image: url('{% static 'assets/img/admin_background.png' %}'); 
+            /* - '100% 100%' use karne se poori image box ke andar khich kar fit ho jayegi */
+            background-size: 100% 100%; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            border-radius: 20px; 
+            min-height: 250px; 
+            display: flex;
+            align-items: center; 
+            padding: 30px;
+            margin: 0 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div class="col-md-12 col-lg-12">
+            <div class="row author-box position-relative" style="background: transparent !important; border: none !important;">
+                        <img id="image_preview" alt="image"
+                            src="{% if user.user_profile %}{{ user.user_profile.url }}{% else %}{% static 'assets/img/users/default.png' %}{% endif %}"
+                            class="rounded-circle author-box-picture box-center mt-4"
+                            style="width: 150px; height: 150px; object-fit: cover;">
+
+                        <div class="photo-edit-btn" style="position: absolute; bottom: 10px; left: 55%;">
+                            <form method="POST" enctype="multipart/form-data" id="profile_pic_form" action="{% url 'profile' %}">
+                                {% csrf_token %}
+                                <input type="file" name="user_profile" id="profile_image_input" class="d-none"
+                                    accept="image/*">
+                                <button type="button" class="btn btn-primary btn-sm rounded-circle"
+                                    onclick="$('#profile_image_input').click();">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <button type="submit" id="save_photo_btn" class="btn btn-primary d-none shadow-primary"
+                                    style="border-radius: 20px; font-weight: 600; padding: 5px 20px; margin-top: 10px; transition: all 0.3s;">
+                                    <i class="fas fa-check-circle"></i> Save Photo
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row author-box">
+                        <div class="page-inner box-center align-center">
+                            <h2 style="color: white;">{{ user.cust_name }}</h2>
+                            <div class="page-description">
+                                <h5>Admin</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-sm-4">
+                <div class="col-12 col-md-12 col-lg-4">
+                    <div class="card">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12 col-lg-16">
+                    <div class="card">
+                        <div class="padding-20">
+                            <ul class="nav nav-pills mb-1" id="myTab2" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#about"
+                                        role="tab">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#settings"
+                                        role="tab">Edit Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="security-tab2" data-toggle="tab" href="#security"
+                                        role="tab">Security</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tab-bordered" id="myTab3Content">
+                                <div class="tab-pane fade show active" id="about" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-3 col-6 b-r">
+                                            <strong>Full Name</strong><br>
+                                            <p class="text-muted">{{ user.cust_name }}</p>
+                                        </div>
+                                        <div class="col-md-3 col-6 b-r">
+                                            <strong>Mobile</strong><br>
+                                            <p class="text-muted">{{ user.contact }}</p>
+                                        </div>
+                                        <div class="col-md-3 col-6 b-r">
+                                            <strong>Email</strong><br>
+                                            <p class="text-muted">{{ user.email }}</p>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <strong>Location</strong><br>
+                                            <p class="text-muted">{{ user.area_id.area_name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="section-title">Address Details</div>
+                                    <p class="m-t-30">{{ user.address }}</p>
+                                </div>
+
+                                <div class="tab-pane fade" id="settings" role="tabpanel">
+                                    <form method="POST" id="profile_form" class="needs-validation">
+                                        {% csrf_token %}
+                                        <div class="card-header">
+                                            <h4>Edit Profile</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <label>Full Name</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="txtname" id="name_input"
+                                                            class="form-control" value="{{ user.cust_name }}" required>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text d-none"
+                                                                id="name_valid_tick"><i
+                                                                    class="fas fa-check-circle text-success"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-7 col-12">
+                                                    <label>Email</label>
+                                                    <div class="input-group">
+                                                        <input type="email" name="txtemail" id="email_input"
+                                                            class="form-control" value="{{ user.email }}" required>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text d-none"
+                                                                id="email_valid_tick"><i
+                                                                    class="fas fa-check-circle text-success"></i></span>
+                                                            <span class="input-group-text d-none"
+                                                                id="email_invalid_cross"><i
+                                                                    class="fas fa-times-circle text-danger"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <small id="email_error_msg" class="text-danger d-none">Invalid
+                                                        format!</small>
+                                                </div>
+
+                                                <div class="form-group col-md-5 col-12">
+                                                    <label>Phone</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="txtphone" id="phone_input"
+                                                            class="form-control" value="{{ user.contact }}" required
+                                                            maxlength="10">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text d-none"
+                                                                id="phone_valid_tick"><i
+                                                                    class="fas fa-check-circle text-success"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-12">
+                                                    <label>Address</label>
+                                                    <textarea name="txtaddress" id="address_input" class="form-control"
+                                                        required style="height: 100px;">{{ user.address }}</textarea>
+                                                    <small id="address_error_msg" class="text-danger d-none">Address is
+                                                        too short!</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-right">
+                                            <button type="submit" id="btn_save" class="btn btn-primary">Save
+                                                Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane fade" id="security" role="tabpanel">
+                                    <form method="POST" action="{% url 'change_password' %}" id="security_form"
+                                        class="needs-validation">
+                                        {% csrf_token %}
+                                        <div class="card-header">
+                                            <h4>Update Password</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>Current Password</label>
+                                                <input type="password" name="old_password" class="form-control"
+                                                    required>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label>New Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" name="new_password" id="new_p"
+                                                        class="form-control" required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary toggle-pass" type="button"
+                                                            data-id="#new_p">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="progress mt-2" style="height: 5px;">
+                                                    <div id="strength-bar" class="progress-bar" role="progressbar"
+                                                        style="width: 0%;"></div>
+                                                </div>
+                                                <small id="strength-text" class="form-text text-muted">Password
+                                                    strength</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Confirm New Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" name="confirm_password" id="conf_p"
+                                                        class="form-control" required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary toggle-pass" type="button"
+                                                            data-id="#conf_p">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <small id="match-text" class="form-text d-none"></small>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-right">
+                                            <button type="submit" id="btn_pass_save" class="btn btn-primary"
+                                                disabled>Update Password</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        /**
+         * 1. TAB SWITCHING LOGIC
+         * Handles direct navigation to tabs via URL hash (e.g., profile/#security)
+         */
+        function activateTabFromHash() {
+            let hash = window.location.hash;
+            if (hash) {
+                $('.nav-pills a[href="' + hash + '"]').tab('show');
+            }
+        }
+        activateTabFromHash();
+        $(window).on('hashchange', function () {
+            activateTabFromHash();
+        });
+
+        /**
+         * 2. PASSWORD VISIBILITY TOGGLE
+         * Switches input type between 'password' and 'text'
+         */
+        $('.toggle-pass').on('click', function () {
+            let inputId = $(this).attr('data-id');
+            let inputField = $(inputId);
+            let icon = $(this).find('i');
+
+            if (inputField.attr('type') === 'password') {
+                inputField.attr('type', 'text');
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                inputField.attr('type', 'password');
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+
+        /**
+         * 3. AUTO-HIDE ALERTS
+         * Automatically fades out Django success/error messages after 5 seconds
+         */
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 5000);
+
+        /**
+         * 4. PROFILE FORM VALIDATION
+         * Validates Name, Email, Phone, and Address fields in real-time
+         */
+        const emailRegex = /^[A-Za-z0-9][A-Za-z0-9._%+-]*@[a-z0-9.-]+\.[a-z]{2,3}$/;
+        const nameRegex = /^[A-Za-z\s]+$/;
+
+        function validateProfileForm() {
+            let nameInput = $('#name_input');
+            let emailInput = $('#email_input');
+            let phoneInput = $('#phone_input');
+            let addressInput = $('#address_input');
+            let saveBtn = $('#btn_save');
+
+            let nameVal = nameInput.val() || "";
+            let emailVal = emailInput.val() || "";
+            let phoneVal = phoneInput.val() || "";
+            let addressVal = addressInput.val() || "";
+
+            // Validation rules
+            let isNameValid = nameRegex.test(nameVal) && nameVal.trim().length > 2;
+            let isEmailValid = emailRegex.test(emailVal);
+            let isPhoneValid = phoneVal.length === 10;
+            let isAddressValid = addressVal.trim().length >= 10;
+
+            // Visual feedback (Green/Red borders)
+            nameInput.toggleClass('is-valid', isNameValid).toggleClass('is-invalid', !isNameValid);
+            emailInput.toggleClass('is-valid', isEmailValid).toggleClass('is-invalid', !isEmailValid);
+            phoneInput.toggleClass('is-valid', isPhoneValid).toggleClass('is-invalid', !isPhoneValid);
+            addressInput.toggleClass('is-valid', isAddressValid).toggleClass('is-invalid', !isAddressValid);
+
+            // Enable/Disable Submit Button
+            saveBtn.prop('disabled', !(isNameValid && isEmailValid && isPhoneValid && isAddressValid));
+        }
+
+        /**
+         * 5. SECURITY FORM VALIDATION & STRENGTH METER
+         * Calculates password strength and checks if new passwords match
+         */
+        function validateSecurityForm() {
+            let newPass = $('#new_p').val() || "";
+            let confPass = $('#conf_p').val() || "";
+            let strength = 0;
+            let barContainer = $('#strength-bar').parent();
+            let bar = $('#strength-bar');
+            let text = $('#strength-text');
+            let matchText = $('#match-text');
+            let updateBtn = $('#btn_pass_save');
+
+            // Hide strength indicator if field is empty
+            if (newPass.length === 0) {
+                barContainer.addClass('d-none');
+                text.addClass('d-none');
+            } else {
+                barContainer.removeClass('d-none');
+                text.removeClass('d-none');
+
+                // Strength Logic: Length, Uppercase, Numbers, Special Characters
+                if (newPass.length >= 6) strength++;
+                if (newPass.match(/[A-Z]/)) strength++;
+                if (newPass.match(/[0-9]/)) strength++;
+                if (newPass.match(/[!@#$%^&*]/)) strength++;
+
+                // Update UI based on strength score
+                switch (strength) {
+                    case 0: bar.css('width', '10%').removeClass().addClass('progress-bar bg-secondary'); text.text('Too short').css('color', 'gray'); break;
+                    case 1: bar.css('width', '25%').removeClass().addClass('progress-bar bg-danger'); text.text('Weak').css('color', 'red'); break;
+                    case 2: bar.css('width', '50%').removeClass().addClass('progress-bar bg-warning'); text.text('Fair').css('color', '#ffc107'); break;
+                    case 3: bar.css('width', '75%').removeClass().addClass('progress-bar bg-info'); text.text('Good').css('color', '#17a2b8'); break;
+                    case 4: bar.css('width', '100%').removeClass().addClass('progress-bar bg-success'); text.text('Strong').css('color', 'green'); break;
+                }
+            }
+
+            // Confirm Password Match Check
+            let isMatch = (newPass === confPass && confPass.length > 0);
+            if (confPass.length > 0) {
+                matchText.removeClass('d-none').text(isMatch ? 'Passwords match' : 'Passwords do not match').css('color', isMatch ? 'green' : 'red');
+            } else {
+                matchText.addClass('d-none');
+            }
+
+            // Requirements: Minimum 'Fair' strength and matching passwords
+            updateBtn.prop('disabled', !(strength >= 2 && isMatch));
+        }
+
+        /**
+         * 6. LOADER LOGIC (SUBMIT HANDLING)
+         * Replaces button text with a spinner during form submission
+         */
+
+        // Loader for Edit Profile Form
+        $('#profile_form').on('submit', function () {
+            let btn = $('#btn_save');
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+            btn.prop('disabled', true);
+        });
+
+        // Loader for Update Password Form
+        $('#security_form').on('submit', function () {
+            let btn = $('#btn_pass_save');
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...');
+            btn.prop('disabled', true);
+        });
+
+        /**
+         * 7. EVENT LISTENERS & INITIALIZATION
+         */
+        $('#name_input, #email_input, #phone_input, #address_input').on('input', validateProfileForm);
+        $('#new_p, #conf_p').on('input', validateSecurityForm);
+
+        // Run on Page Load
+        validateProfileForm();
+        validateSecurityForm();
+
+        // Refresh validation when user clicks on a tab
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
+            validateProfileForm();
+            validateSecurityForm();
+        });
+        // Image selection preview and auto-show save button
+        $('#profile_image_input').on('change', function (event) {
+            const [file] = event.target.files;
+            if (file) {
+                $('#image_preview').attr('src', URL.createObjectURL(file));
+                $('#save_photo_btn').removeClass('d-none'); // Show save button only after selection
+            }
+        });
+    });
+</script>
+<style>
+#save_photo_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(103, 119, 239, 0.4) !important;
+    background-color: #394eea !important; /* Slightly darker than primary */
+}
+</style>
+{% endblock %}

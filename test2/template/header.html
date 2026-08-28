@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<!-- Mirrored from radixtouch.in/templates/snkthemes/grexsan/source/light/export-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Dec 2020 04:01:48 GMT -->
+
+<head>
+  <meta charset="UTF-8">
+  <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/app.min.css' %}">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'assets/bundles/datatables/datatables.min.css' %}">
+  <link rel="stylesheet"
+    href="{% static 'assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/components.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Ye add karo — sab elements pe override hoga */
+        th{
+            font-family: 'Baloo Bhaina 2', cursive !important;
+            font-size: medium;
+            font-weight: bold;
+        }
+        td{
+            font-family: 'Baloo Bhaina 2', cursive !important;
+            font-size: 15px;
+            font-weight: bold;
+            color: black;
+        }
+    </style>
+  <!-- Custom style CSS -->
+  <style>
+    /* Jab sidebar chota (mini) ho, tab profile buttons ko hide kar do */
+    body.sidebar-mini .sidebar-profile-buttons {
+      display: none !important;
+    }
+    .admin-table-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+.admin-table-img:hover {
+    transform: scale(1.1);
+}
+/* - Jab Sidebar Mini mode active ho */
+
+/* - Perfect alignment with menu icons */
+
+body.sidebar-mini .sidebar-brand {
+    /* - Padding-left se logo ko icons ki vertical line mein laya */
+    padding: 15px 0 10px 15px !important; 
+    display: flex !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+body.sidebar-mini .sidebar-brand a div {
+    /* - Logo ko niche wale icons se exactly match karne ke liye margin */
+    margin-left: 2px !important; 
+    width: 40px !important; 
+    height: 40px !important;
+    border-radius: 50% !important;
+    background: #ffffff;
+    border: 3px solid #a05da7 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Andar ki image ko circle mein fit karna */
+body.sidebar-mini .sidebar-brand a img {
+    height: 100% !important; /* Zoom hatakar 100% kiya taaki sirf icon dikhe */
+    width: 100% !important;
+    padding: 5px !important; /* Side spacing for icon clarity */
+    object-fit: contain !important;
+}
+
+/* Smooth transition ke liye toggle effect */
+.sidebar-brand a div, .sidebar-brand a img {
+    transition: all 0.3s ease-in-out !important;
+}
+
+  </style>
+
+  <!-- <link rel='shortcut icon' type='image/x-icon' href="{% static 'assets/img/favicon.i}" /> -->
+</head>
+
+<body>
+<script>
+  (function() {
+    var layout  = localStorage.getItem('themeLayout');
+    var sidebar = localStorage.getItem('sidebarColor');
+    var theme   = localStorage.getItem('themeColor');
+    var mini    = localStorage.getItem('miniSidebar');
+
+    if (layout === '2') {
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+    } else {
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+    }
+
+    if (sidebar && sidebar !== 'white') {
+      document.body.classList.add(sidebar + '-sidebar');
+      document.body.classList.add('sidebar-' + sidebar);
+    } else {
+      document.body.classList.add('white-sidebar');
+    }
+
+    // White theme ke liye bhi theme-white lagao
+    if (theme && theme !== 'white') {
+      document.body.classList.add('theme-' + theme);
+    } else {
+      document.body.classList.add('theme-white');
+    }
+
+    if (mini === 'true') {
+      document.body.classList.add('sidebar-mini');
+    }
+  })();
+</script>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn">
+                <i class="fas fa-bars"></i></a></li>
+            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
+                <i class="fas fa-expand"></i></a></li>
+          </ul>
+        </form>
+
+        <ul class="navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+              <img alt="image"
+                src="{% if user.user_profile %}{{ user.user_profile.url }}{% else %}{% static 'assets/img/users/default.png' %}{% endif %}"
+                class="user-img-radious-style">
+              <span class="d-sm-none d-lg-inline-block"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title">Hello {{ user.cust_name }}</div>
+
+              <a href="{% url 'profile' %}" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Profile
+              </a>
+
+              <a href="{% url 'profile' %}#security" class="dropdown-item has-icon">
+                <i class="fas fa-lock"></i> Change Password
+              </a>
+
+              <div class="dropdown-divider"></div>
+              <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          
+  <div class="sidebar-brand" style="padding: 15px 0; height: auto; text-align: center;">
+  <a href="{% url 'dashboard' %}" style="display: inline-block; width: 230px;">
+    <div style="
+        height: 75px; 
+        width: 100%; 
+        border-radius: 50px; 
+        background: #ffffff; 
+        border: 4px solid #a05da7; 
+        box-shadow: 0 4px 15px rgba(137, 75, 141, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;">
+        
+        <img alt="image" src="{% static 'assets/img/logo2.png' %}" 
+             style="height: 170%; /* - Height badhane se text bada dikhega */
+                    width: 120%; 
+                    object-fit: contain;
+                    padding: 0 10px; /* - Sides mein space ke liye */
+                    display: block;">
+    </div>
+  </a>
+</div>
+
+          <ul class="sidebar-menu">
+            <li class="dropdown active" style="display: block;">
+              <div class="sidebar-profile">
+                <div class="siderbar-profile-pic">
+                  {% if user.user_profile %}
+                  <img src="{{ user.user_profile.url }}" class="profile-img-circle box-center" alt="User Image">
+                  {% else %}
+                  <img src="{% static 'assets/img/users/default.png' %}" class="profile-img-circle box-center"
+                    alt="User Image">
+                  {% endif %}
+                </div>
+                <div class="siderbar-profile-details">
+                  <div class="siderbar-profile-name">
+                    <h3>{{ user.cust_name }}</h3>
+                  </div>
+                  <div class="siderbar-profile-position">
+                    <h6>Admin</h6>
+                  </div>
+                </div>
+                <div class="sidebar-profile-buttons sidebar-hide"
+                  style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px 0; border-bottom: 1px solid #f2f2f2; margin-bottom: 10px;">
+                  <a class="tooltips waves-effect waves-block" href="{% url 'profile' %}" data-toggle="tooltip"
+                    title="Profile"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f0f3ff; border-radius: 10px; text-decoration: none;">
+                    <i class="fas fa-user sidebarQuickIcon" style="color: #6777ef; font-size: 16px; margin: 0;"></i>
+                  </a>
+
+                  <a class="tooltips waves-effect waves-block" href="{% url 'logout' %}" data-toggle="tooltip"
+                    title="Logout"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #fff5f5; border-radius: 10px; text-decoration: none;">
+                    <i class="fas fa-sign-out-alt sidebarQuickIcon"
+                      style="color: #fc544b; font-size: 16px; margin: 0;"></i>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li class="menu-header">Main</li>
+            <li><a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-boxes"></i><span>Dashboard</span></a>
+            </li>
+            <li class="menu-header">Tables</li>
+            <li><a class="nav-link" href="{% url 'area_table' %}"><i class="fas fa-paw"></i><span>Area</span></a></li>
+            <li><a class="nav-link" href="{% url 'customer_table' %}"><i
+                  class="fas fa-paw"></i><span>Customer</span></a></li>
+            <li><a class="nav-link" href="{% url 'vet_table' %}"><i class="fas fa-paw"></i><span>Vet</span></a></li>
+            <li><a class="nav-link" href="{% url 'vet_schedule_table' %}"><i class="fas fa-paw"></i><span>Vet Schedule</span></a></li>
+            <li><a class="nav-link" href="{% url 'vendor_table' %}"><i class="fas fa-paw"></i><span>Vendor</span></a>
+            </li>
+            <li><a class="nav-link" href="{% url 'deliveryboy_table' %}"><i
+                  class="fas fa-paw"></i><span>Delivery boy</span></a></li>
+            <li><a class="nav-link" href="{% url 'appointment_table' %}"><i
+                  class="fas fa-paw"></i><span>Appointment</span></a></li>
+            <li><a class="nav-link" href="{% url 'productcategory_table' %}"><i
+                  class="fas fa-paw"></i><span>Product Category</span></a></li>
+            <li><a class="nav-link" href="{% url 'product_table' %}"><i class="fas fa-paw"></i><span>Product</span></a>
+            </li>
+            <li><a class="nav-link" href="{% url 'order_table' %}"><i class="fas fa-paw"></i><span>Order</span></a></li>
+            <li><a class="nav-link" href="{% url 'orderdetail_table' %}"><i
+                  class="fas fa-paw"></i><span>Order Details</span></a></li>
+            <li><a class="nav-link" href="{% url 'appointmentpayment_table' %}"><i
+                  class="fas fa-paw"></i><span>Appointment Payment</span></a></li>
+            <li><a class="nav-link" href="{% url 'orderpayment_table' %}"><i
+                  class="fas fa-paw"></i><span>Order Payment</span></a></li>
+            <li><a class="nav-link" href="{% url 'feedback_table' %}"><i
+                  class="fas fa-paw"></i><span>Feedback</span></a></li>
+            <li><a class="nav-link" href="{% url 'gallery_table' %}"><i class="fas fa-paw"></i><span>Gallery</span></a>
+            </li>
+            <li><a class="nav-link" href="{% url 'wishlist_table' %}"><i
+                  class="fas fa-paw"></i><span>Whislist</span></a></li>
+            <li><a class="nav-link" href="{% url 'cart_table' %}"><i class="fas fa-paw"></i><span>Cart</span></a></li>
+
+            <li class="menu-header">Components</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-chart-line"></i><span>Charts</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="chart-amchart.html">amChart</a></li>
+                <li><a class="nav-link" href="chart-apexchart.html">apexchart</a></li>
+                <li><a class="nav-link" href="chart-echart.html">eChart</a></li>
+                <li><a class="nav-link" href="chart-chartjs.html">Chartjs</a></li>
+                <li><a class="nav-link" href="chart-sparkline.html">Sparkline</a></li>
+                <li><a class="nav-link" href="chart-morris.html">Morris</a></li>
+              </ul>
+            </li>
+          </ul>
+        </aside>
+      </div>
+      {% block content %}
+
+      {% endblock %}
+      <div class="settingSidebar">
+        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+        </a>
+        <div class="settingSidebar-body ps-container ps-theme-default">
+          <div class=" fade show active">
+            <div class="setting-panel-header">Theme Customizer</div>
+            <div class="p-15 border-bottom">
+              <h6 class="font-medium m-b-10">Theme Layout</h6>
+              <div class="selectgroup layout-color w-50">
+                <label> <span class="control-label p-r-20">Light</span>
+                  <input type="radio" name="custom-switch-input" value="1" class="custom-switch-input" checked> <span
+                    class="custom-switch-indicator"></span>
+                </label>
+              </div>
+              <div class="selectgroup layout-color  w-50">
+                <label> <span class="control-label p-r-20">Dark&nbsp;</span>
+                  <input type="radio" name="custom-switch-input" value="2" class="custom-switch-input"> <span
+                    class="custom-switch-indicator"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="p-15 border-bottom">
+            <h6 class="font-medium m-b-10">Sidebar Colors</h6>
+            <div class="sidebar-setting-options">
+              <ul class="sidebar-color list-unstyled mb-0">
+                <li title="white" class="active">
+                  <div class="white"></div>
+                </li>
+                <li title="blue">
+                  <div class="blue"></div>
+                </li>
+                <li title="coral">
+                  <div class="coral"></div>
+                </li>
+                <li title="purple">
+                  <div class="purple"></div>
+                </li>
+                <li title="allports">
+                  <div class="allports"></div>
+                </li>
+                <li title="barossa">
+                  <div class="barossa"></div>
+                </li>
+                <li title="fancy">
+                  <div class="fancy"></div>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="p-15 border-bottom">
+            <h6 class="font-medium m-b-10">Theme Colors</h6>
+            <div class="theme-setting-options">
+              <ul class="choose-theme list-unstyled mb-0">
+                <li title="white" class="active">
+                  <div class="white"></div>
+                </li>
+                <li title="blue">
+                  <div class="blue"></div>
+                </li>
+                <li title="coral">
+                  <div class="coral"></div>
+                </li>
+                <li title="purple">
+                  <div class="purple"></div>
+                </li>
+                <li title="allports">
+                  <div class="allports"></div>
+                </li>
+                <li title="barossa">
+                  <div class="barossa"></div>
+                </li>
+                <li title="fancy">
+                  <div class="fancy"></div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="p-15 border-bottom">
+            <h6 class="font-medium m-b-10">Layout Options</h6>
+            <div class="theme-setting-options">
+              <label> <span class="control-label p-r-20">Compact
+                  Sidebar Menu</span> <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                  id="mini_sidebar_setting"> <span class="custom-switch-indicator"></span>
+              </label>
+            </div>
+          </div>
+          <div class="mt-3 mb-3 align-center">
+            <a href="#" class="btn btn-icon icon-left btn-outline-primary btn-restore-theme">
+              <i class="fas fa-undo"></i> Restore Default
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="main-footer">
+      <div class="footer-left">
+        Copyright &copy; 2026 <div class="bullet"></div> Design By <a href="{% url 'developers' %}">PETCAREHUB_TEAM</a>
+      </div>
+      <div class="footer-right">
+      </div>
+    </footer>
+  </div>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="{% static 'assets/js/app.min.js' %}"></script>
+
+  <script src="{% static 'assets/bundles/datatables/datatables.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/jquery.sparkline.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/buttons.flash.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/jszip.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/pdfmake.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/vfs_fonts.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'assets/bundles/datatables/export-tables/buttons.print.min.js' %}"></script>
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+  <script>
+    $(document).ready(function () {
+      // 1. Sidebar & Dropdown Logic (Existing)
+      $(document).on('click', '[data-toggle="sidebar"]', function (e) {
+        e.preventDefault();
+        $("body").toggleClass("sidebar-mini");
+      });
+
+      $('.nav-link-user').on('click', function (e) {
+        e.preventDefault();
+        $(this).next('.dropdown-menu').toggleClass('show');
+      });
+
+      // 2. GLOBAL TABLE EXPORT FIX
+      // Wrap in a small timeout to ensure other scripts don't override this
+      setTimeout(function () {
+        if ($.fn.DataTable && $('#tableExport').length) {
+          if ($.fn.DataTable.isDataTable('#tableExport')) {
+            $('#tableExport').DataTable().destroy();
+          }
+
+          var table = $('#tableExport').DataTable({
+            scrollX: true,
+            dom: 'Bfrtip',
+            buttons: [
+              { extend: 'copy', className: 'btn btn-primary btn-sm' },
+              { extend: 'csv', className: 'btn btn-purple btn-sm' },
+              { extend: 'excel', className: 'btn btn-danger btn-sm' },
+              { extend: 'pdf', className: 'btn btn-warning btn-sm' },
+              { extend: 'print', className: 'btn btn-success btn-sm' }
+            ],
+            language: {
+              search: "_INPUT_",
+              searchPlaceholder: "Search records..."
+            }
+          });
+
+          var header = $('.card-header').first();
+          if (header.length) {
+            // 1. Setup Header as a multi-row flex container
+            header.css({
+              'display': 'flex',
+              'flex-wrap': 'wrap',
+              'align-items': 'center',
+              'justify-content': 'space-between'
+            });
+
+            // 2. Put INSERT button on the right side of the first line
+            var insertBtn = header.find('.btn-outline-success');
+            insertBtn.addClass('ml-auto');
+
+            // 3. Create a new line (row) for Export buttons and Search
+            header.find('.dt-custom-row').remove(); // Prevent duplicates
+            var customRow = $('<div class="dt-custom-row w-100 d-flex align-items-center mt-3 pt-3 border-top"></div>');
+
+            // 4. Move Buttons and Search into the new row
+            var btnContainer = $('<div class="export-btns-group"></div>');
+            table.buttons().container().appendTo(btnContainer);
+            customRow.append(btnContainer);
+
+            var searchBox = $('.dataTables_filter').detach();
+            customRow.append(searchBox);
+            searchBox.addClass('ml-auto mb-0');
+
+            header.append(customRow);
+          }
+        }
+      }, 300);
+    });
+  </script>
+
+  <style>
+    /* Spacing for the buttons in the new line */
+    .export-btns-group .btn {
+      margin-right: 5px !important;
+    }
+
+    .btn-purple {
+      background-color: #894B8D;
+      color: white;
+    }
+
+    .border-top {
+      border-top: 1px solid #f2f2f2 !important;
+    }
+
+    .dataTables_filter label {
+      margin-bottom: 0 !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .dataTables_filter input {
+      width: 300px !important;
+      /* Fixed width for better control */
+      height: 38px !important;
+      /* Matches standard button height */
+      padding: 5px 15px !important;
+      border-radius: 5px !important;
+      border: 1px solid #e4e6fc !important;
+      transition: all 0.3s ease;
+    }
+
+    /* Focus effect for a premium feel */
+    .dataTables_filter input:focus {
+      width: 350px !important;
+      /* Expands slightly on click */
+      outline: none;
+      border-color: #6777ef !important;
+      box-shadow: 0 0 5px rgba(103, 119, 239, 0.2);
+    }
+
+    /* Adjust label alignment */
+    .dataTables_filter label {
+      font-weight: 600;
+      color: #34395e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      /* Space between "Search:" text and input */
+    }
+  </style>
+  <style>
+    /* Jab sidebar mini ho jaye, toh navbar ko left se shift karo */
+    body.sidebar-mini .main-navbar {
+      left: 65px !important;
+      width: calc(100% - 65px) !important;
+    }
+
+    /* Jab sidebar poora gayab ho (mobile mein), tab full width */
+    body.sidebar-gone .main-navbar {
+      left: 0 !important;
+      width: 100% !important;
+    }
+
+    /* Taaki transition smooth dikhe */
+    .main-navbar {
+      transition: all 0.5s ease;
+      z-index: 890 !important;
+    }
+
+    .navbar-right {
+      margin-left: auto;
+    }
+  </style>
+
+<!-- STEP 2: jQuery ready — events + active classes -->
+<script>
+  $(document).ready(function () {
+
+    var savedThemeLayout  = localStorage.getItem('themeLayout')  || '1';
+    var savedSidebarColor = localStorage.getItem('sidebarColor') || 'white';
+    var savedThemeColor   = localStorage.getItem('themeColor')   || 'white';
+    var savedMiniSidebar  = localStorage.getItem('miniSidebar')  || 'false';
+
+    // ── 1. THEME LAYOUT (Light / Dark) ─────────────────────────────────────
+    function applyThemeLayout(val) {
+      if (val === '2') {
+        $('body').addClass('dark').removeClass('light');
+      } else {
+        $('body').addClass('light').removeClass('dark');
+      }
+      $('input[name="custom-switch-input"][type="radio"]').each(function () {
+        $(this).prop('checked', $(this).val() === val);
+      });
+    }
+    applyThemeLayout(savedThemeLayout);
+
+    $(document).on('change', 'input[name="custom-switch-input"][type="radio"]', function () {
+      localStorage.setItem('themeLayout', $(this).val());
+      applyThemeLayout($(this).val());
+    });
+
+    // ── 2. SIDEBAR COLOR ───────────────────────────────────────────────────
+    function applySidebarColor(color) {
+  var protectedClasses = ['sidebar-gone', 'sidebar-mini', 'sidebar-style-2'];
+  var filtered = document.body.className.split(' ').filter(function (cls) {
+    if (protectedClasses.indexOf(cls) !== -1) return true;
+    if (cls.endsWith('-sidebar')) return false;
+    if (cls.startsWith('sidebar-') && protectedClasses.indexOf(cls) === -1) return false;
+    return true;
+  });
+  document.body.className = filtered.join(' ');
+
+  // White ke liye 'white-sidebar' explicitly lagao
+  if (color && color !== 'white') {
+    $('body').addClass(color + '-sidebar').addClass('sidebar-' + color);
+  } else {
+    $('body').addClass('white-sidebar');
+  }
+
+  $('.sidebar-color li').removeClass('active');
+  $('.sidebar-color li[title="' + color + '"]').addClass('active');
+}
+    applySidebarColor(savedSidebarColor);
+
+    $(document).on('click', '.sidebar-color li', function () {
+      var color = $(this).attr('title');
+      localStorage.setItem('sidebarColor', color);
+      applySidebarColor(color);
+    });
+
+    // ── 3. THEME COLOR ─────────────────────────────────────────────────────
+    function applyThemeColor(color) {
+  var filtered = document.body.className.split(' ').filter(function (cls) {
+    return !cls.startsWith('theme-');
+  });
+  document.body.className = filtered.join(' ');
+
+  // White ke liye bhi theme-white lagao
+  if (color && color !== 'white') {
+    $('body').addClass('theme-' + color);
+  } else {
+    $('body').addClass('theme-white');
+  }
+
+  $('.choose-theme li').removeClass('active');
+  $('.choose-theme li[title="' + color + '"]').addClass('active');
+}
+    applyThemeColor(savedThemeColor);
+
+    $(document).on('click', '.choose-theme li', function () {
+      var color = $(this).attr('title');
+      localStorage.setItem('themeColor', color);
+      applyThemeColor(color);
+    });
+
+    // ── 4. MINI / COMPACT SIDEBAR ──────────────────────────────────────────
+    function applyMiniSidebar(enabled) {
+      if (enabled === 'true' || enabled === true) {
+        $('body').addClass('sidebar-mini');
+        $('#mini_sidebar_setting').prop('checked', true);
+      } else {
+        $('body').removeClass('sidebar-mini');
+        $('#mini_sidebar_setting').prop('checked', false);
+      }
+    }
+    applyMiniSidebar(savedMiniSidebar);
+
+    $(document).on('change', '#mini_sidebar_setting', function () {
+      var val = $(this).is(':checked') ? 'true' : 'false';
+      localStorage.setItem('miniSidebar', val);
+      applyMiniSidebar(val);
+    });
+
+    // ── 5. RESTORE DEFAULT ─────────────────────────────────────────────────
+    $(document).on('click', '.btn-restore-theme', function (e) {
+      e.preventDefault();
+      localStorage.removeItem('themeLayout');
+      localStorage.removeItem('sidebarColor');
+      localStorage.removeItem('themeColor');
+      localStorage.removeItem('miniSidebar');
+      applyThemeLayout('1');
+      applySidebarColor('white');
+      applyThemeColor('white');
+      applyMiniSidebar(false);
+    });
+
+  });
+</script>
+</body>
+
+</html>

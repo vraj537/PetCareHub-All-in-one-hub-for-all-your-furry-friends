@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<!-- Mirrored from radixtouch.in/templates/snkthemes/grexsan/source/light/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Dec 2020 03:58:33 GMT -->
+
+<head>
+  <meta charset="UTF-8">
+  <title>PetCareHub - All in one hub for all your furry friends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/petcarehub_roundlogo_bgremoved.png' %}">
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/app.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/bundles/bootstrap-social/bootstrap-social.css' %}">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/components.css' %}">
+  <!-- Custom style CSS -->
+<style>
+  /* - Modern Login Styling */
+.card-auth {
+    background: rgba(255, 255, 255, 0.9) !important; /* Halka transparent white */
+    backdrop-filter: blur(10px); /* Glass effect */
+    border-radius: 30px !important; /* Round corners like other pages */
+    border: 4px solid var(--tg-brand-color) !important;
+    box-shadow: 0 15px 35px rgba(137, 75, 141, 0.2) !important;
+}
+
+.card-header-auth {
+    background: linear-gradient(45deg, #894B8D, #b36eb8) !important;
+    color: white !important;
+    border-radius: 25px 25px 0 0 !important;
+    padding: 20px !important;
+    text-align: center;
+}
+
+.btn-auth-color {
+    background-color: #ff0080 !important; /* Bright Pink as per your screenshot */
+    border-radius: 15px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-auth-color:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(255, 0, 128, 0.3);
+}
+
+.form-control {
+    border-radius: 12px !important;
+    background: #f0f5ff !important; /* Blue tint like delivery login */
+    border: 2px solid #eee !important;
+}
+/* - Perfect Theme Matching */
+
+/* - Center Alignment Fix */
+/* - Perfect Symmetry Fix */
+.login-brand {
+    display: block !important; /* inline-block hata kar block karein */
+    margin: 0 auto 30px auto !important; /* Isse card ke upar exact center hoga */
+    
+    padding: 0 !important; 
+    border: 5px solid #b294b5 !important; 
+    border-radius: 80px !important; /* Shape ko aur round kiya taaki borders square na lagein */
+    
+    /* - Width adjust ki taaki card ke borders se bahar na dikhe */
+    width: 350px !important; 
+    height: 110px !important;
+    
+    background: #fff;
+    overflow: hidden; 
+    box-shadow: 0 10px 25px rgba(137, 75, 141, 0.2) !important;
+}
+
+/* Header Gradient Fix (Same as screenshot) */
+.card-header-auth {
+    background: linear-gradient(180deg, #894B8D 0%, #7c3f81 100%) !important;
+    padding: 25px !important;
+    border-bottom: none !important;
+}
+
+.card-header-auth h4 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 3. Login Button: Pink ko theme ke dark purple ya accent color mein badla */
+.btn-auth-color {
+    background: linear-gradient(45deg, #894B8D, #703d73) !important; /* Theme Purple Button */
+    border: none !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border-radius: 15px !important;
+    padding: 12px !important;
+    transition: 0.3s ease;
+}
+
+.btn-auth-color:hover {
+    background: #703d73 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(137, 75, 141, 0.4) !important;
+}
+
+/* 4. Input Focus: Border color theme purple */
+.form-control:focus {
+    border-color: #894B8D !important;
+    box-shadow: 0 0 0 0.2rem rgba(137, 75, 141, 0.25) !important;
+}
+/* - Matching Dog & Cat Icon Purple */
+
+/* 1. Login Header: Exact Pet Icon Purple */
+.card-header-auth {
+    background: #894B8D !important; /* Dog/Cat icon ka exact purple shade */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 22px !important;
+    border-bottom: none !important;
+}
+
+.card-header-auth h4 {
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* 2. Login Button: Normal state mein logo purple */
+.btn-auth-color {
+    background-color: #894B8D !important; 
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 14px !important;
+    font-weight: 700 !important;
+    transition: 0.3s ease;
+}
+
+/* 3. Button Hover: Aapki demand ke according thoda light shade */
+.btn-auth-color:hover {
+    background-color: #a46ca8 !important; /* Lightened version of the pet purple */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(137, 75, 141, 0.3) !important;
+}
+</style>
+  <!-- <link rel='shortcut icon' type='image/x-icon' href="{% static 'assets/img/favicon.ico' %}" /> -->
+</head>
+
+<body style="background-image: url('{% static 'assets/img/admin_background.png' %}'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+  <div class="loader"></div>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="login-brand login-brand-color">
+              <img alt="image" src="{% static 'assets/img/posts/logo2.png' %}" style="height:100px;width:320px;" />
+            </div>
+            <div class="card card-auth">
+              <div class="card-header card-header-auth">
+                <h4>Login</h4>
+              </div>
+              <div class="card-body">
+                {% if messages %}
+                {% for message in messages %}
+                <div
+                  class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %} alert-dismissible show fade">
+                  <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                      <span>&times;</span>
+                    </button>
+                    <i
+                      class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                    &nbsp; {{ message }}
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <form method="POST" action="#" class="needs-validation" novalidate="">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                    <div class="invalid-feedback">
+                      Please fill in your email
+                    </div>
+                  </div>
+                  <div class="form-group">
+    <div class="d-block">
+        <label for="password" class="control-label">Password</label>
+        <div class="float-right">
+            <a href="{% url 'forgotpass' %}" class="text-small">Forgot Password?</a>
+        </div>
+    </div>
+    <div class="input-group">
+        <input id="password" type="password" class="form-control" name="password" tabindex="2" required style="border-radius: 12px 0 0 12px !important;">
+        <div class="input-group-append">
+            <span class="input-group-text" onclick="togglePass('password', this)" 
+                  style="cursor: pointer; border-radius: 0 12px 12px 0; background: #f0f5ff; border: 2px solid #eee; border-left: none;">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+    </div>
+    <div class="invalid-feedback">
+        Please fill in your password
+    </div>
+</div>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                      <label class="custom-control-label" for="remember-me">Remember Me</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-lg btn-block btn-auth-color" tabindex="4">
+                      Login
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+    </section>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="{% static 'assets/js/app.min.js' %}"></script>
+  <!-- JS Libraies -->
+  <!-- Page Specific JS File -->
+  <!-- Template JS File -->
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+  <script>
+    window.setTimeout(function () {
+      $(".alert").fadeTo(500, 0).slideUp(500, function () {
+        $(this).remove();
+      });
+    }, 5000);
+    // - Admin Login Eye Toggle
+function togglePass(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const icon = btn.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+  </script>
+
+</body>
+
+
+<!-- Mirrored from radixtouch.in/templates/snkthemes/grexsan/source/light/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Dec 2020 03:58:33 GMT -->
+
+</html>

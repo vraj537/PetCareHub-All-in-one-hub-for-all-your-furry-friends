@@ -1,0 +1,60 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Vet Schedule Table</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                    
+                                    <thead>
+                                        <tr>
+                                            <th>SCHEDULE_ID</th>
+                                            <th>VET_NAME</th>
+                                            <th>DAY_OF_WEEK</th>
+                                            <th>OPEN_TIME</th>
+                                            <th>CLOSE_TIME</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.schedule_id }}</td>
+                                            <td>{{ item.vet_id.vet_name }}</td>
+                                            <td>{{ item.get_day_of_week_display }}</td>
+                                            <td>{{ item.open_time }}</td>
+                                            <td>{{ item.close_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

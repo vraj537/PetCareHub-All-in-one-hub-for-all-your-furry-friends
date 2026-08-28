@@ -1,0 +1,60 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Appointment Payment Table</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>APP_PAYMENT_ID</th>
+                                            <th>APPOINTMENT_ID</th>
+                                            <th>PAYMENT_MODE</th>
+                                            <th>AMOUNT</th>
+                                            <th>PAYMENT_STATUS</th>
+                                            <th>PAYMENT_TOKEN</th>
+                                            <th>PAYMENT_DATE</th>
+                                            <th>PAYMENT_TIME</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.app_payment_id }}</td>
+                                            <td>{{ item.appointment_id_id }}</td>
+                                            <td>{{ item.payment_mode }}</td>
+                                            <td>{{ item.amount }}</td>
+                                            <td>{{ item.payment_status }}</td>
+                                            <td>{{ item.payment_token }}</td>
+                                            <td>{{ item.payment_date }}</td>
+                                            <td>{{ item.payment_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}

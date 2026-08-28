@@ -1,0 +1,75 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Appointment Table</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>APPOINTMENT_ID</th>
+                                            <th>CUST_ID</th>
+                                            <th>VET_ID</th>
+                                            <th>APP_FOR</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>APPOINTMENT_DATE</th>
+                                            <th>APPOINTMENT_STATUS</th>
+                                            <th>PAYMENT_TIMER_START</th>
+                                            <th>MEDICAL_REPORT</th>
+                                            <th>PAYMENT_MODE</th>
+                                            <th>CHARGES</th>
+                                            <th>CANCEL_REASON</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.appointment_id }}</td>
+                                            <td>{{ item.cust_id.cust_name }}</td>
+                                            <td>{{ item.vet_id.vet_name }}</td>
+                                            <td>{{ item.app_for }}</td>
+                                            <td>{{ item.description }}</td>
+                                            <td>{{ item.appointment_date }}</td>
+                                            <td>{{ item.appointment_status }}</td>
+                                            <td>{{ item.payment_timer_start }}</td>
+                                            <td>
+                                                {% if item.medical_report %}
+                                                <a href="{{ item.medical_report.url }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-info">View PDF 📄</a>
+                                                {% else %}
+                                                <span class="text-danger small">No Docs</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.payment_mode }}</td>
+                                            <td>{{ item.charges }}</td>
+                                            <td>{{ item.cancel_charges }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}

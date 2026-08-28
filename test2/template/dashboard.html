@@ -1,0 +1,293 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+  {% if messages %}
+  {% for message in messages %}
+  <div
+    class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %} alert-dismissible show fade"
+    style="position: absolute; top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+    <div class="alert-body">
+      <button class="close" data-dismiss="alert">
+        <span>&times;</span>
+      </button>
+      <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+      &nbsp; <strong>{% if message.tags == 'success' %}Success!{% else %}Error!{% endif %}</strong>
+      <br> {{ message }}
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <section class="section">
+    <div class="section-header">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+          <div class="section-header-breadcrumb-content">
+            <h1>Pet Care Hub Dashboard</h1>
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+          <div class="section-header-breadcrumb-chart float-right">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card card-sales-widget card-bg-blue-gradient" style="min-height: 140px;">
+          <div class="card-wrap d-flex flex-column align-items-center justify-content-center"
+            style="padding-top: 25px;">
+            <div class="card-header text-center">
+              <h3 class="mb-1">{{ product_count }}</h3>
+              <h4 class="mb-0">TOTAL PRODUCTS</h4>
+            </div>
+          </div>        
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card card-sales-widget card-bg-yellow-gradient" style="min-height: 140px;">
+          <div class="card-wrap d-flex flex-column align-items-center justify-content-center"
+            style="padding-top: 25px;">
+            <div class="card-header text-center">
+              <h3 class="mb-1">{{ appointment_count }}</h3>
+              <h4 class="mb-0">TOTAL APPOINTMENTS</h4>
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card card-sales-widget card-bg-orange-gradient" style="min-height: 140px;">
+          <div class="card-wrap d-flex flex-column align-items-center justify-content-center"
+            style="padding-top: 25px;">
+            <div class="card-header text-center">
+              <h3 class="mb-1">₹{{ appointment_payment }}</h3>
+              <h4 class="mb-0">App. Payment Received</h4>
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card card-sales-widget card-bg-green-gradient" style="min-height: 140px;">
+          <div class="card-wrap d-flex flex-column align-items-center justify-content-center"
+            style="padding-top: 25px;">
+            <div class="card-header text-center">
+              <h3 class="mb-1">₹{{ order_payment }}</h3>
+              <h4 class="mb-0">Order Payment Received</h4>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Monthly Sales</h4>
+          </div>
+          <div class="card-body">
+            <div id="monthlySalesChart"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>ORDER TABLE</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-striped" id="orderTable">
+                <thead style="position: sticky; top: 0; background: #fff; z-index: 10;">
+                  <tr>
+                    <th>ORDER_ID</th>
+                    <th>CUST_ID</th>
+                    <th>DELIVERYBOY_ID</th>
+                    <th>AREA_NAME</th>
+                    <th>ADDRESS</th>
+                    <th>TOTAL_AMOUNT</th>
+                    <th>ORDER_DATE</th>
+                    <th>IS_CANCELLED</th>
+                    <th>CANCELLED_AT</th>
+                    <th>DELIVERY_DATE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in items %}
+                  <tr>
+                    <td>{{ item.order_id }}</td>
+                    <td>{{ item.cust_id.cust_name }}</td>
+                    <td>{{ item.deliveryboy_id.deliveryboy_name }}</td>
+                    <td>{{ item.area_id.area_name }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>{{ item.total_amount }}</td>
+                    <td>{{ item.order_date }}</td>
+                    <td>{{ item.is_cancelled }}</td>
+                    <td>{{ item.cancelled_at }}</td>
+                    <td>{{ item.delivery_date }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>APPOINTMENT TABLE</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-striped">
+                <thead style="position: sticky; top: 0; background: #fff; z-index: 10;">
+                  <tr>
+                    <th>APPOINTMENT_ID</th>
+                    <th>CUST_ID</th>
+                    <th>VET_ID</th>
+                    <th>APP_FOR</th>
+                    <th>DESCRIPTION</th>
+                    <th>APPOINTMENT_DATE</th>
+                    <th>APPOINTMENT_STATUS</th>
+                    <th>PAYMENT_TIMER_START</th>
+                    <th>MEDICAL_REPORT</th>
+                    <th>PAYMENT_MODE</th>
+                    <th>CHARGES</th>
+                    <th>CANCEL_REASON</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in e %}
+                  <tr>
+                    <td>{{ item.appointment_id }}</td>
+                    <td>{{ item.cust_id.cust_name }}</td>
+                    <td>{{ item.vet_id.vet_name }}</td>
+                    <td>{{ item.app_for }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.appointment_date }}</td>
+                    <td>{{ item.appointment_status }}</td>
+                    <td>{{ item.payment_timer_start }}</td>
+                    <td>
+                      {% if item.medical_report %}
+                      <a href="{{ item.medical_report.url }}" target="_blank" class="btn btn-sm btn-outline-info">View
+                        PDF 📄</a>
+                      {% else %}
+                      <span class="text-danger small">No Docs</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ item.payment_mode }}</td>
+                    <td>{{ item.charges }}</td>
+                    <td>{{ item.cancel_charges }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <div class="settingSidebar">
+    <a href="javascript:void(0)" class="settingPanelToggle"><i class="fa fa-spin fa-cog"></i></a>
+    <div class="settingSidebar-body ps-container ps-theme-default">
+      <div class="p-15 border-bottom">
+        <h6 class="font-medium m-b-10">Theme Layout</h6>
+        <div class="selectgroup layout-color w-50">
+          <label><input type="radio" name="custom-switch-input" value="1" class="custom-switch-input" checked><span
+              class="custom-switch-indicator"></span> Light</label>
+        </div>
+        <div class="selectgroup layout-color w-50">
+          <label><input type="radio" name="custom-switch-input" value="2" class="custom-switch-input"><span
+              class="custom-switch-indicator"></span> Dark</label>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<script src="{% static 'assets/js/app.min.js' %}"></script>
+<script src="{% static 'assets/bundles/echart/echarts.js' %}"></script>
+<script src="{% static 'assets/bundles/chartjs/chart.min.js' %}"></script>
+<script src="{% static 'assets/bundles/apexcharts/apexcharts.min.js' %}"></script>
+
+<script src="{% static 'assets/js/page/index.js' %}"></script>
+
+
+<script>
+  $(document).ready(function () {
+    // FIX FOR SIDEBAR
+    $(".settingPanelToggle").on("click", function () {
+      $(".settingSidebar").toggleClass("showSettingPanel");
+    });
+
+    // FIX FOR PROFILE ICON DROPDOWN
+    // We target the icon class or the dropdown-toggle to ensure it opens on click
+    $('.nav-link-user').on('click', function (e) {
+      $(this).next('.dropdown-menu').toggleClass('show');
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on('click', function (e) {
+      if (!$(e.target).closest('.dropdown').length) {
+        $('.dropdown-menu').removeClass('show');
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    // FIX FOR PROFILE ICON DROPDOWN
+    // Using $(document).on ensures the click is caught even if 
+    // the header is still rendering.
+    $(document).on('click', '.nav-link-user', function (e) {
+      e.preventDefault();   // Stops '#' from appearing in URL
+      e.stopPropagation();  // Prevents the document-click-close from firing
+
+      var $menu = $(this).next('.dropdown-menu');
+
+      // Close any other open dropdowns first
+      $('.dropdown-menu').not($menu).removeClass('show');
+
+      // Toggle the current one
+      $menu.toggleClass('show');
+    });
+
+    // Close dropdown when clicking anywhere else on the page
+    $(document).on('click', function (e) {
+      if (!$(e.target).closest('.dropdown').length) {
+        $('.dropdown-menu').removeClass('show');
+      }
+    });
+
+    // Sidebar Toggle Fix (if needed)
+    $(".settingPanelToggle").on("click", function (e) {
+      e.preventDefault();
+      $(".settingSidebar").toggleClass("showSettingPanel");
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // 5 second baad popup ko dhire se gayab karne ke liye
+    window.setTimeout(function () {
+      $(".alert").fadeTo(500, 0).slideUp(500, function () {
+        $(this).remove();
+      });
+    }, 5000);
+  });
+</script>
+
+{% endblock %}

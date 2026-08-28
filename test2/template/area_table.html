@@ -1,0 +1,65 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4>Area Table</h4>
+                            <a href="{% url 'insert_area_table' %}" class="btn btn-outline-success">ADD</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th>AREA_ID</th>
+                                            <th>AREA_NAME</th>
+                                            <th>PINCODE</th>
+                                            <th>EDIT</th>
+                                            <th>REMOVE</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.area_id }}</td>
+                                            <td>{{ item.area_name }}</td>
+                                            <td>{{ item.pincode }}</td>
+                                            <td>
+                                                <a href="{% url 'update_area_table' item.area_id %}" class="btn"
+                                                    style="border: 1px solid #007bff; color: #007bff; background: transparent;">EDIT</a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'area_delete' item.area_id %}" class="btn"
+                                                    style="border: 1px solid #dc3545; color: #dc3545; background: transparent;">REMOVE</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}

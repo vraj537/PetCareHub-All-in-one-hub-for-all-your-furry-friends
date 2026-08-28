@@ -1,0 +1,62 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="section-header-breadcrumb-content">                     
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Cart Table</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>CART_ID</th>
+                                            <th>CUST_ID</th>
+                                            <th>PROD_ID</th>
+                                            <th>QUANTITY</th>
+                                            <th>PRICE</th>
+                                            <th>TOTAL_PRICE</th>
+                                            <th>ADDED_AT</th>
+                                            <th>UPDATED_AT</th>
+                                            <th>STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.cart_id }}</td>
+                                            <td>{{ item.cust_id_id }}</td>
+                                            <td>{{ item.prod_id.prod_name }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>{{ item.price }}</td>
+                                            <td>{{ item.total_price }}</td>
+                                            <td>{{ item.added_at }}</td>
+                                            <td>{{ item.updated_at }}</td>
+                                            <td>{{ item.status }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}

@@ -9,6 +9,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:B8860B,100:0C0C0C&height=100&section=footer"/>
 
+
+
 </div>
 
 
@@ -26,7 +28,7 @@
 
 </div>
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🐕 What is this, exactly?
 
@@ -44,7 +46,7 @@ It's built like a real pet-care marketplace would be — **five separate roles**
 
 Everything from OTP-based password resets to Razorpay checkout to area-wise vet search was built to *work*, not just demo well.
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🏆 A Real-World Partnership
 
@@ -55,7 +57,7 @@ This isn't a fictional "adopt a pet" page for show. PetCareHub's adoption sectio
 
 Both documents are viewable right from the in-app **Adoption** page. Big thanks to **Naitik Bhatt** and the team at [@adoptionhome_ahmedabad](https://instagram.com/adoptionhome_ahmedabad) for trusting a student project with something real.
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## ✨ Feature Tour
 
@@ -85,7 +87,7 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
 - Full CRUD control over areas, categories, products, gallery, and feedback
 - Every table in the system, exportable and searchable
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 ## 🖼️ Screenshots
 
 <table>
@@ -220,7 +222,7 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
     <td align="center" width="33%"><img src="screenshots/image_78.png" alt="Screenshot 78" width="100%" /></td>
   </tr>
 </table>
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🧰 Built With
 
@@ -234,7 +236,7 @@ Both documents are viewable right from the in-app **Adoption** page. Big thanks 
 | Email | Django SMTP backend (Gmail) for OTP flows |
 | Config | `python-dotenv` for environment-based secrets |
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🏗️ How It's Organized
 
@@ -253,7 +255,7 @@ petcare/
 
 Each role lives as its own self-contained Django app — its own `*_urls.py`, `*_views.py`, templates, and static assets. Nothing bleeds into anything else.
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🚀 Running It Locally
 
@@ -297,7 +299,7 @@ python manage.py runserver
 ```
 Then open `http://127.0.0.1:8000/`
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🔐 Security Notes
 
@@ -305,7 +307,7 @@ Then open `http://127.0.0.1:8000/`
 - Passwords are hashed with Django's built-in `make_password` / `check_password`.
 - Each dashboard is fenced off by its own middleware guard (`client/middleware.py`, `test2/middleware.py`, and friends).
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 🗺️ Where This Could Go Next
 
@@ -314,7 +316,7 @@ Then open `http://127.0.0.1:8000/`
 - Containerize with Docker for one-command setup
 - Expose a REST API layer for a future mobile app
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 📄 License
 
@@ -322,11 +324,11 @@ Then open `http://127.0.0.1:8000/`
 
 This project is **not** open-source. No permission is granted to copy, reproduce, redistribute, modify, or reuse this software, its source code, or any part of it — for personal, academic, or commercial purposes — without prior written permission from the copyright holder.
 
----
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 
 ## 👥 Built By
 
 **Vraj Rathod** — [@vraj537](https://github.com/vraj537)
-**Ansh** — [@Anshu073](https://github.com/Anshu073)
+**Ansh Prajapati** — [@Anshu073](https://github.com/Anshu073)
 
-A two-person final-year BCA capstone project, built from the ground up together. Open to a conversation about the architecture — feel free to reach out.
+A two-person final-year BCA project, built from the ground up together. Open to a conversation about the architecture — feel free to reach out.

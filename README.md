@@ -1,8 +1,19 @@
 <div align="center">
+<div align="center">
 
-# 🐾 PetCareHub
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0C0C0C,100:B8860B&height=100&section=header"/>
 
-### One roof. Five roles. Every pet, taken care of.
+<img src="client/client_static/assets/img/logo/footerlogo_removedbg.png" width="300"/>
+<br>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&color=B8860B&center=true&vCenter=true&width=500&lines=All+in+one+hub+for+all+your+furry+friends;5+Roles.+One+Platform.+Every+Pet+Covered." />
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:B8860B,100:0C0C0C&height=100&section=footer"/>
+
+</div>
+
+
+
+
 
 *A full-stack Django platform where customers book vets, shop for pet supplies, and track deliveries — while vets, vendors, delivery agents, and admins each run their own side of the show.*
 

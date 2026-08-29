@@ -5,7 +5,7 @@
 
 <img src="client/client_static/assets/img/logo/footerlogo_removedbg.png" width="300"/>
 <br>
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&color=B8860B&center=true&vCenter=true&width=500&lines=All+in+one+hub+for+all+your+furry+friends;5+Roles.+One+Platform.+Every+Pet+Covered." />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&color=B8860B&center=true&vCenter=true&width=500&lines=All+in+one+hub+for+all+your+furry+friends;5+Roles.+One+Platform.+For:-+Dogs+Cats." />
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:B8860B,100:0C0C0C&height=100&section=footer"/>
 

@@ -7,7 +7,7 @@
 
 <img src="client/client_static/assets/img/logo/footerlogo_removedbg.png" width="300"/>
 <br>
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&color=B8860B&center=true&vCenter=true&width=500&lines=All+in+one+hub+for+all+your+furry+friends;5+Roles.+One+Platform.+For:-+Dogs+Cats." />
+<img src="https://readme-typing-svg.demolab.comfont=Fira+Code&size=20&pause=1000&color=B8860B&center=true&vCenter=true&width=500&lines=All+in+one+hub+for+all+your+furry+friends;5+Roles.+One+Platform.+For:-+Dogs+/+Cats." />
 
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:B8860B,100:0C0C0C&height=100&section=footer"/>
@@ -83,8 +83,22 @@ This isn't a fictional "adopt a pet" page for show. PetCareHub's adoption sectio
 Both documents are viewable right from the in-app **Adoption** page. Big thanks to **Naitik Bhatt** and the team at [@adoptionhome_ahmedabad](https://instagram.com/adoptionhome_ahmedabad) for trusting a student project with something real.
 
 
+
+
+
 ---
 
+
+## 📄 License
+
+
+**All Rights Reserved** — Copyright (c) 2026 PetCareHub. See [LICENSE](LICENSE) for the full text.
+
+
+This project is **not** open-source. No permission is granted to copy, reproduce, redistribute, modify, or reuse this software, its source code, or any part of it — for personal, academic, or commercial purposes — without prior written permission from the copyright holder.
+
+
+---
 
 ## ✨ Feature Tour
 
@@ -371,21 +385,7 @@ Then open `http://127.0.0.1:8000/`
 - Containerize with Docker for one-command setup
 - Expose a REST API layer for a future mobile app
 
-
 ---
-
-
-## 📄 License
-
-
-**All Rights Reserved** — Copyright (c) 2026 PetCareHub. See [LICENSE](LICENSE) for the full text.
-
-
-This project is **not** open-source. No permission is granted to copy, reproduce, redistribute, modify, or reuse this software, its source code, or any part of it — for personal, academic, or commercial purposes — without prior written permission from the copyright holder.
-
-
----
-
 
 ## 👥 Built By
 
@@ -393,8 +393,9 @@ This project is **not** open-source. No permission is granted to copy, reproduce
 **Vraj Rathod** — [@vraj537](https://github.com/vraj537)
 **Ansh Prajapati** — [@Anshu073](https://github.com/Anshu073)
 
-<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
+
 
 
 A two-person final-year BCA project, built from the ground up together. Open to a conversation about the architecture — feel free to reach out.
+<img src="client/client_static/assets/img/logo/petcarehub-marquee-strip-v5.svg" width="100%"/>
 

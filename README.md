@@ -390,8 +390,8 @@ Then open `http://127.0.0.1:8000/`
 ## 👥 Built By
 
 
-**Vraj Rathod** — [@vraj537](https://github.com/vraj537)
-**Ansh Prajapati** — [@Anshu073](https://github.com/Anshu073)
+**Vraj Rathod** 
+**Ansh Prajapati**
 
 
 
